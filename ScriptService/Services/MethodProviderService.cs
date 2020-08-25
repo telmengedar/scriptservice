@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -19,7 +20,6 @@ namespace ScriptService.Services {
         IScriptExecutionService scriptexecutor;
         IWorkflowExecutionService workflowexecutor;
         readonly Dictionary<string, object> hosts=new Dictionary<string, object>();
-
 
         /// <summary>
         /// creates a new <see cref="MethodProviderService"/>
@@ -42,7 +42,26 @@ namespace ScriptService.Services {
                             logger.LogWarning($"Type '{service.Value}' not found");
                             continue;
                         }
-                        object host = Activator.CreateInstance(hosttype);
+
+                        ConstructorInfo[] constructors = hosttype.GetConstructors();
+                        if (constructors.Length == 0) {
+                            logger.LogWarning($"Type '{service.Value}' has no accessible constructors");
+                            continue;
+                        }
+
+                        object host;
+                        ConstructorInfo constructor = constructors.FirstOrDefault(c => c.GetParameters().FirstOrDefault()?.ParameterType == typeof(IConfiguration));
+                        if (constructor != null)
+                            host = constructor.Invoke(new object[] {configuration});
+                        else {
+                            constructor = constructors.FirstOrDefault(c => c.GetParameters().Length == 0);
+                            if (constructor != null)
+                                host = constructor.Invoke(new object[0]);
+                            else {
+                                logger.LogWarning($"No compatible constructor found on type '{service.Value}'");
+                                continue;
+                            }
+                        }
                         hosts[service.Key.ToLower()] = host;
                     }
                     catch (Exception e) {

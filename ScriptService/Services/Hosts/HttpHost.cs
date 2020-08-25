@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using NightlyCode.AspNetCore.Services.Errors.Exceptions;
 using Utf8Json;
 using Utf8Json.Resolvers;
@@ -13,6 +14,13 @@ namespace ScriptService.Services.Hosts {
     /// </summary>
     public class HttpHost  {
         readonly HttpClient httpclient = new HttpClient();
+
+        /// <summary>
+        /// creates a new <see cref="HttpHost"/>
+        /// </summary>
+        /// <param name="configuration">not used but necessary for automatic host</param>
+        public HttpHost(IConfiguration configuration) {
+        }
 
         void CheckHttpResponse(HttpResponseMessage response) {
             if(!response.IsSuccessStatusCode)
