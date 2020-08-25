@@ -1,0 +1,93 @@
+<div class="content-page">
+  <div class="side-panel">
+  <button mat-icon-button (click)="back()" id="back"><mat-icon>arrow_back</mat-icon>back to scripts</button>
+  <p></p>
+  <h5>Test Script</h5>
+  <div class="container">
+    <div class="row header">
+      <div class="col-12">Parameters</div>
+    </div>
+    <div class="row" *ngFor="let parameter of parameters | keyvalue">
+      <div class="col-3">{{parameter.key}}</div>
+      <div class="col-9">
+        <mat-form-field>
+          <input matInput [value]="parameter.value" (change)="setParameter(parameter.key,$event.target.value)">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <mat-form-field>
+          <input matInput (change)="addParameter($event.target.value)">
+        </mat-form-field>
+      </div>
+      <div class="col-9">New Parameter</div>
+    </div>
+  </div>
+  <p></p>
+  
+    <div class="actionbutton">
+      <button mat-button [disabled]="taskrunning" (click)="executeTest()">Test</button>
+    </div>
+  
+  <p></p>
+  <div class="container">
+    <div class="row header">
+      <div class="col-12">Log</div>
+    </div>
+    <div *ngIf="task">
+      <div class="row log" *ngFor="let line of task.log">
+        <div class="col-12" >
+          {{line}}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!task">
+      <div class="row log">
+        <div class="col-12" >
+        Test execution not started
+        </div>
+      </div>  
+    </div>
+
+  </div>  
+  </div>
+  <div class="content-panel">
+  <div class="container">
+    <div class="row header">
+      <div class="col-12">Script <span>{{script.id}}.{{script.revision}}</span></div>
+    </div>
+    <div class="row">
+      <div class="col-2 property align-self-center">Scope</div>
+      <div class="col-10 value">
+      <mat-form-field>
+        <input matInput [(ngModel)]="script.scope" (ngModelChange)="changed=true">
+      </mat-form-field>
+      </div>  
+    </div>
+    <div class="row">
+      <div class="col-2 property align-self-center">Name</div>
+      <div class="col-10 value">
+      <mat-form-field>
+        <input matInput [(ngModel)]="script.name" (ngModelChange)="changed=true">
+      </mat-form-field>
+      </div>
+    </div>
+  </div>
+    <p></p>
+    <div class="container">
+      <div class="row header">
+        <div class="col-12">Code</div>
+      </div>
+      <div class="row">
+        <ngx-monaco-editor class="codeeditor" [options]="editorOptions" [(ngModel)]="script.code" (ngModelChange)="changed=true"></ngx-monaco-editor>
+      </div>
+    </div>
+    <p></p>
+    <div class="container">
+      <div class="actionbutton">
+        <button mat-button [disabled]="!changed" (click)="save()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

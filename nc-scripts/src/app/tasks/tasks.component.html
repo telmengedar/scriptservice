@@ -1,0 +1,66 @@
+<div class="content-page">
+<div class="content-panel">
+<div class="container">
+  <div class="row header">
+    <div class="col-3">Script</div>
+    <div class="col-2">Started</div>
+    <div class="col-2">Finished</div>
+    <div class="col-2">Runtime</div>
+    <div class="col-1">Status</div>
+    <div class="col-1">Result</div>
+    <div class="col-1"></div>
+  </div>
+
+  <div class="row" [class.tasksuccess]="task.status==='Success'" [class.taskcanceled]="task.status==='Canceled'" [class.taskfailure]="task.status==='Failure'" *ngFor="let task of tasks">
+    <div class="col-3" (click)="showDetails(task.id)">{{task.workableName}}</div>
+    <div class="col-2" (click)="showDetails(task.id)">{{task.started | date:'short'}}</div>
+    <div class="col-2" (click)="showDetails(task.id)">{{task.finished | date:'short'}}</div>
+    <div class="col-2" (click)="showDetails(task.id)">{{task.runtime}}</div>
+    <div class="col-1" (click)="showDetails(task.id)">{{task.status}}</div>
+    <div class="col-1" (click)="showDetails(task.id)">{{task.result}}</div>
+    <div class="col-1 actions"><button mat-icon-button *ngIf="task.status==='Running'" (click)="cancelTask(task.id)"><mat-icon>delete</mat-icon></button></div>
+  </div>
+
+  <div class="row footer">
+    <div class="col-3"></div>
+    <div class="col-6 text-center align-self-center">
+        <span class="info">Page {{page}} of {{pages}}</span>
+    </div>
+    <div class="col-3 links"></div>
+  </div>
+</div>
+</div>
+<div class="side-panel">
+  <div class="filter-block">
+    <div class="filter-row">
+      <mat-checkbox [checked]="hasStatus('Running')" (change)="changeStatus('Running')">Running</mat-checkbox>
+    </div>
+    <div class="filter-row">
+      <mat-checkbox [checked]="hasStatus('Success')" (change)="changeStatus('Success')">Success</mat-checkbox>
+    </div>
+    <div class="filter-row">
+      <mat-checkbox [checked]="hasStatus('Canceled')" (change)="changeStatus('Canceled')">Canceled</mat-checkbox>
+    </div>
+    <div class="filter-row">
+      <mat-checkbox [checked]="hasStatus('Failure')" (change)="changeStatus('Failure')">Failure</mat-checkbox>
+    </div>
+  </div>
+  <div class="filter-block">
+    
+    <div class="filter-row">
+      <mat-form-field>
+      <mat-label>From</mat-label>
+      <input matInput [matDatepicker]="fromPicker" [value]="filterFrom" (change)="changeFrom($event.target.value)">
+      <mat-datepicker type="datetime-local" #fromPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="filter-row">
+      <mat-form-field>
+        <mat-label>To</mat-label>
+        <input matInput [matDatepicker]="toPicker" [value]="filterTo" (change)="changeTo($event.target.value)">
+        <mat-datepicker type="datetime-local" #toPicker></mat-datepicker>
+        </mat-form-field>
+    </div>
+  </div>
+</div>
+</div>

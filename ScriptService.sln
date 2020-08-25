@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptService", "ScriptService\ScriptService.csproj", "{7E46A374-9D12-41D7-8716-632282D52657}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptService.Tests", "ScriptService.Tests\ScriptService.Tests.csproj", "{AFB88CD9-4DE5-4B26-9993-1664BB438507}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E46A374-9D12-41D7-8716-632282D52657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E46A374-9D12-41D7-8716-632282D52657}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E46A374-9D12-41D7-8716-632282D52657}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E46A374-9D12-41D7-8716-632282D52657}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFB88CD9-4DE5-4B26-9993-1664BB438507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFB88CD9-4DE5-4B26-9993-1664BB438507}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFB88CD9-4DE5-4B26-9993-1664BB438507}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFB88CD9-4DE5-4B26-9993-1664BB438507}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5C24C7CD-F0B5-4230-97EC-88F12EEBD196}
+	EndGlobalSection
+EndGlobal

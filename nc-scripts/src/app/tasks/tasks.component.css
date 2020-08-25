@@ -1,0 +1,90 @@
+table.tasks {
+    border: 3px solid #1C6EA4;
+    background-color: #EEEEEE;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    text-align: left;
+    border-collapse: collapse;
+  }
+  table.tasks td, table.tasks th {
+    border: 1px solid #AAAAAA;
+    padding: 5px 5px;
+  }
+  table.tasks tbody td {
+    font-size: 13px;
+  }
+  .actions{
+    width: 40px;
+  }
+  table.tasks tr:nth-child(even) {
+    background: #D0E4F5;
+  }
+  table.tasks thead {
+    background: #1C6EA4;
+    background: -moz-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+    background: -webkit-linear-gradient(top, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+    background: linear-gradient(to bottom, #5592bb 0%, #327cad 66%, #1C6EA4 100%);
+    border-bottom: 2px solid #444444;
+  }
+  table.tasks thead th {
+    font-size: 15px;
+    font-weight: bold;
+    color: #FFFFFF;
+    border-left: 2px solid #D0E4F5;
+  }
+  table.tasks thead th:first-child {
+    border-left: none;
+  }
+  
+  table.tasks tfoot {
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background: #D0E4F5;
+    background: -moz-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+    background: -webkit-linear-gradient(top, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+    background: linear-gradient(to bottom, #dcebf7 0%, #d4e6f6 66%, #D0E4F5 100%);
+    border-top: 2px solid #444444;
+  }
+  table.tasks tfoot td {
+    font-size: 14px;
+  }
+  table.tasks tfoot .links {
+    text-align: right;
+  }
+  table.tasks tfoot .info {
+    color: #000000;
+    padding-right: 10px;
+  }
+  table.tasks tfoot .links a{
+    display: inline-block;
+    background: #1C6EA4;
+    color: #FFFFFF;
+    padding: 2px 8px;
+    border-radius: 5px;
+  }
+
+  .tasksuccess {
+    background: #7dc27d;
+}
+
+.tasksuccess:nth-child(even) {
+    background: #73b373;
+}
+
+.taskcanceled {
+    background: #c2c17d;
+}
+
+.taskcanceled:nth-child(even) {
+    background: #b3af73;
+}
+
+.taskfailure {
+    background: #c27d7d;
+}
+
+.taskfailure:nth-child(even) {
+    background: #b37373;
+}

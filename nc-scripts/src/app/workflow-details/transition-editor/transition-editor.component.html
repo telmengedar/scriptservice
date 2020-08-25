@@ -1,0 +1,15 @@
+<h2>Transition Editor</h2>
+<mat-dialog-content>
+  <div class="row">
+    <mat-checkbox [(ngModel)]="transition.error">Error</mat-checkbox>
+  </div>
+  <div class="row">
+    <div class="col-2">Condition</div>
+    <div class="col-10">
+      <input [(ngModel)]="transition.condition">
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Done</button>
+</mat-dialog-actions>

@@ -1,0 +1,22 @@
+.workflowgraph {
+    height: 600px;
+}
+.hint{
+    color: #606060;
+}
+
+.transition{
+    stroke: black;
+}
+
+.transitionhighlight {
+    stroke: yellow;
+}
+
+.transitionerror {
+    stroke: red;
+}
+
+.callnode {
+    fill: #ff9191;
+}

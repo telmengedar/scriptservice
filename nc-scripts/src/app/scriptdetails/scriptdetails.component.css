@@ -1,0 +1,10 @@
+.codeeditor {
+    display: block;
+    width:100%;
+    height:500px;
+    border: 1px solid black;
+}
+
+.customMonacoEditor { /*set automaticLayout*/
+    height: calc(100vh +10px);
+}

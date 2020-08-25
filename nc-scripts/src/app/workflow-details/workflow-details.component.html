@@ -1,0 +1,134 @@
+<div class="content-page">
+  <div class="side-panel">
+    <button mat-icon-button (click)="back()" id="back"><mat-icon>arrow_back</mat-icon>back to workflows</button>
+  <p></p>
+  <div class="container">
+    <div class="row header">
+      <div class="col-12">Workflow <span>{{workflow.id}}.{{workflow.revision}}</span></div>
+    </div>
+    <div class="row">
+      <div class="col-2 property align-self-center">Name</div>
+      <div class="col-10 value">
+        <input [(ngModel)]="workflow.name" (ngModelChange)="changed=true">
+      </div>
+    </div>
+  </div>
+  <p></p>
+  <h5>Test</h5>
+  <div class="container">
+    <div class="row header">
+      <div class="col-12">Parameters</div>
+    </div>
+    <div class="row" *ngFor="let parameter of parameters | keyvalue">
+      <div class="col-3">{{parameter.key}}</div>
+      <div class="col-8">
+          <input [value]="parameter.value" (change)="setParameter(parameter.key,$event.target.value)">
+      </div>
+      <div class="col-1">
+        <button mat-icon-button (click)="deleteParameter(parameter.key)"><mat-icon>delete</mat-icon></button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+          <input (change)="addParameter($event.target)">
+      </div>
+      <div class="col-9 hint">New Parameter</div>
+    </div>
+  </div>
+  <p></p>
+  
+    <div class="actionbutton">
+      <button mat-button [disabled]="task && task.status==='Running'" (click)="executeTest()">Test</button>
+    </div>
+  
+  <p></p>
+  <div class="container">
+    <div class="row header">
+      <div class="col-12">Log</div>
+    </div>
+    <div *ngIf="task">
+      <div class="row log" *ngFor="let line of task.log">
+        <div class="col-12" >
+          {{line}}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!task">
+      <div class="row log">
+        <div class="col-12" >
+        Test execution not started
+        </div>
+      </div>  
+    </div>
+
+  </div>  
+  </div>
+  <div class="content-panel">
+    <div class="container">
+      <div class="row header">
+        <div class="col-12">Workflow</div>
+      </div>
+      <div class="row workflowgraph" (click)="resetTransition()">
+        <ngx-graph class="chart-container" [nodes]="nodes" [links]="transitions" [update$]="updateGraph$" (contextmenu)="onContextMenu($event)" [draggingEnabled]="false">
+          <ng-template #defsTemplate>
+            <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+              <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+            </svg:marker>
+          </ng-template>
+
+          <!--svg:g class="edge" *ngIf="dragNode" [x1]="dragNode.position.x" [y1]="dragNode.position.y" x2stroke="yellow">
+            <svg:path class="line" stroke-width="2" marker-end="url(#arrow)"></svg:path>
+          </svg:g-->
+
+          <ng-template #nodeTemplate let-node>
+            <svg:g class="node" ngx-tooltip [tooltipPlacement]="'top'" [tooltipType]="'tooltip'" [tooltipTitle]="node.label" (click)="nodeClick($event, node)" width="100" height="80" (dblclick)="editNode($event, node)">
+              <svg:rect width="100" height="15" fill="#606060" />
+              <svg:text alignment-baseline="central" [attr.x]="5" [attr.y]="7.5" font-size="10" fill="#FFFFFF">
+                {{node.data.node.type}}
+              </svg:text>
+              <svg:rect
+                y="15"
+                width="100"
+                height="65"
+                [attr.fill]="determineColor(node.data.node.type, node.data.highlighted)"
+              />              
+              <svg:text alignment-baseline="central" text-anchor="middle" x="50" y="47.5">
+                {{node.data.node.name}}
+              </svg:text>
+            </svg:g>
+          </ng-template>
+          <ng-template #linkTemplate let-link>
+            <svg:g class="edge" (dblclick)="editTransition($event, link)" (click)="edgeClick($event, link)">
+              <svg:path class="line" [ngClass]="{'transitionhighlight': link.data.highlighted, 'transitionerror': !link.data.highlighted && link.data.transition.error, 'transition': !link.data.highlighted && !link.data.transition.error}" stroke-width="3" marker-end="url(#arrow)"></svg:path>
+              <svg:text class="edge-label" text-anchor="middle">
+                <textPath
+                  class="text-path"
+                  [attr.href]="'#' + link.id"
+                  [style.dominant-baseline]="link.dominantBaseline"
+                  startOffset="50%"
+                >
+                  {{ link.data.transition.condition }}
+                </textPath>
+              </svg:text>
+            </svg:g>
+          </ng-template>
+        </ngx-graph>
+      </div>
+    </div>
+    <p></p>
+    <div class="container">
+      <div class="actionbutton">
+        <button mat-button [disabled]="!changed" (click)="save()">Save</button>
+      </div>
+    </div>
+  </div>
+  <div style="visibility: hidden; position: fixed"
+    [style.left]="contextMenuPosition.x"
+    [style.top]="contextMenuPosition.y"
+    [matMenuTriggerFor]="contextMenu">
+</div>
+  <mat-menu #contextMenu="matMenu">
+    <button mat-menu-item (click)="addNode()">Add Node</button>
+    <button mat-menu-item (click)="refreshLayout()">RefreshLayout</button>
+  </mat-menu>
+</div>

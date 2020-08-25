@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <h1>{{ title }}</h1>
+    <span class="menu-spacer"></span>
+    <div>
+      <a mat-button [routerLink]="'/tasks'">Tasks</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/scripts'">Scripts</a>
+    </div>
+    <div>
+      <a mat-button [routerLink]="'/workflows'">Workflows</a>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<router-outlet></router-outlet>

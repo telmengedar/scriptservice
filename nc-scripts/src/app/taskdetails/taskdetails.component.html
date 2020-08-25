@@ -1,0 +1,71 @@
+<div class="content-page" *ngIf="task">
+  <button mat-icon-button (click)="back()" id="back"><mat-icon>arrow_back</mat-icon>back to tasks</button>
+  <div class="container">
+    <div class="row header">
+      <div class="col-12">Script Information</div>
+    </div>
+    <div class="row">
+      <div class="col-2 property">Task Id</div>
+      <div class="col-10 value">{{task.id}}</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 property">Script Id</div>
+      <div class="col-sm-10 value">{{task.workableId}}</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 property">Script Revision</div>
+      <div class="col-sm-10 value">{{task.workableRevision}}</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 property">Script Name</div>
+      <div class="col-sm-10 value">{{task.workableName}}</div>
+    </div>
+  </div>
+    <p></p>
+    <div class="container">
+      <div class="row header">
+        <div class="col-12">Execution Parameters</div>
+      </div>
+      <div class="row" *ngFor="let parameter of task.parameters | keyvalue">
+        <div class="col-sm-2">{{parameter.key}}</div>
+        <div class="col-sm-10">{{parameter.value}}</div>
+      </div>
+    </div>
+    <p></p>
+    <div class="container">
+    <div class="row header">
+      <div class="col-12">Execution Information</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 property">Started</div>
+      <div class="col-sm-10 value">{{task.started | date:'yyyy-MM-dd hh:mm:ss.SSS'}}</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 property">Finished</div>
+      <div class="col-sm-10 value">{{task.finished | date:'yyyy-MM-dd hh:mm:ss.SSS'}}</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 property">Runtime</div>
+      <div class="col-sm-10 value">{{task.runtime}}</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 property">Status</div>
+      <div class="col-sm-10 value">{{task.status}}</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 property">Result</div>
+      <div class="col-sm-10 value">{{task.result}}</div>
+    </div>
+    </div>
+  <p></p>
+  <div class="container">
+    <div class="row header">
+      <div class="col-12">Script Log</div>
+    </div>
+    <div class="row log" *ngFor="let line of task.log">
+      <div class="col-sm-12" >
+        {{line}}
+      </div>
+    </div>
+  </div>
+</div>

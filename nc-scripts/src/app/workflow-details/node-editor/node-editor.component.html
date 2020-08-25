@@ -1,0 +1,182 @@
+<h2>Node Editor</h2>
+<mat-dialog-content>
+  <div class="row">
+    <div class="col-2">Name</div>
+    <div class="col-10">
+      <input [(ngModel)]="node.name">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-2">Group</div>
+    <div class="col-10">
+      <input [(ngModel)]="node.group">
+    </div>
+  </div>
+  <div class="row" *ngIf="node.type!=='Start'">
+    <div class="col-2">Node Type</div>
+    <div class="col-10">
+      <select [(ngModel)]="node.type">
+        <option value="Node">Node</option>
+        <option value="Expression">Expression</option>
+        <option value="BinaryOperation">Binary Operation</option>
+        <option value="Value">Value</option>
+        <option value="Call">Call</option>
+        <option value="Script">Script</option>
+        <option value="Workflow">Workflow</option>
+        <option value="Suspend">Suspend</option>
+      </select>
+    </div>
+  </div>
+
+  <div [ngSwitch]="node.type">
+
+    <!-- Parameters for 'Start' Nodes -->
+    <div *ngSwitchCase="'Start'">
+      <div class="row header">
+        <div class="col-12">Imports</div>
+      </div>  
+      <div class="row" *ngFor="let import of node.parameters.imports">
+        <div class="col-3">
+          <input [(ngModel)]="import.variable">
+        </div>
+        <div class="col-8">
+          <input [(ngModel)]="import.name">
+        </div>
+        <div class="col-1">
+          <button mat-icon-button (click)="deleteImport(import.variable)"><mat-icon>delete</mat-icon></button>
+        </div>
+      </div>    
+      <div class="row">
+        <div class="col-12">
+          <input (change)="addImport($event.target)">
+        </div>
+      </div>
+    </div>
+
+    <!-- Parameters for 'Call' Nodes -->
+    <div *ngSwitchCase="'Call'">
+      <div class="row">
+        <div class="col-2">Host</div>
+        <div class="col-10">
+          <input [(ngModel)]="node.parameters.host">
+        </div>  
+      </div>  
+      <div class="row">
+        <div class="col-2">Method</div>
+        <div class="col-10">
+          <input [(ngModel)]="node.parameters.method">
+        </div>  
+      </div>  
+      <div class="row header">
+        <div class="col-12">Arguments</div>
+      </div>  
+      <div class="row" *ngFor="let argument of node.parameters.arguments;index as i">
+        <div class="col-11">
+          <input [(ngModel)]="argument">
+        </div>
+        <div class="col-1">
+          <button mat-icon-button (click)="deleteArgument(i)"><mat-icon>delete</mat-icon></button>
+        </div>
+      </div>    
+      <div class="row">
+        <div class="col-12">
+          <input (change)="addArgument($event.target)">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Parameters for 'Binary' Nodes -->
+    <div class="row" *ngSwitchCase="'BinaryOperation'">
+      <div class="col-5">
+        <input [(ngModel)]="node.parameters.lhs">
+      </div>
+      <div class="col-2">
+        <select [(ngModel)]="node.parameters.operation">
+          <option value="Add">+</option>
+          <option value="Subtract">-</option>
+          <option value="Multiply">*</option>
+          <option value="Divide">/</option>
+          <option value="Modulo">%</option>
+          <option value="ShiftLeft">&lt;&lt;</option>
+          <option value="ShiftRight">&gt;&gt;</option>
+          <option value="RollLeft">&lt;&lt;&lt;</option>
+          <option value="RollRight">&gt;&gt;&gt;</option>
+          <option value="Equality">=</option>
+          <option value="Inequality">!=</option>
+          <option value="Less">&lt;</option>
+          <option value="LessEqual">&lt;=</option>
+          <option value="Greater">&gt;</option>
+          <option value="GreaterEqual">&gt;=</option>
+          <option value="Matches">~~</option>
+          <option value="MatchesNot">!~</option>
+          <option value="BitAnd">&</option>
+          <option value="BitOr">|</option>
+          <option value="BitXor">^</option>
+          <option value="LogicalAnd">&&</option>
+          <option value="LogicalOr">||</option>
+          <option value="LogicalXor">^^</option>
+        </select>
+      </div>
+      <div class="col-5">
+        <input [(ngModel)]="node.parameters.rhs">
+      </div>
+    </div>
+
+    <!-- Parameters for 'Expression' Nodes -->
+    <div *ngSwitchCase="'Expression'">
+      <div class="row">
+        <ngx-monaco-editor class="codeeditor" [options]="editorOptions" [(ngModel)]="node.parameters.code"></ngx-monaco-editor>
+      </div>
+    </div>
+
+    <!-- Parameters for 'Value' Nodes -->
+    <div *ngSwitchCase="'Value'">
+      <div class="row">
+        <div class="col-2">Value</div>
+        <div class="col-10">
+          <input [(ngModel)]="node.parameters.value">
+        </div>
+      </div>    
+    </div>
+
+    <!-- Parameters for 'Script' Nodes -->
+    <div *ngSwitchCase="'Script'">
+      <div class="row">
+        <div class="col-2">Name</div>
+        <div class="col-10">
+          <input [(ngModel)]="node.parameters.name">
+        </div>
+      </div>    
+    </div>
+
+    <!-- Parameters for 'Workflow' Nodes -->
+    <div *ngSwitchCase="'Workflow'">
+      <div class="row">
+        <div class="col-2">Name</div>
+        <div class="col-10">
+          <input [(ngModel)]="node.parameters.name">
+        </div>
+      </div>    
+    </div>    
+
+    <!-- Parameters for 'Suspend' Nodes -->
+    <div *ngSwitchCase="'Suspend'">
+      <div class="row">
+        <div class="col-2">Variable</div>
+        <div class="col-10">
+          <input [(ngModel)]="node.parameters.variable">
+        </div>
+      </div>    
+    </div>    
+  </div>
+
+</mat-dialog-content>
+<div class="row" *ngIf="node.type!=='Start'">
+  <div class="col-2">Return</div>
+  <div class="col-10">
+    <input [(ngModel)]="node.variable">
+  </div>
+</div>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Done</button>
+</mat-dialog-actions>
