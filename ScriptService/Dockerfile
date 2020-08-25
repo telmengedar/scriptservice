@@ -6,9 +6,9 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["ScriptService/ScriptService.csproj", "ScriptService/"]
+COPY ["ScriptService.csproj", "ScriptService/"]
 RUN dotnet restore "ScriptService/ScriptService.csproj"
-COPY . .
+COPY . ScriptService
 WORKDIR "/src/ScriptService"
 RUN dotnet build "ScriptService.csproj" -c Release -o /app/build
 
