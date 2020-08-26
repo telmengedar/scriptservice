@@ -14,5 +14,14 @@
     <PackageReference Include="Npgsql" Version="4.1.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="mamgo.dto.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="mamgo.serviceconnector.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 
 </Project>

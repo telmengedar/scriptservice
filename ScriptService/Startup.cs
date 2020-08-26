@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using mamgo.services.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -66,12 +68,15 @@ namespace ScriptService {
                 builder.AddEventSourceLogger();
             }).CreateLogger("Startup");
 
+            string contentRoot = Configuration.GetValue<string>(WebHostDefaults.ContentRootKey);
+
+            List<Assembly> assemblies=new List<Assembly>();
             IConfigurationSection assemblysection = Configuration.GetSection("Assemblies");
             if (assemblysection != null) {
                 foreach (IConfigurationSection assembly in assemblysection.GetChildren()) {
                     logger.LogInformation($"Loading assembly '{assembly.Value}'");
                     try {
-                        Assembly.LoadFile(Path.GetFullPath(assembly.Value));
+                        assemblies.Add(Assembly.LoadFrom(Path.Combine(contentRoot, assembly.Value)));
                     }
                     catch (Exception e) {
                         logger.LogError(e, $"Unable to load '{assembly.Value}'");
@@ -83,15 +88,20 @@ namespace ScriptService {
             if (servicesection != null) {
                 foreach (IConfigurationSection service in servicesection.GetChildren()) {
                     string servicename = service["Service"];
-                    Type servicetype = !string.IsNullOrEmpty(servicename) ? Type.GetType(servicename) : null;
+                    Type servicetype=!string.IsNullOrEmpty(servicename) ? Type.GetType(servicename) : null;
+                    if (servicetype == null && !string.IsNullOrEmpty(servicename))
+                        servicetype = assemblies.Select(a => a.GetType(servicename)).FirstOrDefault(t => t != null);
 
                     string implementationname = service["Implementation"];
                     Type implementationtype = !string.IsNullOrEmpty(implementationname) ? Type.GetType(implementationname) : null;
+                    if (implementationtype == null && !string.IsNullOrEmpty(implementationname))
+                        implementationtype = assemblies.Select(a => a.GetType(implementationname)).FirstOrDefault(t => t != null);
+
                     if (servicetype == null)
                         servicetype = implementationtype;
 
                     if (servicetype == null) {
-                        logger.LogWarning($"Unable to setup service '{service.Key}' using '{implementationname}'->'{servicename}'");
+                        logger.LogWarning($"Unable to setup service '{service.Key}' using '{servicename}'->'{implementationname}'");
                         continue;
                     }
 
