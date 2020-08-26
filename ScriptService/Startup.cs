@@ -104,6 +104,8 @@ namespace ScriptService {
                         logger.LogWarning($"Unable to setup service '{service.Key}' using '{servicename}'->'{implementationname}'");
                         continue;
                     }
+                    else
+                        logger.LogInformation($"Adding service '{service.Key}' using '{servicename}'->'{implementationname}'");
 
                     services.AddSingleton(servicetype, implementationtype);
                 }
