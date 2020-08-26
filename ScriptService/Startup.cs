@@ -1,9 +1,9 @@
 using System;
+using System.Reflection;
 using mamgo.services.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,21 +65,37 @@ namespace ScriptService {
                 builder.AddEventSourceLogger();
             }).CreateLogger("Startup");
 
-            IConfigurationSection servicesection = Configuration.GetSection("Services");
-            foreach (IConfigurationSection service in servicesection.GetChildren()) {
-                string servicename = service["Service"];
-                Type servicetype = !string.IsNullOrEmpty(servicename) ? Type.GetType(servicename) : null;
-
-                string implementationname = service["Implementation"];
-                Type implementationtype = !string.IsNullOrEmpty(implementationname) ? Type.GetType(implementationname) : null;
-                if (servicetype == null)
-                    servicetype = implementationtype;
-
-                if (servicetype == null) {
-                    logger.LogWarning($"Unable to setup service '{service.Key}' using '{implementationname}'->'{servicename}'");
-                    continue;
+            IConfigurationSection assemblysection = Configuration.GetSection("Assemblies");
+            if (assemblysection != null) {
+                foreach (IConfigurationSection assembly in assemblysection.GetChildren()) {
+                    logger.LogInformation($"Loading assembly '{assembly.Value}'");
+                    try {
+                        Assembly.LoadFile(assembly.Value);
+                    }
+                    catch (Exception e) {
+                        logger.LogError(e, $"Unable to load '{assembly.Value}'");
+                    }
                 }
-                services.AddSingleton(servicetype, implementationtype);
+            }
+
+            IConfigurationSection servicesection = Configuration.GetSection("Services");
+            if (servicesection != null) {
+                foreach (IConfigurationSection service in servicesection.GetChildren()) {
+                    string servicename = service["Service"];
+                    Type servicetype = !string.IsNullOrEmpty(servicename) ? Type.GetType(servicename) : null;
+
+                    string implementationname = service["Implementation"];
+                    Type implementationtype = !string.IsNullOrEmpty(implementationname) ? Type.GetType(implementationname) : null;
+                    if (servicetype == null)
+                        servicetype = implementationtype;
+
+                    if (servicetype == null) {
+                        logger.LogWarning($"Unable to setup service '{service.Key}' using '{implementationname}'->'{servicename}'");
+                        continue;
+                    }
+
+                    services.AddSingleton(servicetype, implementationtype);
+                }
             }
         }
 
