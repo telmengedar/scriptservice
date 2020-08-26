@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -30,38 +29,20 @@ namespace ScriptService.Services {
         public MethodProviderService(ILogger<MethodProviderService> logger, IServiceProvider serviceprovider, IConfiguration configuration) {
             this.logger = logger;
             this.serviceprovider = serviceprovider;
-
-            IConfigurationSection servicesection = configuration.GetSection("Hosts");
+            IConfigurationSection servicesection = configuration.GetSection("Services");
             if (servicesection != null) {
-                logger.LogInformation("Loading method hosts from configuration");
+                logger.LogInformation("Loading service hosts from configuration");
                 foreach (IConfigurationSection service in servicesection.GetChildren()) {
-                    this.logger.LogInformation($"Loading host '{service.Key}' from '{service.Value}'");
+                    this.logger.LogInformation($"Loading service '{service.Key}'");
+                    Type hosttype = Type.GetType(service["Service"] ?? service["Implementation"]);
+
+                    if (hosttype == null) {
+                        logger.LogWarning($"Type '{service["Service"] ?? service["Implementation"]}' not found.");
+                        continue;
+                    }
+
                     try {
-                        Type hosttype = Type.GetType(service.Value);
-                        if (hosttype==null) {
-                            logger.LogWarning($"Type '{service.Value}' not found");
-                            continue;
-                        }
-
-                        ConstructorInfo[] constructors = hosttype.GetConstructors();
-                        if (constructors.Length == 0) {
-                            logger.LogWarning($"Type '{service.Value}' has no accessible constructors");
-                            continue;
-                        }
-
-                        object host;
-                        ConstructorInfo constructor = constructors.FirstOrDefault(c => c.GetParameters().FirstOrDefault()?.ParameterType == typeof(IConfiguration));
-                        if (constructor != null)
-                            host = constructor.Invoke(new object[] {configuration});
-                        else {
-                            constructor = constructors.FirstOrDefault(c => c.GetParameters().Length == 0);
-                            if (constructor != null)
-                                host = constructor.Invoke(new object[0]);
-                            else {
-                                logger.LogWarning($"No compatible constructor found on type '{service.Value}'");
-                                continue;
-                            }
-                        }
+                        object host = serviceprovider.GetService(hosttype);
                         hosts[service.Key.ToLower()] = host;
                     }
                     catch (Exception e) {

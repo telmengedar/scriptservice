@@ -3,6 +3,7 @@ using mamgo.services.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,6 +57,18 @@ namespace ScriptService {
             services.AddSingleton(s => ConnectDatabase());
             services.AddErrorHandlers();
             services.AddSingleton<IConfigureOptions<MvcOptions>, MvcConfiguration>();
+
+            IConfigurationSection servicesection = Configuration.GetSection("Services");
+            foreach (IConfigurationSection service in servicesection.GetChildren()) {
+                string servicename = service["Service"];
+                Type servicetype = !string.IsNullOrEmpty(servicename) ? Type.GetType(servicename) : null;
+
+                string implementationname = service["Implementation"];
+                Type implementationtype = !string.IsNullOrEmpty(implementationname) ? Type.GetType(implementationname) : null;
+                if (servicetype == null)
+                    servicetype = implementationtype;
+                services.AddSingleton(servicetype, implementationtype);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
