@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Reflection;
 using mamgo.services.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -70,7 +71,7 @@ namespace ScriptService {
                 foreach (IConfigurationSection assembly in assemblysection.GetChildren()) {
                     logger.LogInformation($"Loading assembly '{assembly.Value}'");
                     try {
-                        Assembly.LoadFile(assembly.Value);
+                        Assembly.LoadFile(Path.GetFullPath(assembly.Value));
                     }
                     catch (Exception e) {
                         logger.LogError(e, $"Unable to load '{assembly.Value}'");
