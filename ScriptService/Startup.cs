@@ -8,6 +8,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NightlyCode.AspNetCore.Services.Extensions;
 using NightlyCode.AspNetCore.Services.Middleware;
@@ -58,6 +59,12 @@ namespace ScriptService {
             services.AddErrorHandlers();
             services.AddSingleton<IConfigureOptions<MvcOptions>, MvcConfiguration>();
 
+            ILogger logger=LoggerFactory.Create(builder => {
+                builder.SetMinimumLevel(LogLevel.Information);
+                builder.AddConsole();
+                builder.AddEventSourceLogger();
+            }).CreateLogger("Startup");
+
             IConfigurationSection servicesection = Configuration.GetSection("Services");
             foreach (IConfigurationSection service in servicesection.GetChildren()) {
                 string servicename = service["Service"];
@@ -67,6 +74,11 @@ namespace ScriptService {
                 Type implementationtype = !string.IsNullOrEmpty(implementationname) ? Type.GetType(implementationname) : null;
                 if (servicetype == null)
                     servicetype = implementationtype;
+
+                if (servicetype == null) {
+                    logger.LogWarning($"Unable to setup service '{service.Key}' using '{implementationname}'->'{servicename}'");
+                    continue;
+                }
                 services.AddSingleton(servicetype, implementationtype);
             }
         }
