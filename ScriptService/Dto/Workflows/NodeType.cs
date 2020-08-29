@@ -52,6 +52,13 @@
         /// <summary>
         /// calls a method on a host
         /// </summary>
-        Call
+        Call,
+
+        /// <summary>
+        /// iterates over every element of a collection
+        /// </summary>
+        Iterator,
+
+
     }
 }

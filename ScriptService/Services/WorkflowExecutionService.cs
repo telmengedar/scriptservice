@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NightlyCode.Scripting;
 using NightlyCode.Scripting.Data;
 using NightlyCode.Scripting.Parser;
 using NightlyCode.Scripting.Providers;
@@ -15,6 +16,7 @@ using ScriptService.Extensions;
 using ScriptService.Services.Cache;
 using ScriptService.Services.Scripts;
 using ScriptService.Services.Workflows;
+using ScriptService.Services.Workflows.Commands;
 using TaskStatus = ScriptService.Dto.TaskStatus;
 
 namespace ScriptService.Services {
@@ -113,7 +115,7 @@ namespace ScriptService.Services {
                         state.State[entry.Key] = entry.Value.DetermineValue(state.State);
             }
 
-            return await Execute(state.Variables, tasklogger, token, state.State, EvaluateTransition(state.Node, tasklogger, state.State, token), lastresult);
+            return await Execute(state.Variables, tasklogger, token, state.State, await EvaluateTransitions(state.Node, tasklogger, state.State, state.Node.Transitions, token), lastresult);
         }
 
         async Task<IInstanceNode> BuildNode(NodeData node) {
@@ -136,7 +138,7 @@ namespace ScriptService.Services {
                 break;
             case NodeType.BinaryOperation:
                 BinaryOpParameters binparameters = node.Parameters.Deserialize<BinaryOpParameters>();
-                instance = new BinaryNode(node.Name, binparameters);
+                instance = new BinaryNode(node.Name, binparameters, compiler);
                 break;
             case NodeType.Value:
                 ValueParameters valueparameters = node.Parameters.Deserialize<ValueParameters>();
@@ -148,6 +150,9 @@ namespace ScriptService.Services {
             case NodeType.Call:
                 instance=new CallNode(node.Name, node.Parameters.Deserialize<CallParameters>(), compiler);
                 break;
+            case NodeType.Iterator:
+                instance = new IteratorNode(node.Name, node.Parameters.Deserialize<IteratorParameters>(), compiler);
+                break;
             default:
                 instance = new InstanceNode(node.Name);
                 break;
@@ -156,6 +161,29 @@ namespace ScriptService.Services {
             if (!string.IsNullOrEmpty(node.Variable))
                 instance = new AssignStateNode(instance, node.Variable);
             return instance;
+        }
+
+        async Task BuildTransition<T>(T source, T target, Transition data, Func<T, IInstanceNode> nodegetter) {
+            IScript condition = string.IsNullOrEmpty(data.Condition) ? null : await compiler.CompileCode(data.Condition);
+            List<InstanceTransition> transitions;
+            switch (data.Type) {
+            case TransitionType.Standard:
+                transitions = nodegetter(source).Transitions;
+                break;
+            case TransitionType.Error:
+                transitions = nodegetter(source).ErrorTransitions;
+                break;
+            case TransitionType.Loop:
+                transitions = nodegetter(source).LoopTransitions;
+                break;
+            default:
+                throw new ArgumentException($"Invalid type '{data.Type}'");
+            }
+
+            transitions.Add(new InstanceTransition {
+                Target = nodegetter(target),
+                Condition = condition
+            });
         }
 
         async Task<WorkflowInstance> BuildWorkflow(WorkflowStructure workflow, IDictionary<string, object> variables) {
@@ -179,32 +207,7 @@ namespace ScriptService.Services {
             }
 
             foreach(IndexTransition transition in workflow.Transitions) {
-                if (!string.IsNullOrEmpty(transition.Condition)) {
-                    if (transition.Error) {
-                        nodes[transition.OriginIndex].ErrorTransitions.Add(new InstanceTransition {
-                            Target = nodes[transition.TargetIndex],
-                            Condition = await compiler.CompileCode(transition.Condition)
-                        });
-                    }
-                    else {
-                        nodes[transition.OriginIndex].Transitions.Add(new InstanceTransition {
-                            Target = nodes[transition.TargetIndex],
-                            Condition = await compiler.CompileCode(transition.Condition)
-                        });
-                    }
-                }
-                else {
-                    if (transition.Error) {
-                        nodes[transition.OriginIndex].DefaultErrorTransitions.Add(new InstanceTransition {
-                            Target = nodes[transition.TargetIndex]
-                        });
-                    }
-                    else {
-                        nodes[transition.OriginIndex].DefaultTransitions.Add(new InstanceTransition {
-                            Target = nodes[transition.TargetIndex]
-                        });
-                    }
-                }
+                await BuildTransition(transition.OriginIndex, transition.TargetIndex, transition, i => nodes[i]);
             }
 
             return new WorkflowInstance {
@@ -239,32 +242,7 @@ namespace ScriptService.Services {
             }
 
             foreach (TransitionData transition in workflow.Transitions) {
-                if (!string.IsNullOrEmpty(transition.Condition)) {
-                    if (transition.Error) {
-                        nodes[transition.OriginId].ErrorTransitions.Add(new InstanceTransition {
-                            Target = nodes[transition.TargetId],
-                            Condition = await compiler.CompileCode(transition.Condition)
-                        });
-                    }
-                    else {
-                        nodes[transition.OriginId].Transitions.Add(new InstanceTransition {
-                            Target = nodes[transition.TargetId],
-                            Condition = await compiler.CompileCode(transition.Condition)
-                        });
-                    }
-                }
-                else {
-                    if (transition.Error) {
-                        nodes[transition.OriginId].DefaultErrorTransitions.Add(new InstanceTransition {
-                            Target = nodes[transition.TargetId]
-                        });
-                    }
-                    else {
-                        nodes[transition.OriginId].DefaultTransitions.Add(new InstanceTransition {
-                            Target = nodes[transition.TargetId]
-                        });
-                    }
-                }
+                await BuildTransition(transition.OriginId, transition.TargetId, transition, id => nodes[id]);
             }
 
             instance = new WorkflowInstance {
@@ -341,50 +319,31 @@ namespace ScriptService.Services {
         }
 
         Task<object> Execute(WorkflowInstance workflow, WorkableLogger tasklogger, CancellationToken token) {
-            IVariableProvider variables = new VariableProvider(ProcessImports(tasklogger, workflow.StartNode.Parameters.Imports));
+            IVariableProvider variables = new VariableProvider(ProcessImports(tasklogger, workflow.StartNode.Parameters?.Imports));
             return Execute(variables, tasklogger, token, new Dictionary<string, object>(), workflow.StartNode);
         }
 
-        IInstanceNode EvaluateTransition(IInstanceNode current, WorkableLogger tasklogger, IDictionary<string, object> state, CancellationToken token) {
-            InstanceTransition transition = current.Transitions.FirstOrDefault(t => t.Condition.Execute<bool>(new VariableProvider(state)));
-            if(transition == null) {
-                if(current.DefaultTransitions.Count > 1)
-                    tasklogger.Warning($"More than one default transition defined for '{current.NodeName}'. Behavior of Workflow is undefined since the order of transitions is not guaranteed to be static.");
-                transition = current.DefaultTransitions.FirstOrDefault();
-            }
-
-            if(transition == null) {
-                if(current.Transitions.Count > 0)
-                    tasklogger.Warning($"Node '{current.NodeName}' has transitions defined but no transition matches. Workflow will end here by default. It is recommended you add a transition to an empty node without exits so that this behavior does not lead to confusal.");
-                current = null;
-            }
-            else {
-                if(current is BinaryNode)
-                    tasklogger.Warning("Result of binary operation is discarded since there is no result variable defined. This should only make sense if the node is the last executing node in the workflow.");
-                current = transition.Target;
-                tasklogger.Info($"Transition to '{current.NodeName}'");
-            }
-
-            return current;
+        Task<IInstanceNode> EvaluateTransitions(IInstanceNode current, WorkableLogger tasklogger, IDictionary<string, object> state, List<InstanceTransition> transitions, CancellationToken token) {
+            return EvaluateTransitions(current, tasklogger, new VariableProvider(state), transitions, token);
         }
 
-        IInstanceNode EvaluateErrorTransition(IInstanceNode current, WorkableLogger tasklogger, IDictionary<string, object> state, Exception error, CancellationToken token) {
-            IVariableProvider variableprovider = new VariableProvider(new Variable("error", error));
-            variableprovider = new VariableProvider(variableprovider, state);
-            InstanceTransition transition = current.ErrorTransitions.FirstOrDefault(t => t.Condition.Execute<bool>(variableprovider));
-            if(transition == null) {
-                if(current.DefaultErrorTransitions.Count > 1)
-                    tasklogger.Warning($"More than one default error transition defined for '{current.NodeName}'. Behavior of Workflow is undefined since the order of transitions is not guaranteed to be static.");
-                transition = current.DefaultErrorTransitions.FirstOrDefault();
+        async Task<IInstanceNode> EvaluateTransitions(IInstanceNode current, WorkableLogger tasklogger, IVariableProvider variableprovider, List<InstanceTransition> transitions, CancellationToken token) {
+            foreach (InstanceTransition conditionaltransition in transitions.Where(c=>c.Condition!=null)) {
+                if (await conditionaltransition.Condition.ExecuteAsync<bool>(variableprovider, token)) {
+                    tasklogger.Info($"Transition '{current.NodeName}' -> '{conditionaltransition.Target.NodeName}'");
+                    return conditionaltransition.Target;
+                }
             }
 
-            if (transition != null) {
-                current = transition.Target;
-                tasklogger.Info($"Transition to '{current.NodeName}'");
+            InstanceTransition[] defaulttransitions = transitions.Where(t => t.Condition == null).ToArray();
+            if (defaulttransitions.Length > 0) {
+                if (defaulttransitions.Length > 1)
+                    tasklogger.Warning($"More than one default transition defined for '{current.NodeName}'. Behavior of Workflow is undefined since the order of transitions is not guaranteed to be static.");
+                tasklogger.Info($"Transition '{current.NodeName}' -> '{defaulttransitions.First().Target.NodeName}'");
+                return defaulttransitions.First().Target;
             }
-            else current = null;
 
-            return current;
+            return null;
         }
 
         async Task<object> Execute(IVariableProvider variables, WorkableLogger tasklogger, CancellationToken token, IDictionary<string, object> state, IInstanceNode current, object lastresult=null) {
@@ -398,12 +357,9 @@ namespace ScriptService.Services {
                     // used for workflow suspension
                     if (lastresult is SuspendState)
                         return lastresult;
-
-                    
                 }
                 catch (Exception e) {
-                    
-                    IInstanceNode next = EvaluateErrorTransition(current, tasklogger, state, e, token);
+                    IInstanceNode next = await EvaluateTransitions(current, tasklogger, new VariableProvider(new VariableProvider(new Variable("error", e)), state), current.ErrorTransitions, token);
                     if (next == null)
                         throw;
 
@@ -413,10 +369,13 @@ namespace ScriptService.Services {
                 }
 
                 try {
-                    current = EvaluateTransition(current, tasklogger, state, token);
+                    if (lastresult is LoopCommand) {
+                        current = await EvaluateTransitions(current, tasklogger, new VariableProvider(state), current.LoopTransitions, token) ?? current;
+                    }
+                    else current = await EvaluateTransitions(current, tasklogger, new VariableProvider(state), current.Transitions, token);
                 }
                 catch (Exception e) {
-                    IInstanceNode next = EvaluateErrorTransition(current, tasklogger, state, e, token);
+                    IInstanceNode next = await EvaluateTransitions(current, tasklogger, new VariableProvider(new VariableProvider(new Variable("error", e)), state), current.ErrorTransitions, token);
                     if(next == null)
                         throw;
 

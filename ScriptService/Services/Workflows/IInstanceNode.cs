@@ -23,17 +23,12 @@ namespace ScriptService.Services.Workflows {
         /// <summary>
         /// list of transitions without condition
         /// </summary>
-        public List<InstanceTransition> DefaultTransitions { get; }
-
-        /// <summary>
-        /// list of transitions without condition
-        /// </summary>
         public List<InstanceTransition> ErrorTransitions { get; }
 
         /// <summary>
-        /// list of transitions without condition
+        /// list of loop transitions
         /// </summary>
-        public List<InstanceTransition> DefaultErrorTransitions { get; }
+        public List<InstanceTransition> LoopTransitions { get; }
 
         /// <summary>
         /// executes the node

@@ -18,34 +18,19 @@ namespace ScriptService.Services.Workflows {
             NodeName = nodeName;
         }
 
-        /// <summary>
-        /// name of node
-        /// </summary>
+        /// <inheritdoc />
         public string NodeName { get; }
 
-        /// <summary>
-        /// transitions processed after this node was processed
-        /// </summary>
+        /// <inheritdoc />
         public List<InstanceTransition> Transitions { get; } = new List<InstanceTransition>();
 
-        /// <summary>
-        /// list of transitions without condition
-        /// </summary>
-        public List<InstanceTransition> DefaultTransitions { get; } = new List<InstanceTransition>();
-
-        /// <summary>
-        /// transitions for error handling
-        /// </summary>
+        /// <inheritdoc />
         public List<InstanceTransition> ErrorTransitions { get; } = new List<InstanceTransition>();
 
-        /// <summary>
-        /// transitions for error handling without conditions
-        /// </summary>
-        public List<InstanceTransition> DefaultErrorTransitions { get; }= new List<InstanceTransition>();
+        /// <inheritdoc />
+        public List<InstanceTransition> LoopTransitions { get; } = new List<InstanceTransition>();
 
-        /// <summary>
-        /// executes the node
-        /// </summary>
+        /// <inheritdoc />
         public virtual Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
             return Task.FromResult((object)null);
         }

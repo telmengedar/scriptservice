@@ -33,13 +33,10 @@ namespace ScriptService.Services.Workflows {
         public List<InstanceTransition> Transitions => node.Transitions;
 
         /// <inheritdoc />
-        public List<InstanceTransition> DefaultTransitions => node.DefaultTransitions;
-
-        /// <inheritdoc />
         public List<InstanceTransition> ErrorTransitions => node.ErrorTransitions;
 
         /// <inheritdoc />
-        public List<InstanceTransition> DefaultErrorTransitions => node.DefaultErrorTransitions;
+        public List<InstanceTransition> LoopTransitions => node.LoopTransitions;
 
         /// <inheritdoc />
         public async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {

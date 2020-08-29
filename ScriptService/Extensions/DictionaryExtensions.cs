@@ -31,6 +31,9 @@ namespace ScriptService.Extensions {
         /// <param name="targettype">type to deserialize dictionary to</param>
         /// <returns>deserialized object</returns>
         public static object Deserialize(this IDictionary<string, object> dictionary, Type targettype) {
+            if (dictionary == null)
+                return null;
+
             object data = Activator.CreateInstance(targettype);
 
             foreach(KeyValuePair<string, object> entries in dictionary) {

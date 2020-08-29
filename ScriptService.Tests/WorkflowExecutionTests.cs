@@ -78,7 +78,7 @@ namespace ScriptService.Tests {
         }
 
         [Test, Parallelizable]
-        public async Task SuspendAndContinueWidthParameters() {
+        public async Task SuspendAndContinueWithParameters() {
             IEntityManager database = TestSetup.CreateMemoryDatabase();
             CacheService cache = new CacheService(new NullLogger<CacheService>());
             WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new Mock<IWorkflowService>().Object, new DatabaseTaskService(database), new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null), cache, new Mock<IScriptService>().Object, null);

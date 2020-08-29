@@ -6,7 +6,7 @@ namespace ScriptService.Dto.Workflows {
     /// <summary>
     /// transition from a <see cref="WorkflowNode"/> to another
     /// </summary>
-    public class WorkflowTransition {
+    public class WorkflowTransition : Transition {
 
         /// <summary>
         /// id of workflow transition is part of
@@ -23,15 +23,5 @@ namespace ScriptService.Dto.Workflows {
         /// id of node to which transition leads
         /// </summary>
         public Guid TargetId { get; set; }
-
-        /// <summary>
-        /// condition for transition
-        /// </summary>
-        public string Condition { get; set; }
-
-        /// <summary>
-        /// determines whether this transition is used for error handling
-        /// </summary>
-        public bool Error { get; set; }
     }
 }
