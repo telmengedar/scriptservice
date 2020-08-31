@@ -10,7 +10,7 @@ using Utf8Json.Resolvers;
 namespace ScriptService.Services.Hosts {
 
     /// <summary>
-    /// host providing access to http requests
+    /// provides functionality to send http requests to servers and receive the response
     /// </summary>
     public class HttpHost  {
         readonly HttpClient httpclient = new HttpClient();

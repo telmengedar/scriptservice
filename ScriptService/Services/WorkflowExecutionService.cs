@@ -41,7 +41,7 @@ namespace ScriptService.Services {
         /// <param name="cache">access to object cache</param>
         /// <param name="scriptservice">access to script data</param>
         /// <param name="importprovider">access to host imports</param>
-        public WorkflowExecutionService(ILogger<WorkflowExecutionService> logger, IWorkflowService workflowservice, ITaskService taskservice, IScriptCompiler compiler, ICacheService cache, IScriptService scriptservice, IImportProvider importprovider) {
+        public WorkflowExecutionService(ILogger<WorkflowExecutionService> logger, IWorkflowService workflowservice, ITaskService taskservice, IScriptCompiler compiler, ICacheService cache, IScriptService scriptservice, IMethodProviderService importprovider) {
             this.logger = logger;
             this.workflowservice = workflowservice;
             this.taskservice = taskservice;
@@ -152,6 +152,9 @@ namespace ScriptService.Services {
                 break;
             case NodeType.Iterator:
                 instance = new IteratorNode(node.Name, node.Parameters.Deserialize<IteratorParameters>(), compiler);
+                break;
+            case NodeType.Log:
+                instance = new LogNode(node.Name, compiler, node.Parameters.Deserialize<LogParameters>());
                 break;
             default:
                 instance = new InstanceNode(node.Name);

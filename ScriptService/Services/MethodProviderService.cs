@@ -4,8 +4,8 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NightlyCode.AspNetCore.Services.Errors.Exceptions;
 using NightlyCode.Scripting.Data;
-using NightlyCode.Scripting.Providers;
 using ScriptService.Services.Providers;
 
 namespace ScriptService.Services {
@@ -13,7 +13,7 @@ namespace ScriptService.Services {
     /// <summary>
     /// service used to provide methods to scripts and workflows
     /// </summary>
-    public class MethodProviderService : IImportProvider {
+    public class MethodProviderService : IMethodProviderService {
         readonly ILogger<MethodProviderService> logger;
         readonly IServiceProvider serviceprovider;
         IScriptExecutionService scriptexecutor;
@@ -51,6 +51,18 @@ namespace ScriptService.Services {
                 }
             }
             else logger.LogInformation("No method hosts found in configuration");
+        }
+
+        /// <summary>
+        /// hosts available to services
+        /// </summary>
+        public IEnumerable<KeyValuePair<string, object>> Hosts => hosts;
+
+        /// <inheritdoc />
+        public object GetHost(string hostname) {
+            if (!hosts.TryGetValue(hostname, out object hostinstance))
+                throw new NotFoundException(typeof(object), hostname);
+            return hostinstance;
         }
 
         /// <inheritdoc />

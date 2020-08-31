@@ -1,12 +1,12 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
-using ScriptService.Dto;
 using ScriptService.Dto.Tasks;
+using LogLevel = ScriptService.Dto.LogLevel;
 
 namespace ScriptService.Services {
 
     /// <summary>
-    /// routes logs to the service logger and to the script instance object
+    /// provides logging methods which route to the service logger and the linked task object
     /// </summary>
     public class WorkableLogger {
         readonly ILogger logger;
@@ -22,32 +22,24 @@ namespace ScriptService.Services {
             this.instance = instance;
         }
 
-        void Log(string severity, string message, string details = null) {
+        /// <summary>
+        /// logs a message
+        /// </summary>
+        /// <param name="severity">severity of message</param>
+        /// <param name="message">message text to log</param>
+        /// <param name="details">message details</param>
+        public void Log(LogLevel severity, string message, string details = null) {
             switch (severity) {
-            case "ERR":
-                if (details != null)
-                    logger.LogError($"{instance.WorkableName}#{instance.WorkableRevision}: {message}\n{details}");
-                else
-                    logger.LogError($"{instance.WorkableName}#{instance.WorkableRevision}: {message}");
+            case LogLevel.Error:
+                Error(message, details);
                 break;
-            case "WRN":
-                if(details != null)
-                    logger.LogWarning($"{instance.WorkableName}#{instance.WorkableRevision}: {message}\n{details}");
-                else
-                    logger.LogWarning($"{instance.WorkableName}#{instance.WorkableRevision}: {message}");
+            case LogLevel.Warning:
+                Warning(message, details);
                 break;
             default:
-                if(details != null)
-                    logger.LogInformation($"{instance.WorkableName}#{instance.WorkableRevision}: {message}\n{details}");
-                else
-                    logger.LogInformation($"{instance.WorkableName}#{instance.WorkableRevision}: {message}");
+                Info(message, details);
                 break;
             }
-
-            
-            instance.Log.Add($"{DateTime.Now:yyyy-MM-dd hh:mm:ss} {severity}: {message}");
-            if (details != null)
-                instance.Log.Add(details);
         }
 
         /// <summary>
@@ -56,7 +48,14 @@ namespace ScriptService.Services {
         /// <param name="message">info message</param>
         /// <param name="details">message details (optional)</param>
         public void Info(string message, string details = null) {
-            Log("INF", message, details);
+            if(details != null)
+                logger.LogInformation($"{instance.WorkableName}#{instance.WorkableRevision}: {message}\n{details}");
+            else
+                logger.LogInformation($"{instance.WorkableName}#{instance.WorkableRevision}: {message}");
+
+            instance.Log.Add($"{DateTime.Now:yyyy-MM-dd hh:mm:ss} INF: {message}");
+            if(details != null)
+                instance.Log.Add(details);
         }
 
         /// <summary>
@@ -65,7 +64,14 @@ namespace ScriptService.Services {
         /// <param name="message">warning message</param>
         /// <param name="details">message details (optional)</param>
         public void Warning(string message, string details = null) {
-            Log("WRN", message, details);
+            if(details != null)
+                logger.LogWarning($"{instance.WorkableName}#{instance.WorkableRevision}: {message}\n{details}");
+            else
+                logger.LogWarning($"{instance.WorkableName}#{instance.WorkableRevision}: {message}");
+
+            instance.Log.Add($"{DateTime.Now:yyyy-MM-dd hh:mm:ss} WRN: {message}");
+            if(details != null)
+                instance.Log.Add(details);
         }
 
         /// <summary>
@@ -74,7 +80,14 @@ namespace ScriptService.Services {
         /// <param name="message">error message</param>
         /// <param name="details">message details (optional)</param>
         public void Error(string message, string details = null) {
-            Log("ERR", message, details);
+            if(details != null)
+                logger.LogError($"{instance.WorkableName}#{instance.WorkableRevision}: {message}\n{details}");
+            else
+                logger.LogError($"{instance.WorkableName}#{instance.WorkableRevision}: {message}");
+
+            instance.Log.Add($"{DateTime.Now:yyyy-MM-dd hh:mm:ss} ERR: {message}");
+            if(details != null)
+                instance.Log.Add(details);
         }
 
         /// <summary>
@@ -83,7 +96,14 @@ namespace ScriptService.Services {
         /// <param name="message">error message</param>
         /// <param name="details">message details (optional)</param>
         public void Error(string message, Exception details = null) {
-            Log("ERR", message, details?.ToString());
+            if(details != null)
+                logger.LogError(details, $"{instance.WorkableName}#{instance.WorkableRevision}: {message}");
+            else
+                logger.LogError($"{instance.WorkableName}#{instance.WorkableRevision}: {message}");
+
+            instance.Log.Add($"{DateTime.Now:yyyy-MM-dd hh:mm:ss} ERR: {message}");
+            if(details != null)
+                instance.Log.Add(details.ToString());
         }
     }
 }

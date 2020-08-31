@@ -20,7 +20,7 @@ namespace ScriptService.Services.Scripts {
         /// <param name="parser">parser used to parse scripts</param>
         /// <param name="cache">access to object cache</param>
         /// <param name="methodprovider">provides managed method hosts to scripts</param>
-        public ScriptCompiler(ILogger<ScriptCompiler> logger, IScriptParser parser, ICacheService cache, IImportProvider methodprovider) {
+        public ScriptCompiler(ILogger<ScriptCompiler> logger, IScriptParser parser, ICacheService cache, IMethodProviderService methodprovider) {
             this.parser = parser;
             this.cache = cache;
             this.logger = logger;

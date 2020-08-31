@@ -24,6 +24,7 @@ using Npgsql;
 using ScriptService.Services;
 using ScriptService.Services.Cache;
 using ScriptService.Services.Scripts;
+using ScriptService.Services.Sense;
 
 namespace ScriptService {
     public class Startup {
@@ -57,7 +58,8 @@ namespace ScriptService {
             services.AddSingleton<IWorkflowExecutionService, WorkflowExecutionService>();
             services.AddSingleton<IArchiveService, DatabaseArchiveService>();
             services.AddSingleton<ITaskService, DatabaseTaskService>();
-            services.AddSingleton<IImportProvider, MethodProviderService>();
+            services.AddSingleton<IMethodProviderService, MethodProviderService>();
+            services.AddSingleton<IScriptSenseService, ScriptSenseService>();
             services.AddSingleton(s => ConnectDatabase());
             services.AddErrorHandlers();
             services.AddSingleton<IConfigureOptions<MvcOptions>, MvcConfiguration>();

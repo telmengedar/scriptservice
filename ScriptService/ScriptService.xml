@@ -1,0 +1,2846 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ScriptService</name>
+    </assembly>
+    <members>
+        <member name="T:ScriptService.Controllers.ScriptController">
+            <summary>
+            provides endpoints for script code
+            </summary>
+        </member>
+        <member name="M:ScriptService.Controllers.ScriptController.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Controllers.ScriptController},ScriptService.Services.IScriptService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Controllers.ScriptController"/>
+            </summary>
+            <param name="logger">access to logging</param>
+            <param name="scriptservice">access to script service</param>
+        </member>
+        <member name="M:ScriptService.Controllers.ScriptController.CreateScript(ScriptService.Dto.ScriptData)">
+            <summary>
+            creates a new script
+            </summary>
+            <param name="script">data for script to create</param>
+            <returns>id of created script</returns>
+        </member>
+        <member name="M:ScriptService.Controllers.ScriptController.GetScript(System.Int64)">
+            <summary>
+            get a script by id
+            </summary>
+            <param name="scriptid">id of script to get</param>
+            <returns>script with the specified id</returns>
+        </member>
+        <member name="M:ScriptService.Controllers.ScriptController.ListScripts(NightlyCode.AspNetCore.Services.Data.ListFilter)">
+            <summary>
+            lists scripts matching a criteria
+            </summary>
+            <param name="filter">filter for scripts to match</param>
+            <returns>a page of scripts which match the filter</returns>
+        </member>
+        <member name="M:ScriptService.Controllers.ScriptController.PatchScript(System.Int64,ScriptService.Dto.Patches.PatchOperation[])">
+            <summary>
+            patches properties of a script
+            </summary>
+            <param name="scriptid">id of script to patch</param>
+            <param name="patches">patches to apply</param>
+        </member>
+        <member name="M:ScriptService.Controllers.ScriptController.DeleteScript(System.Int64)">
+            <summary>
+            deletes an existing script
+            </summary>
+            <param name="scriptid">id of script to delete</param>
+        </member>
+        <member name="T:ScriptService.Controllers.ScriptExecutionController">
+            <summary>
+            provides endpoints for script execution
+            </summary>
+        </member>
+        <member name="M:ScriptService.Controllers.ScriptExecutionController.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Controllers.ScriptExecutionController},ScriptService.Services.IScriptExecutionService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Controllers.ScriptExecutionController"/>
+            </summary>
+            <param name="logger">access to logging</param>
+            <param name="executionservice">access to script executor</param>
+        </member>
+        <member name="M:ScriptService.Controllers.ScriptExecutionController.Execute(ScriptService.Dto.ExecuteScriptParameters)">
+            <summary>
+            executes a script
+            </summary>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ScriptService.Controllers.SenseController">
+            <summary>
+            endpoints providing context information of installed script types
+            </summary>
+        </member>
+        <member name="M:ScriptService.Controllers.SenseController.#ctor(ScriptService.Services.Sense.IScriptSenseService,ScriptService.Services.IMethodProviderService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Controllers.SenseController"/>
+            </summary>
+            <param name="senseservice">access to sense information</param>
+            <param name="hostprovider">access to host information</param>
+        </member>
+        <member name="M:ScriptService.Controllers.SenseController.ListHosts">
+            <summary>
+            lists all installed host providers
+            </summary>
+            <returns>installed host providers</returns>
+        </member>
+        <member name="M:ScriptService.Controllers.SenseController.GetHostInfo(System.String)">
+            <summary>
+            lists all installed host providers
+            </summary>
+            <returns>installed host providers</returns>
+        </member>
+        <member name="M:ScriptService.Controllers.SenseController.ListTypes">
+            <summary>
+            lists all installed host providers
+            </summary>
+            <returns>installed host providers</returns>
+        </member>
+        <member name="M:ScriptService.Controllers.SenseController.GetTypeInfo(System.String)">
+            <summary>
+            get type information
+            </summary>
+            <param name="type">type of which to get information</param>
+            <returns>structural information about methods and properties of requested type</returns>
+        </member>
+        <member name="M:ScriptService.Controllers.TaskController.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Controllers.TaskController},ScriptService.Services.ITaskService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Controllers.TaskController"/>
+            </summary>
+            <param name="logger">access to logging</param>
+            <param name="scripttaskservice">access to script task service</param>
+        </member>
+        <member name="M:ScriptService.Controllers.TaskController.GetTask(System.Guid)">
+            <summary>
+            get information about a script task
+            </summary>
+            <param name="id">id of script task</param>
+            <returns>script task</returns>
+        </member>
+        <member name="M:ScriptService.Controllers.TaskController.ListTasks(ScriptService.Dto.Tasks.TaskFilter)">
+            <summary>
+            lists script tasks
+            </summary>
+            <param name="filter">filter for tasks to show</param>
+            <returns>a page of script tasks which match the filter</returns>
+        </member>
+        <member name="M:ScriptService.Controllers.TaskController.CancelTask(System.Guid)">
+            <summary>
+            cancels execution of a task
+            </summary>
+            <param name="id">id of task to cancel</param>
+        </member>
+        <member name="T:ScriptService.Controllers.WorkflowController">
+            <summary>
+            provides endpoints for workflow data
+            </summary>
+        </member>
+        <member name="M:ScriptService.Controllers.WorkflowController.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Controllers.WorkflowController},ScriptService.Services.IWorkflowService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Controllers.WorkflowController"/>
+            </summary>
+            <param name="logger">access to logging</param>
+            <param name="workflowservice">access to workflow data</param>
+        </member>
+        <member name="M:ScriptService.Controllers.WorkflowController.CreateWorkflow(ScriptService.Dto.Workflows.WorkflowStructure)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Dto.Workflows.Workflow"/>
+            </summary>
+            <param name="data">data of workflow to create</param>
+            <returns>workflowid of created workflow</returns>
+        </member>
+        <member name="M:ScriptService.Controllers.WorkflowController.UpdateWorkflow(System.Int64,ScriptService.Dto.Workflows.WorkflowStructure)">
+            <summary>
+            updates data of a workflow using a complete structure
+            </summary>
+            <param name="workflowid">id of workflow to update</param>
+            <param name="data">workflow data</param>
+        </member>
+        <member name="M:ScriptService.Controllers.WorkflowController.GetWorkflow(System.Int64)">
+            <summary>
+            get a workflow from backend
+            </summary>
+            <param name="workflowid">workflowid of workflow to get</param>
+            <returns>full workflow information</returns>
+        </member>
+        <member name="M:ScriptService.Controllers.WorkflowController.ListWorkflows(NightlyCode.AspNetCore.Services.Data.ListFilter)">
+            <summary>
+            lists workflows using a filter
+            </summary>
+            <param name="filter">filter to use when listing (optional)</param>
+            <returns>a result page of matching workflows</returns>
+        </member>
+        <member name="M:ScriptService.Controllers.WorkflowController.PatchWorkflow(System.Int64,ScriptService.Dto.Patches.PatchOperation[])">
+            <summary>
+            patches data of a workflow
+            </summary>
+            <param name="workflowid">id of workflow to patch</param>
+            <param name="patches">patches to apply</param>
+        </member>
+        <member name="M:ScriptService.Controllers.WorkflowController.DeleteWorkflow(System.Int64)">
+            <summary>
+            deletes a workflow
+            </summary>
+            <param name="workflowid">id of workflow to delete</param>
+        </member>
+        <member name="T:ScriptService.Controllers.WorkflowExecutionController">
+            <summary>
+            provides endpoints to execute workflows
+            </summary>
+        </member>
+        <member name="M:ScriptService.Controllers.WorkflowExecutionController.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Controllers.WorkflowExecutionController},ScriptService.Services.IWorkflowExecutionService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Controllers.WorkflowExecutionController"/>
+            </summary>
+            <param name="logger">access to logging</param>
+            <param name="executionservice">access to workflow execution service</param>
+        </member>
+        <member name="M:ScriptService.Controllers.WorkflowExecutionController.Execute(ScriptService.Dto.ExecuteWorkflowParameters)">
+            <summary>
+            executes a script
+            </summary>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ScriptService.Controllers.WorkflowExecutionController.Continue(System.Guid,ScriptService.Dto.Workflows.ContinueWorkflowBody)">
+            <summary>
+            executes a script
+            </summary>
+            <param name="taskid">id of task to continue</param>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ScriptService.Dto.AllowPatchAttribute">
+            <summary>
+            attribute used to indicate that a property can get patched using public endpoints
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.ArchivedObject">
+            <summary>
+            obsolete object revision
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ArchivedObject.Type">
+            <summary>
+            object type to archive
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ArchivedObject.ObjectId">
+            <summary>
+            archived object id
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ArchivedObject.Revision">
+            <summary>
+            archived object revision
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ArchivedObject.Data">
+            <summary>
+            archived object data
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Cache.CacheEntry">
+            <summary>
+            entry for an object cache
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Cache.CacheEntry.Object">
+            <summary>
+            object stored in cache
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Cache.CacheEntry.LastAccess">
+            <summary>
+            last time object was accessed
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Cache.CacheKey`1">
+            <summary>
+            key used for an object cache
+            </summary>
+        </member>
+        <member name="M:ScriptService.Dto.Cache.CacheKey`1.#ctor(System.Type,`0,System.Int32)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Dto.Cache.CacheKey`1"/>
+            </summary>
+            <param name="objectType">type of object</param>
+            <param name="id">id of object</param>
+            <param name="revision">object revision</param>
+        </member>
+        <member name="M:ScriptService.Dto.Cache.CacheKey`1.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Dto.Cache.CacheKey`1.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Dto.Cache.CacheKey`1.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Dto.DatabasePatchExtensions">
+            <summary>
+            extensions for patch operations in a database context
+            </summary>
+        </member>
+        <member name="M:ScriptService.Dto.DatabasePatchExtensions.Patch``1(NightlyCode.Database.Entities.Operations.UpdateValuesOperation{``0},ScriptService.Dto.Patches.PatchOperation[])">
+            <summary>
+            applies a set of patch operations to an update operation
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="updateoperation">update operation to be updated</param>
+            <param name="operations">operations to apply</param>
+            <returns>the update operation for fluent behavior</returns>
+        </member>
+        <member name="M:ScriptService.Dto.DatabasePatchExtensions.Patch``1(NightlyCode.Database.Entities.Operations.UpdateValuesOperation{``0},System.Collections.Generic.IEnumerable{ScriptService.Dto.Patches.PatchOperation})">
+            <summary>
+            applies a set of patch operations to an update operation
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="updateoperation">update operation to be updated</param>
+            <param name="operations">operations to apply</param>
+            <returns>the update operation for fluent behavior</returns>
+        </member>
+        <member name="T:ScriptService.Dto.ExecuteScriptParameters">
+            <summary>
+            parameters used when executing a script
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ExecuteScriptParameters.Id">
+            <summary>
+            id of script to execute
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ExecuteScriptParameters.Name">
+            <summary>
+            name of script to execute
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ExecuteScriptParameters.Code">
+            <summary>
+            code to execute
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ExecuteScriptParameters.Parameters">
+            <summary>
+            parameters for script execution
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ExecuteScriptParameters.Wait">
+            <summary>
+            specifies time to wait for result
+            </summary>
+            <remarks>
+            if script doesn't finish in the specified timespan, taskinformation of the running task is returned
+            </remarks>
+        </member>
+        <member name="T:ScriptService.Dto.ExecuteWorkflowParameters">
+            <summary>
+            parameters used when executing a script
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ExecuteWorkflowParameters.Id">
+            <summary>
+            id of script to execute
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ExecuteWorkflowParameters.Name">
+            <summary>
+            name of script to execute
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ExecuteWorkflowParameters.Workflow">
+            <summary>
+            complete workflow data for execution
+            </summary>
+            <remarks>
+            used for tests
+            </remarks>
+        </member>
+        <member name="P:ScriptService.Dto.ExecuteWorkflowParameters.Parameters">
+            <summary>
+            parameters for script execution
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ExecuteWorkflowParameters.Wait">
+            <summary>
+            specifies time to wait for result
+            </summary>
+            <remarks>
+            if script doesn't finish in the specified timespan, taskinformation of the running task is returned
+            </remarks>
+        </member>
+        <member name="T:ScriptService.Dto.LogLevel">
+            <summary>
+            type of log message
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.LogLevel.Info">
+            <summary>
+            message with informational value
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.LogLevel.Warning">
+            <summary>
+            warning message
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.LogLevel.Error">
+            <summary>
+            error message
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.NamedCode">
+            <summary>
+            code running in a specific scope
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.NamedCode.Code">
+            <summary>
+            code to execute
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.NamedCode.Name">
+            <summary>
+            name of script to run
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Patches.Patch">
+            <summary>
+            provides helper methods to create patches
+            </summary>
+        </member>
+        <member name="M:ScriptService.Dto.Patches.Patch.Replace(System.String,System.Object)">
+            <summary>
+            creates a replace patch (set a value)
+            </summary>
+            <param name="property">property to set</param>
+            <param name="value">value to set</param>
+            <returns>patch operation to send to patch endpoints</returns>
+        </member>
+        <member name="M:ScriptService.Dto.Patches.Patch.Add(System.String,System.Object)">
+            <summary>
+            adds items to a collection
+            </summary>
+            <param name="property">path to collection</param>
+            <param name="value">item or collection to add</param>
+            <returns>patch operation to send to patch endpoints</returns>
+        </member>
+        <member name="M:ScriptService.Dto.Patches.Patch.Remove(System.String,System.Object)">
+            <summary>
+            removes items from a collection
+            </summary>
+            <param name="property">path to collection</param>
+            <param name="value">item or collection to add</param>
+            <returns>patch operation to send to patch endpoints</returns>
+        </member>
+        <member name="T:ScriptService.Dto.Patches.PatchOp">
+            <summary>
+            supported patch operations
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Patches.PatchOp.Replace">
+            <summary>
+            replaces a value
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Patches.PatchOp.Add">
+            <summary>
+            adds a value to a collection
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Patches.PatchOp.Remove">
+            <summary>
+            removes a value from a collection
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Patches.PatchOperation">
+            <summary>
+            single operation of a patch process
+            </summary>
+        </member>
+        <member name="M:ScriptService.Dto.Patches.PatchOperation.#ctor">
+            <summary>
+            creates a new <see cref="T:ScriptService.Dto.Patches.PatchOperation"/>
+            </summary>
+        </member>
+        <member name="M:ScriptService.Dto.Patches.PatchOperation.#ctor(System.String,System.String)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Dto.Patches.PatchOperation"/>
+            </summary>
+            <param name="op">operation to execute</param>
+            <param name="path">path where to apply operation</param>
+        </member>
+        <member name="M:ScriptService.Dto.Patches.PatchOperation.#ctor(System.String,System.String,System.Object)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Dto.Patches.PatchOperation"/>
+            </summary>
+            <param name="op">operation to execute</param>
+            <param name="path">path where to apply operation</param>
+            <param name="value">value to use for operation</param>
+        </member>
+        <member name="M:ScriptService.Dto.Patches.PatchOperation.#ctor(System.String,System.String,System.String,System.Object)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Dto.Patches.PatchOperation"/>
+            </summary>
+            <param name="op">operation to execute</param>
+            <param name="from">source path if necessary for operation</param>
+            <param name="path">path where to apply operation</param>
+            <param name="value">value to use for operation</param>
+        </member>
+        <member name="P:ScriptService.Dto.Patches.PatchOperation.Op">
+            <summary>
+            operation to execute
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Patches.PatchOperation.From">
+            <summary>
+            source path if necessary for operation
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Patches.PatchOperation.Path">
+            <summary>
+            path where to apply operation
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Patches.PatchOperation.Value">
+            <summary>
+            value to use for operation
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Script">
+            <summary>
+            script for execution
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Script.Id">
+            <summary>
+            script id
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Script.Revision">
+            <summary>
+            revision number
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.ScriptData">
+            <summary>
+            data of a script
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ScriptData.Name">
+            <summary>
+            name of script
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.ScriptData.Code">
+            <summary>
+            code to execute
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Sense.MethodInfo">
+            <summary>
+            info about a method
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Sense.MethodInfo.Parameters">
+            <summary>
+            method parameters
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Sense.MethodInfo.Returns">
+            <summary>
+            type returned by method
+            </summary>
+        </member>
+        <member name="M:ScriptService.Dto.Sense.MethodInfo.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Dto.Sense.ParameterInfo">
+            <summary>
+            info about a method parameter
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Sense.ParameterInfo.IsReference">
+            <summary>
+            determines whether parameter is a reference parameter
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Sense.ParameterInfo.HasDefault">
+            <summary>
+            determines whether parameter has a default value
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Sense.ParameterInfo.IsParams">
+            <summary>
+            determines whether parameter is a params array
+            </summary>
+        </member>
+        <member name="M:ScriptService.Dto.Sense.ParameterInfo.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Dto.Sense.PropertyInfo">
+            <summary>
+            property description
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Sense.PropertyInfo.Type">
+            <summary>
+            property type
+            </summary>
+        </member>
+        <member name="M:ScriptService.Dto.Sense.PropertyInfo.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Dto.Sense.SenseEntry">
+            <summary>
+            entry in a sense table
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Sense.SenseEntry.Name">
+            <summary>
+            name of entry
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Sense.SenseEntry.Description">
+            <summary>
+            documentation for entry
+            </summary>
+        </member>
+        <member name="M:ScriptService.Dto.Sense.SenseEntry.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Dto.Sense.TypeInfo">
+            <summary>
+            info about a type
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Sense.TypeInfo.ElementType">
+            <summary>
+            type of element if this type is a collection
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Sense.TypeInfo.Methods">
+            <summary>
+            methods available in type
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Sense.TypeInfo.Properties">
+            <summary>
+            properties available in type
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Sense.TypeInfo.Indexer">
+            <summary>
+            indexer methods
+            </summary>
+        </member>
+        <member name="M:ScriptService.Dto.Sense.TypeInfo.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Dto.TaskStatus">
+            <summary>
+            status of a script instance
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.TaskStatus.Canceled">
+            <summary>
+            execution of script was canceled
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.TaskStatus.Failure">
+            <summary>
+            script failed to execute
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.TaskStatus.Success">
+            <summary>
+            script was executed successfully
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.TaskStatus.Running">
+            <summary>
+            script is still running
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.TaskStatus.Suspended">
+            <summary>
+            workable is waiting for a continue trigger
+            </summary>
+            <remarks>
+            only valid for workflows
+            </remarks>
+        </member>
+        <member name="T:ScriptService.Dto.Tasks.TaskDb">
+            <summary>
+            script task archived in database
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskDb.Id">
+            <summary>
+            id of script instance
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskDb.Type">
+            <summary>
+            type of workable
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskDb.WorkableId">
+            <summary>
+            id of executing script
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskDb.WorkableRevision">
+            <summary>
+            executing script revision
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskDb.WorkableName">
+            <summary>
+            name of executing script
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskDb.Parameters">
+            <summary>
+            script variables passed to script
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskDb.Log">
+            <summary>
+            script log
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskDb.Started">
+            <summary>
+            time when script was started
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskDb.Finished">
+            <summary>
+            time when script finished
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskDb.Status">
+            <summary>
+            status of script
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskDb.Result">
+            <summary>
+            script result
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Tasks.TaskFilter">
+            <summary>
+            list filter for script tasks
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskFilter.Status">
+            <summary>
+            status to filter for
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskFilter.From">
+            <summary>
+            timewindow start
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskFilter.To">
+            <summary>
+            timewindow end
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskFilter.WorkableId">
+            <summary>
+            id of script to filter for
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.TaskFilter.WorkableName">
+            <summary>
+            name of script to filter for
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Tasks.WorkableTask">
+            <summary>
+            currently executing script
+            </summary>
+        </member>
+        <member name="M:ScriptService.Dto.Tasks.WorkableTask.#ctor">
+            <summary>
+            creates a new <see cref="T:ScriptService.Dto.Tasks.WorkableTask"/>
+            </summary>
+        </member>
+        <member name="M:ScriptService.Dto.Tasks.WorkableTask.#ctor(ScriptService.Dto.Tasks.WorkableTask)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Dto.Tasks.WorkableTask"/>
+            </summary>
+            <param name="other">script task copy values from</param>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.Id">
+            <summary>
+            id of task
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.Type">
+            <summary>
+            type of workable
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.WorkableId">
+            <summary>
+            id of executing script
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.WorkableRevision">
+            <summary>
+            executing script revision
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.WorkableName">
+            <summary>
+            name of executing script
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.Parameters">
+            <summary>
+            script variables passed to script
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.Log">
+            <summary>
+            script log
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.Started">
+            <summary>
+            time when script was started
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.Finished">
+            <summary>
+            time when script finished
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.Runtime">
+            <summary>
+            time script ran
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.Status">
+            <summary>
+            status of script
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.Result">
+            <summary>
+            script result
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.Task">
+            <summary>
+            internal task used to run the script
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.Token">
+            <summary>
+            token used to cancel task
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Tasks.WorkableTask.SuspensionState">
+            <summary>
+            state used to continue workflow
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.WorkableType">
+            <summary>
+            type of supported workables
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.WorkableType.Script">
+            <summary>
+            script code
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.WorkableType.Workflow">
+            <summary>
+            workflow
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.ContinueWorkflowBody">
+            <summary>
+            parameters for continuing a suspended workflow
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.ContinueWorkflowBody.Parameters">
+            <summary>
+            parameters to push to workflow state
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.ContinueWorkflowBody.Wait">
+            <summary>
+            specifies time to wait for result
+            </summary>
+            <remarks>
+            if script doesn't finish in the specified timespan, taskinformation of the running task is returned
+            </remarks>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.ImportType">
+            <summary>
+            known import types
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.ImportType.Host">
+            <summary>
+            host service
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.ImportType.Script">
+            <summary>
+            script
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.ImportType.Workflow">
+            <summary>
+            workflow
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.IndexTransition">
+            <summary>
+            argument used to create a transition
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.IndexTransition.OriginIndex">
+            <summary>
+            index of node from which transition originates
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.IndexTransition.TargetIndex">
+            <summary>
+            index of node to which transition leads
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.NodeData">
+            <summary>
+            data for a workflow node
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.NodeData.Name">
+            <summary>
+            name of workflow node
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.NodeData.Group">
+            <summary>
+            name of group node is part of
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.NodeData.Type">
+            <summary>
+            type of node
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.NodeData.Parameters">
+            <summary>
+            type specific parameters of node
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.NodeData.Variable">
+            <summary>
+            variable to which to assign node result
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.NodeDetails">
+            <summary>
+            details for a workflow node
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.NodeDetails.Id">
+            <summary>
+            id of node
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Nodes.ArgumentSourceType">
+            <summary>
+            sources where argument values can get be retrieved from
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.ArgumentSourceType.StateVariable">
+            <summary>
+            argument is read from a state variable
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.ArgumentSourceType.Constant">
+            <summary>
+            constant value
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Nodes.BinaryOperation">
+            <summary>
+            binary operation to execute
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.Add">
+            <summary>
+            add two values
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.Subtract">
+            <summary>
+            subtract a value from another
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.Multiply">
+            <summary>
+            multiply two values
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.Divide">
+            <summary>
+            divide a value by another
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.Modulo">
+            <summary>
+            remainder of division
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.Equality">
+            <summary>
+            compare for equality
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.Inequality">
+            <summary>
+            compare for inequality
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.Less">
+            <summary>
+            determines whether a value is less than another value
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.LessOrEqual">
+            <summary>
+            determines whether a value is less or equal to another value
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.Greater">
+            <summary>
+            determines whether a value is greater than another value
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.GreaterOrEqual">
+            <summary>
+            determines whether a value is greater or equal to another value
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.Matches">
+            <summary>
+            determines whether a value matches another value
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.MatchesNot">
+            <summary>
+            determines whether a value does not match another value
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.BitAnd">
+            <summary>
+            combines two values bitwise using an AND operator
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.BitOr">
+            <summary>
+            combines two values bitwise using an OR operator
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.BitXor">
+            <summary>
+            combines two values bitwise using an XOR operator
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.ShiftLeft">
+            <summary>
+            bitwise shifts left a value by a specified number of steps
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.ShiftRight">
+            <summary>
+            bitwise shifts right a value by a specified number of steps
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.RollLeft">
+            <summary>
+            bitwise rolls left a value by a specified number of steps
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.RollRight">
+            <summary>
+            bitwise rolls right a value by a specified number of steps
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.LogicalAnd">
+            <summary>
+            logically compares two values using an AND operator
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.LogicalOr">
+            <summary>
+            logically compares two values using an OR operator
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.Nodes.BinaryOperation.LogicalXor">
+            <summary>
+            logically compares two values using a XOR operator
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Nodes.BinaryOpParameters">
+            <summary>
+            parameters used for a binary operator
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.BinaryOpParameters.Lhs">
+            <summary>
+            left hand side operator
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.BinaryOpParameters.Rhs">
+            <summary>
+            right hand side operator
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.BinaryOpParameters.Operation">
+            <summary>
+            operation to execute
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Nodes.CallParameters">
+            <summary>
+            parameters for a method call
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.CallParameters.Host">
+            <summary>
+            host variable on which to call a method
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.CallParameters.Method">
+            <summary>
+            method to call
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.CallParameters.Arguments">
+            <summary>
+            arguments for method
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Nodes.CallWorkableParameters">
+            <summary>
+            parameters for a node of type <see cref="F:ScriptService.Dto.Workflows.NodeType.Script"/>
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.CallWorkableParameters.Name">
+            <summary>
+            name of workable to call
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.CallWorkableParameters.Arguments">
+            <summary>
+            parameters for script to call
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Nodes.ExecuteExpressionParameters">
+            <summary>
+            parameters for a node of type <see cref="F:ScriptService.Dto.Workflows.NodeType.Script"/>
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.ExecuteExpressionParameters.Code">
+            <summary>
+            name of script to call
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Nodes.ImportDeclaration">
+            <summary>
+            declares a method or host to import
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.ImportDeclaration.Variable">
+            <summary>
+            variable where to store import
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.ImportDeclaration.Type">
+            <summary>
+            type of import
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.ImportDeclaration.Name">
+            <summary>
+            name of host, script or method
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Nodes.IteratorParameters">
+            <summary>
+            parameters for nodes of type <see cref="F:ScriptService.Dto.Workflows.NodeType.Iterator"/>
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.IteratorParameters.Collection">
+            <summary>
+            collection to iterate
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.IteratorParameters.Item">
+            <summary>
+            name of variable to store current item to
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Nodes.LogParameters">
+            <summary>
+            parameters for log node
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.LogParameters.Type">
+            <summary>
+            type of log message
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.LogParameters.Text">
+            <summary>
+            text to log
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Nodes.ScriptArgument">
+            <summary>
+            argument for a script
+            </summary>
+        </member>
+        <member name="M:ScriptService.Dto.Workflows.Nodes.ScriptArgument.#ctor(System.String,ScriptService.Dto.Workflows.Nodes.ArgumentSourceType,System.Object)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Dto.Workflows.Nodes.ScriptArgument"/>
+            </summary>
+            <param name="name">name of argument</param>
+            <param name="source">type how value is retrieved</param>
+            <param name="value">argument value</param>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.ScriptArgument.Name">
+            <summary>
+            name of argument
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.ScriptArgument.Source">
+            <summary>
+            type of argument value
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.ScriptArgument.Value">
+            <summary>
+            value for script
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Nodes.StartParameters">
+            <summary>
+            parameters for a start node
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.StartParameters.Imports">
+            <summary>
+            types which are imported by the workflow
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Nodes.SuspendParameters">
+            <summary>
+            parameters for suspend node
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.SuspendParameters.Timeout">
+            <summary>
+            timeout for suspend operation
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.SuspendParameters.Variable">
+            <summary>
+            variable to initialize
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Nodes.ValueParameters">
+            <summary>
+            parameters for a node of type <see cref="F:ScriptService.Dto.Workflows.NodeType.Value"/>
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Nodes.ValueParameters.Value">
+            <summary>
+            value expression to provide to workflow
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.NodeType">
+            <summary>
+            possible workflow node types
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.NodeType.Start">
+            <summary>
+            start of workflow
+            </summary>
+            <remarks>
+            only one start node can exist in a workflow
+            </remarks>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.NodeType.Node">
+            <summary>
+            simple node without any data
+            used for simple branching without any actions
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.NodeType.Expression">
+            <summary>
+            direct script code
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.NodeType.Script">
+            <summary>
+            script call
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.NodeType.BinaryOperation">
+            <summary>
+            binary math operation
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.NodeType.Value">
+            <summary>
+            generates a constant or reads a value from state
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.NodeType.Workflow">
+            <summary>
+            calls a workflow
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.NodeType.Suspend">
+            <summary>
+            suspends execution of a workflow
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.NodeType.Call">
+            <summary>
+            calls a method on a host
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.NodeType.Iterator">
+            <summary>
+            iterates over every element of a collection
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.NodeType.Log">
+            <summary>
+            node used to log messages
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Transition">
+            <summary>
+            base data for a transition
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Transition.Condition">
+            <summary>
+            condition for transition
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Transition.Type">
+            <summary>
+            type of transition
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.TransitionData">
+            <summary>
+            details of a workflow transition
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.TransitionData.OriginId">
+            <summary>
+            id of node transition is leaving
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.TransitionData.TargetId">
+            <summary>
+            id of node to which transition leads
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.TransitionType">
+            <summary>
+            type of transition
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.TransitionType.Standard">
+            <summary>
+            standard transition executed on node execution end
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.TransitionType.Error">
+            <summary>
+            transition executed on node execution fail
+            </summary>
+        </member>
+        <member name="F:ScriptService.Dto.Workflows.TransitionType.Loop">
+            <summary>
+            loop transition
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.Workflow">
+            <summary>
+            Workflow definition
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Workflow.Id">
+            <summary>
+            id of workflow
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.Workflow.Revision">
+            <summary>
+            Workflow revision
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.WorkflowData">
+            <summary>
+            data of a workflow
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowData.Name">
+            <summary>
+            name of workflow
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.WorkflowDetails">
+            <summary>
+            detailed workflow information
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowDetails.Nodes">
+            <summary>
+            nodes contained in workflow
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowDetails.Transitions">
+            <summary>
+            transitions of nodes contained in workflow
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.WorkflowNode">
+            <summary>
+            node in a workflow
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowNode.Id">
+            <summary>
+            id of node
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowNode.WorkflowId">
+            <summary>
+            id of workflow node is contained in
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowNode.Name">
+            <summary>
+            name of workflow node
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowNode.Group">
+            <summary>
+            group node is part of
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowNode.Type">
+            <summary>
+            type of node
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowNode.Parameters">
+            <summary>
+            type specific parameters of node (json)
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowNode.Variable">
+            <summary>
+            variable to store result in
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.WorkflowStructure">
+            <summary>
+            arguments used to create a new workflow
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowStructure.Name">
+            <summary>
+            name of workflow to create
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowStructure.Nodes">
+            <summary>
+            nodes to create
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowStructure.Transitions">
+            <summary>
+            transitions to create
+            </summary>
+        </member>
+        <member name="T:ScriptService.Dto.Workflows.WorkflowTransition">
+            <summary>
+            transition from a <see cref="T:ScriptService.Dto.Workflows.WorkflowNode"/> to another
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowTransition.WorkflowId">
+            <summary>
+            id of workflow transition is part of
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowTransition.OriginId">
+            <summary>
+            id of node transition is leaving
+            </summary>
+        </member>
+        <member name="P:ScriptService.Dto.Workflows.WorkflowTransition.TargetId">
+            <summary>
+            id of node to which transition leads
+            </summary>
+        </member>
+        <member name="T:ScriptService.Errors.WorkflowException">
+            <summary>
+            exception thrown when executing a workflow
+            </summary>
+        </member>
+        <member name="M:ScriptService.Errors.WorkflowException.#ctor(System.String)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Errors.WorkflowException"/>
+            </summary>
+            <param name="message">error message</param>
+        </member>
+        <member name="M:ScriptService.Errors.WorkflowException.#ctor(System.String,System.Exception)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Errors.WorkflowException"/>
+            </summary>
+            <param name="message">error message</param>
+            <param name="innerException">error which triggered this error</param>
+        </member>
+        <member name="T:ScriptService.Extensions.BinaryOperationExtensions">
+            <summary>
+            extensions for <see cref="T:ScriptService.Dto.Workflows.Nodes.BinaryOperation"/>
+            </summary>
+        </member>
+        <member name="M:ScriptService.Extensions.BinaryOperationExtensions.ToOperatorString(ScriptService.Dto.Workflows.Nodes.BinaryOperation)">
+            <summary>
+            converts an operator to an operator string
+            </summary>
+            <param name="operation">operator to convert</param>
+            <returns>string representation of operator</returns>
+        </member>
+        <member name="T:ScriptService.Extensions.DictionaryExtensions">
+            <summary>
+            extensions for dictionaries
+            </summary>
+        </member>
+        <member name="M:ScriptService.Extensions.DictionaryExtensions.Deserialize``1(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            deserializes a dictionary to a type
+            </summary>
+            <typeparam name="T">type to deserialize dictionary to</typeparam>
+            <param name="dictionary">dictionary containing property values</param>
+            <returns>deserialized object</returns>
+        </member>
+        <member name="M:ScriptService.Extensions.DictionaryExtensions.Deserialize(System.Collections.Generic.IDictionary{System.String,System.Object},System.Type)">
+            <summary>
+            deserializes a dictionary to a type
+            </summary>
+            <param name="dictionary">dictionary containing property values</param>
+            <param name="targettype">type to deserialize dictionary to</param>
+            <returns>deserialized object</returns>
+        </member>
+        <member name="M:ScriptService.Extensions.DictionaryExtensions.BuildArguments(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            builds node arguments from a dictionary
+            </summary>
+            <param name="data"></param>
+            <returns>collection of prepared script arguments</returns>
+        </member>
+        <member name="M:ScriptService.Extensions.DictionaryExtensions.BuildArguments(ScriptService.Dto.Workflows.Nodes.ScriptArgument[],System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            builds arguments to be used by workables
+            </summary>
+            <param name="arguments">arguments specs from which to build workable arguments</param>
+            <param name="state">state variables</param>
+            <returns>workable variables</returns>
+        </member>
+        <member name="T:ScriptService.Extensions.FilterExtensions">
+            <summary>
+            extensions for filters
+            </summary>
+        </member>
+        <member name="M:ScriptService.Extensions.FilterExtensions.ApplyFilter``1(NightlyCode.Database.Entities.Operations.LoadEntitiesOperation{``0},NightlyCode.AspNetCore.Services.Data.ListFilter)">
+            <summary>
+            applies a standard list filter to a load operation
+            </summary>
+            <typeparam name="T">type of entities to load</typeparam>
+            <param name="operation">operation to modify</param>
+            <param name="filter">filter to apply</param>
+            <returns>load operation for fluent behavior</returns>
+        </member>
+        <member name="M:ScriptService.Extensions.FilterExtensions.ApplyFilter``1(NightlyCode.Database.Entities.Operations.LoadValuesOperation{``0},NightlyCode.AspNetCore.Services.Data.ListFilter)">
+            <summary>
+            applies a standard list filter to a load operation
+            </summary>
+            <typeparam name="T">type of entities to load</typeparam>
+            <param name="operation">operation to modify</param>
+            <param name="filter">filter to apply</param>
+            <returns>load operation for fluent behavior</returns>
+        </member>
+        <member name="M:ScriptService.Extensions.FilterExtensions.TranslateWildcards(System.String)">
+            <summary>
+            translates query wildcards
+            </summary>
+            <param name="data">data to translate</param>
+            <returns>translated string</returns>
+        </member>
+        <member name="T:ScriptService.Extensions.JsonExtensions">
+            <summary>
+            extensions for json data handling
+            </summary>
+        </member>
+        <member name="M:ScriptService.Extensions.JsonExtensions.Deserialize``1(System.String)">
+            <summary>
+            deserializes a json string
+            </summary>
+            <remarks>
+            this handles null values and automatically suppresses all errors
+            </remarks>
+            <typeparam name="T">type of data to deserialize</typeparam>
+            <param name="data">data to deserialize</param>
+            <returns>deserialized data (or default if any error occurs while deserializing)</returns>
+        </member>
+        <member name="M:ScriptService.Extensions.JsonExtensions.Serialize(System.Object)">
+            <summary>
+            serializes data to a json string
+            </summary>
+            <param name="data">data to serialize</param>
+            <returns>serialized data</returns>
+        </member>
+        <member name="T:ScriptService.Extensions.TypeExtensions">
+            <summary>
+            extensions for type structures
+            </summary>
+        </member>
+        <member name="M:ScriptService.Extensions.TypeExtensions.GetPlainTypeName(System.String)">
+            <summary>
+            get plain type name from an assembly named full type name
+            </summary>
+            <param name="typename">name of type to analyse</param>
+            <returns>plain type name</returns>
+        </member>
+        <member name="M:ScriptService.Extensions.TypeExtensions.GetTypeName(System.Type)">
+            <summary>
+            get the type name including assembly name but not version information
+            </summary>
+            <param name="type">type for which to generate type name</param>
+            <returns>name of type containing all info necessary to get type info from it</returns>
+        </member>
+        <member name="T:ScriptService.Extensions.ValueExtensions">
+            <summary>
+            extensions for values
+            </summary>
+        </member>
+        <member name="M:ScriptService.Extensions.ValueExtensions.ParseString(System.ReadOnlySpan{System.Char})">
+            <summary>
+            parses encoded string data
+            </summary>
+            <param name="data">data to parse</param>
+            <returns>parsed string data</returns>
+        </member>
+        <member name="M:ScriptService.Extensions.ValueExtensions.ParseValue(System.ReadOnlySpan{System.Char},System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            parses a value from a string
+            </summary>
+            <param name="data">data containing characters to parse</param>
+            <param name="state">state variables</param>
+            <returns>parsed value</returns>
+        </member>
+        <member name="M:ScriptService.Extensions.ValueExtensions.DetermineValue(System.Object,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            determines argument value to use
+            </summary>
+            <param name="value">value to analyse</param>
+            <param name="state">state variables</param>
+            <returns>value to use</returns>
+        </member>
+        <member name="M:ScriptService.Extensions.ValueExtensions.ToBoolean(System.Object)">
+            <summary>
+            tries to convert a value to boolean
+            </summary>
+            <param name="value">value to convert</param>
+            <returns>boolean representation</returns>
+        </member>
+        <member name="M:ScriptService.Extensions.ValueExtensions.GetMask(System.Type,System.Int32)">
+            <summary>
+            get bit mask for specified type
+            </summary>
+            <param name="masktype">type for which to generate bitmask</param>
+            <param name="numberofbits">number of bits to set</param>
+            <returns>bitmask</returns>
+        </member>
+        <member name="T:ScriptService.Services.Cache.CacheService">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.Cache.CacheService.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Services.Cache.CacheService})">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Cache.CacheService"/>
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Cache.CacheService.GetObject``2(``1,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.Cache.CacheService.StoreObject``2(``1,System.Int32,``0)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Cache.ICacheService">
+            <summary>
+            cache for objects
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Cache.ICacheService.GetObject``2(``1,System.Int32)">
+            <summary>
+            tries to get an object from cache
+            </summary>
+            <typeparam name="T">type of object to get</typeparam>
+            <typeparam name="TId">type of id used to identify object</typeparam>
+            <param name="id">id of object</param>
+            <param name="revision">object revision</param>
+            <returns>object if found in cache, false otherwise</returns>
+        </member>
+        <member name="M:ScriptService.Services.Cache.ICacheService.StoreObject``2(``1,System.Int32,``0)">
+            <summary>
+            stores an object in cache
+            </summary>
+            <typeparam name="T">type of object to store</typeparam>
+            <typeparam name="TId">type of id used to identify object</typeparam>
+            <param name="id">id of object</param>
+            <param name="revision">object revision</param>
+            <param name="instance">object instance</param>
+        </member>
+        <member name="T:ScriptService.Services.DatabaseArchiveService">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseArchiveService.#ctor(NightlyCode.Database.Entities.IEntityManager)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.DatabaseArchiveService"/>
+            </summary>
+            <param name="database">access to database</param>
+        </member>
+        <member name="M:ScriptService.Services.DatabaseArchiveService.ArchiveObject``1(System.String,System.Int64,System.Int32,``0)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseArchiveService.GetArchivedObject``1(System.String,System.Int64,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.DatabaseScriptService">
+            <summary>
+            stores and retrieves scripts using a database
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.DatabaseScriptService.#ctor(NightlyCode.Database.Entities.IEntityManager,ScriptService.Services.IArchiveService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.DatabaseScriptService"/>
+            </summary>
+            <param name="database">access to database</param>
+            <param name="archiveservice">access to object archive</param>
+        </member>
+        <member name="M:ScriptService.Services.DatabaseScriptService.CreateScript(ScriptService.Dto.ScriptData)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseScriptService.GetScript(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseScriptService.GetScript(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseScriptService.ListScripts(NightlyCode.AspNetCore.Services.Data.ListFilter)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseScriptService.PatchScript(System.Int64,ScriptService.Dto.Patches.PatchOperation[])">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseScriptService.DeleteScript(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.DatabaseTaskService">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseTaskService.#ctor(NightlyCode.Database.Entities.IEntityManager)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.DatabaseTaskService"/>
+            </summary>
+            <param name="database">access to database</param>
+        </member>
+        <member name="M:ScriptService.Services.DatabaseTaskService.CreateTask(ScriptService.Dto.WorkableType,System.Int64,System.Int32,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseTaskService.GetTask(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseTaskService.ListTasks(ScriptService.Dto.Tasks.TaskFilter)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseTaskService.FinishTask(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseTaskService.CancelTask(System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.DatabaseWorkflowService">
+            <summary>
+            workflow service storing data in database
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.DatabaseWorkflowService.#ctor(NightlyCode.Database.Entities.IEntityManager,ScriptService.Services.IArchiveService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.DatabaseWorkflowService"/>
+            </summary>
+            <param name="database">access to database</param>
+            <param name="archiveservice">access to data archives</param>
+        </member>
+        <member name="M:ScriptService.Services.DatabaseWorkflowService.CreateWorkflow(ScriptService.Dto.Workflows.WorkflowStructure)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseWorkflowService.GetWorkflow(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseWorkflowService.GetWorkflow(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseWorkflowService.ListWorkflows(NightlyCode.AspNetCore.Services.Data.ListFilter)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseWorkflowService.DeleteWorkflow(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Hosts.HttpHost">
+            <summary>
+            provides functionality to send http requests to servers and receive the response
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Hosts.HttpHost.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Hosts.HttpHost"/>
+            </summary>
+            <param name="configuration">not used but necessary for automatic host</param>
+        </member>
+        <member name="M:ScriptService.Services.Hosts.HttpHost.Request(System.String,System.String)">
+            <summary>
+            creates a new request object which can get sent
+            </summary>
+            <param name="method">http verb to use</param>
+            <param name="url">url to send request to</param>
+            <returns>message to be sent</returns>
+        </member>
+        <member name="M:ScriptService.Services.Hosts.HttpHost.Send(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            sends a http request
+            </summary>
+            <param name="request">request to send</param>
+            <returns>response message</returns>
+        </member>
+        <member name="M:ScriptService.Services.Hosts.HttpHost.Post(System.String,System.Object)">
+            <summary>
+            sends data to a server using POST
+            </summary>
+            <param name="url">url to send message to</param>
+            <param name="content">content to send</param>
+            <returns>response object</returns>
+        </member>
+        <member name="M:ScriptService.Services.Hosts.HttpHost.Put(System.String,System.Object)">
+            <summary>
+            sends data to a server using PUT
+            </summary>
+            <param name="url">url to send message to</param>
+            <param name="content">content to send</param>
+            <returns>response object</returns>
+        </member>
+        <member name="M:ScriptService.Services.Hosts.HttpHost.Patch(System.String,System.Object)">
+            <summary>
+            sends data to a server using PATCH
+            </summary>
+            <param name="url">url to send message to</param>
+            <param name="content">content to send</param>
+            <returns>response object</returns>
+        </member>
+        <member name="M:ScriptService.Services.Hosts.HttpHost.Get(System.String)">
+            <summary>
+            receives data from a server using GET
+            </summary>
+            <param name="url">url to send message to</param>
+            <returns>response object</returns>
+        </member>
+        <member name="M:ScriptService.Services.Hosts.HttpHost.Delete(System.String)">
+            <summary>
+            deletes data on a server using DELETE
+            </summary>
+            <param name="url">url identifying resource to delete</param>
+            <returns>response object</returns>
+        </member>
+        <member name="T:ScriptService.Services.IArchiveService">
+            <summary>
+            archives object revisions
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.IArchiveService.ArchiveObject``1(System.String,System.Int64,System.Int32,``0)">
+            <summary>
+            archives data of an object
+            </summary>
+            <param name="type">type of object to archive</param>
+            <param name="id">id of object to archive</param>
+            <param name="revision">object revision to archive</param>
+            <param name="objectdata">data of object to archive</param>
+        </member>
+        <member name="M:ScriptService.Services.IArchiveService.GetArchivedObject``1(System.String,System.Int64,System.Int32)">
+            <summary>
+            get an archived object
+            </summary>
+            <param name="type">type of object to retrieve</param>
+            <param name="id">id of object to retrieve</param>
+            <param name="revision">object revision to retrieve</param>
+            <returns>archived object data</returns>
+        </member>
+        <member name="M:ScriptService.Services.IArchiveService.ListRevisions(System.String,System.Int64,NightlyCode.AspNetCore.Services.Data.ListFilter)">
+            <summary>
+            lists revisions numbers archived for an object
+            </summary>
+            <param name="type">type of archived object</param>
+            <param name="id">id of archived object</param>
+            <param name="filter">paging filter to apply</param>
+            <returns>a page of available object revisions</returns>
+        </member>
+        <member name="T:ScriptService.Services.IMethodProviderService">
+            <summary>
+            service which provides hosts to scripts and workflows
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.IMethodProviderService.Hosts">
+            <summary>
+            hosts available to services
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.IMethodProviderService.GetHost(System.String)">
+            <summary>
+            get installed host
+            </summary>
+            <param name="hostname">name of host to get</param>
+            <returns>host object</returns>
+        </member>
+        <member name="T:ScriptService.Services.IScriptExecutionService">
+            <summary>
+            executes scripts
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.IScriptExecutionService.Execute(System.Int64,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <summary>
+            executes a script by specifying its id
+            </summary>
+            <param name="id">id of script to execute</param>
+            <param name="variables">variables to pass to script</param>
+            <param name="wait">time to wait for script to finish</param>
+            <returns>script task information</returns>
+        </member>
+        <member name="M:ScriptService.Services.IScriptExecutionService.Execute(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <summary>
+            executes a script by specifying its name
+            </summary>
+            <param name="name">name of script to execute</param>
+            <param name="variables">variables to pass to script</param>
+            <param name="wait">time to wait for script to finish</param>
+            <returns>script task information</returns>
+        </member>
+        <member name="M:ScriptService.Services.IScriptExecutionService.Execute(ScriptService.Dto.NamedCode,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <summary>
+            executes script code
+            </summary>
+            <param name="code">code with a scope to execute</param>
+            <param name="variables">variables to pass to script</param>
+            <param name="wait">time to wait for script to finish</param>
+            <returns>script task information</returns>
+        </member>
+        <member name="T:ScriptService.Services.IScriptService">
+            <summary>
+            script data management
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.IScriptService.CreateScript(ScriptService.Dto.ScriptData)">
+            <summary>
+            creates a new script
+            </summary>
+            <param name="script">data for script to create</param>
+            <returns>id of created script</returns>
+        </member>
+        <member name="M:ScriptService.Services.IScriptService.GetScript(System.Int64)">
+            <summary>
+            get a script by id
+            </summary>
+            <param name="scriptid">id of script to get</param>
+            <returns>script with the specified id</returns>
+        </member>
+        <member name="M:ScriptService.Services.IScriptService.GetScript(System.String)">
+            <summary>
+            get a script by scriptname
+            </summary>
+            <param name="scriptname">name of script</param>
+            <returns>script with the specified name</returns>
+        </member>
+        <member name="M:ScriptService.Services.IScriptService.ListScripts(NightlyCode.AspNetCore.Services.Data.ListFilter)">
+            <summary>
+            lists scripts matching a criteria
+            </summary>
+            <param name="filter">filter for scripts to match</param>
+            <returns>a page of scripts which match the filter</returns>
+        </member>
+        <member name="M:ScriptService.Services.IScriptService.PatchScript(System.Int64,ScriptService.Dto.Patches.PatchOperation[])">
+            <summary>
+            patches properties of a script
+            </summary>
+            <param name="scriptid">id of script to patch</param>
+            <param name="patches">patches to apply</param>
+        </member>
+        <member name="M:ScriptService.Services.IScriptService.DeleteScript(System.Int64)">
+            <summary>
+            deletes an existing script
+            </summary>
+            <param name="scriptid">id of script to delete</param>
+        </member>
+        <member name="T:ScriptService.Services.ITaskService">
+            <summary>
+            handles script instance data
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.ITaskService.CreateTask(ScriptService.Dto.WorkableType,System.Int64,System.Int32,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            creates new meta info for a script task
+            </summary>
+            <param name="workablename">name of workable</param>
+            <param name="variables">variables used to start script</param>
+            <param name="type">type of workable task is created for</param>
+            <param name="workableid">id of workable</param>
+            <param name="workablerevision">revision number of workable</param>
+            <returns>task info</returns>
+        </member>
+        <member name="M:ScriptService.Services.ITaskService.GetTask(System.Guid)">
+            <summary>
+            get information about a script task
+            </summary>
+            <param name="id">id of script task</param>
+            <returns>script task</returns>
+        </member>
+        <member name="M:ScriptService.Services.ITaskService.ListTasks(ScriptService.Dto.Tasks.TaskFilter)">
+            <summary>
+            lists script tasks
+            </summary>
+            <param name="filter">filter for tasks to show</param>
+            <returns>a page of script tasks which match the filter</returns>
+        </member>
+        <member name="M:ScriptService.Services.ITaskService.FinishTask(System.Guid)">
+            <summary>
+            finishes execution of a script task
+            </summary>
+            <param name="id">id of task which has finished</param>
+        </member>
+        <member name="M:ScriptService.Services.ITaskService.CancelTask(System.Guid)">
+            <summary>
+            cancels execution of a task
+            </summary>
+            <param name="id">id of task to cancel</param>
+        </member>
+        <member name="T:ScriptService.Services.IWorkflowExecutionService">
+            <summary>
+            service used to execute workflows
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.IWorkflowExecutionService.Execute(System.Int64,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <summary>
+            executes a workflow by specifying its id
+            </summary>
+            <param name="id">id of workflow to execute</param>
+            <param name="variables">variables to pass to workflow</param>
+            <param name="wait">time to wait for workflow to finish</param>
+            <returns>task information</returns>
+        </member>
+        <member name="M:ScriptService.Services.IWorkflowExecutionService.Execute(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <summary>
+            executes a workflow by specifying its name
+            </summary>
+            <param name="name">name of workflow to execute</param>
+            <param name="variables">variables to pass to workflow</param>
+            <param name="wait">time to wait for workflow to finish</param>
+            <returns>task information</returns>
+        </member>
+        <member name="M:ScriptService.Services.IWorkflowExecutionService.Execute(ScriptService.Dto.Workflows.WorkflowStructure,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <summary>
+            executes a workflow by specifying its name
+            </summary>
+            <param name="workflow">workflow to execute</param>
+            <param name="variables">variables to pass to workflow</param>
+            <param name="wait">time to wait for workflow to finish</param>
+            <returns>task information</returns>
+        </member>
+        <member name="M:ScriptService.Services.IWorkflowExecutionService.Continue(System.Guid,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <summary>
+            continues execution of a suspended workflow
+            </summary>
+            <param name="taskid">id of task which was suspended</param>
+            <param name="variables">variables to push to state</param>
+            <param name="wait">time to wait for workflow to finish</param>
+            <returns>task information</returns>
+        </member>
+        <member name="T:ScriptService.Services.IWorkflowService">
+            <summary>
+            service for workflow data management
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.IWorkflowService.CreateWorkflow(ScriptService.Dto.Workflows.WorkflowStructure)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Dto.Workflows.Workflow"/>
+            </summary>
+            <param name="data">data of workflow to create</param>
+            <returns>workflowid of created workflow</returns>
+        </member>
+        <member name="M:ScriptService.Services.IWorkflowService.UpdateWorkflow(System.Int64,ScriptService.Dto.Workflows.WorkflowStructure)">
+            <summary>
+            updates data of a workflow using a complete structure
+            </summary>
+            <param name="workflowid">id of workflow to update</param>
+            <param name="data">workflow data</param>
+        </member>
+        <member name="M:ScriptService.Services.IWorkflowService.GetWorkflow(System.Int64)">
+            <summary>
+            get a workflow from backend
+            </summary>
+            <param name="workflowid">workflowid of workflow to get</param>
+            <returns>full workflow information</returns>
+        </member>
+        <member name="M:ScriptService.Services.IWorkflowService.GetWorkflow(System.String)">
+            <summary>
+            get a workflow from backend
+            </summary>
+            <param name="name">name of workflow to get</param>
+            <returns>full workflow information</returns>
+        </member>
+        <member name="M:ScriptService.Services.IWorkflowService.ListWorkflows(NightlyCode.AspNetCore.Services.Data.ListFilter)">
+            <summary>
+            lists workflows using a filter
+            </summary>
+            <param name="filter">filter to use when listing (optional)</param>
+            <returns>a result page of matching workflows</returns>
+        </member>
+        <member name="M:ScriptService.Services.IWorkflowService.PatchWorkflow(System.Int64,ScriptService.Dto.Patches.PatchOperation[])">
+            <summary>
+            patches data of a workflow
+            </summary>
+            <param name="workflowid">id of workflow to patch</param>
+            <param name="patches">patches to apply</param>
+        </member>
+        <member name="M:ScriptService.Services.IWorkflowService.DeleteWorkflow(System.Int64)">
+            <summary>
+            deletes a workflow
+            </summary>
+            <param name="workflowid">id of workflow to delete</param>
+        </member>
+        <member name="T:ScriptService.Services.MethodProviderService">
+            <summary>
+            service used to provide methods to scripts and workflows
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.MethodProviderService.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Services.MethodProviderService},System.IServiceProvider,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.MethodProviderService"/>
+            </summary>
+            <param name="logger">access to logging</param>
+            <param name="serviceprovider">used to provide script and workflow executor on first request (to prevent cyclic dependencies)</param>
+            <param name="configuration">configuration containing hosts to load</param>
+        </member>
+        <member name="P:ScriptService.Services.MethodProviderService.Hosts">
+            <summary>
+            hosts available to services
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.MethodProviderService.GetHost(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.MethodProviderService.Import(System.Object[])">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Providers.ScriptIdMethod">
+            <summary>
+            executes a script by id
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Providers.ScriptIdMethod.#ctor(System.Int64,ScriptService.Services.IScriptExecutionService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Providers.ScriptIdMethod"/>
+            </summary>
+            <param name="scriptid">id of script</param>
+            <param name="executor">executor used to execute script</param>
+        </member>
+        <member name="M:ScriptService.Services.Providers.ScriptIdMethod.Invoke(NightlyCode.Scripting.Parser.IVariableProvider,System.Object[])">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Providers.ScriptNameMethod">
+            <summary>
+            method which executes a script by name
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Providers.ScriptNameMethod.#ctor(System.String,ScriptService.Services.IScriptExecutionService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Providers.ScriptIdMethod"/>
+            </summary>
+            <param name="scriptname">name of script</param>
+            <param name="executor">executor used to execute script</param>
+        </member>
+        <member name="M:ScriptService.Services.Providers.ScriptNameMethod.Invoke(NightlyCode.Scripting.Parser.IVariableProvider,System.Object[])">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Providers.WorkflowIdMethod">
+            <summary>
+            executes a workflow by id
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Providers.WorkflowIdMethod.#ctor(System.Int64,ScriptService.Services.IWorkflowExecutionService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Providers.ScriptIdMethod"/>
+            </summary>
+            <param name="workflowid">id of script</param>
+            <param name="executor">executor used to execute workflow</param>
+        </member>
+        <member name="M:ScriptService.Services.Providers.WorkflowIdMethod.Invoke(NightlyCode.Scripting.Parser.IVariableProvider,System.Object[])">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Providers.WorkflowNameMethod">
+            <summary>
+            method which executes a script by name
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Providers.WorkflowNameMethod.#ctor(System.String,ScriptService.Services.IWorkflowExecutionService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Providers.ScriptIdMethod"/>
+            </summary>
+            <param name="workflowname">name of workflow</param>
+            <param name="executor">executor used to execute workflow</param>
+        </member>
+        <member name="M:ScriptService.Services.Providers.WorkflowNameMethod.Invoke(NightlyCode.Scripting.Parser.IVariableProvider,System.Object[])">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.ScriptExecutionService">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.ScriptExecutionService.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Services.ScriptExecutionService},ScriptService.Services.IScriptService,ScriptService.Services.ITaskService,ScriptService.Services.Scripts.IScriptCompiler)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.ScriptExecutionService"/>
+            </summary>
+            <param name="logger">access to logging</param>
+            <param name="scriptservice">service used to get script code to execute</param>
+            <param name="scriptinstances">access to script instances</param>
+            <param name="scriptcompiler">compiles code to executable scripts</param>
+        </member>
+        <member name="M:ScriptService.Services.ScriptExecutionService.Execute(System.Int64,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.ScriptExecutionService.Execute(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.ScriptExecutionService.Execute(ScriptService.Dto.NamedCode,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Scripts.IScriptCompiler">
+            <summary>
+            compiles code to executable script
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Scripts.IScriptCompiler.CompileCode(System.Int64,System.Int32,System.String)">
+            <summary>
+            compiles a code to an executable script based on an id and revision
+            </summary>
+            <remarks>
+            this method is meant to implement caching
+            </remarks>
+            <param name="id">id of script</param>
+            <param name="revision">script revision</param>
+            <param name="code">code to compile</param>
+            <returns>compiled script</returns>
+        </member>
+        <member name="M:ScriptService.Services.Scripts.IScriptCompiler.CompileCode(System.String)">
+            <summary>
+            compiles a code to an executable script based on an id and revision
+            </summary>
+            <param name="code">code to compile</param>
+            <returns>compiled script</returns>
+        </member>
+        <member name="T:ScriptService.Services.Scripts.ScriptCompiler">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.Scripts.ScriptCompiler.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Services.Scripts.ScriptCompiler},NightlyCode.Scripting.Parser.IScriptParser,ScriptService.Services.Cache.ICacheService,ScriptService.Services.IMethodProviderService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Scripts.ScriptCompiler"/>
+            </summary>
+            <param name="logger">access to logging</param>
+            <param name="parser">parser used to parse scripts</param>
+            <param name="cache">access to object cache</param>
+            <param name="methodprovider">provides managed method hosts to scripts</param>
+        </member>
+        <member name="M:ScriptService.Services.Scripts.ScriptCompiler.CompileCode(System.Int64,System.Int32,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.Scripts.ScriptCompiler.CompileCode(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Sense.IScriptSenseService">
+            <summary>
+            provides information about script environment
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Sense.IScriptSenseService.GetTypeInfo(System.String)">
+            <summary>
+            get info about a script type
+            </summary>
+            <returns>type info</returns>
+        </member>
+        <member name="M:ScriptService.Services.Sense.IScriptSenseService.GetTypeProviders">
+            <summary>
+            get installed type providers
+            </summary>
+            <returns>type providers available to scripts</returns>
+        </member>
+        <member name="M:ScriptService.Services.Sense.IScriptSenseService.GetHostProviders">
+            <summary>
+            get information about installed host providers
+            </summary>
+            <returns>info about installed host providers</returns>
+        </member>
+        <member name="T:ScriptService.Services.Sense.ScriptSenseService">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.Sense.ScriptSenseService.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Services.Sense.ScriptSenseService},NightlyCode.Scripting.Parser.IScriptParser,ScriptService.Services.IMethodProviderService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Sense.ScriptSenseService"/>
+            </summary>
+            <param name="logger">access to logging</param>
+            <param name="parser">parser used to get script environment information</param>
+            <param name="methodprovider">provider for installed host types</param>
+        </member>
+        <member name="M:ScriptService.Services.Sense.ScriptSenseService.GetTypeInfo(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.Sense.ScriptSenseService.GetTypeProviders">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.Sense.ScriptSenseService.GetHostProviders">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.WorkableLogger">
+            <summary>
+            provides logging methods which route to the service logger and the linked task object
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.WorkableLogger.#ctor(Microsoft.Extensions.Logging.ILogger,ScriptService.Dto.Tasks.WorkableTask)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.WorkableLogger"/>
+            </summary>
+            <param name="logger">logger to send logs to</param>
+            <param name="instance">script instance to add logs to</param>
+        </member>
+        <member name="M:ScriptService.Services.WorkableLogger.Log(ScriptService.Dto.LogLevel,System.String,System.String)">
+            <summary>
+            logs a message
+            </summary>
+            <param name="severity">severity of message</param>
+            <param name="message">message text to log</param>
+            <param name="details">message details</param>
+        </member>
+        <member name="M:ScriptService.Services.WorkableLogger.Info(System.String,System.String)">
+            <summary>
+            logs an info
+            </summary>
+            <param name="message">info message</param>
+            <param name="details">message details (optional)</param>
+        </member>
+        <member name="M:ScriptService.Services.WorkableLogger.Warning(System.String,System.String)">
+            <summary>
+            logs a warning
+            </summary>
+            <param name="message">warning message</param>
+            <param name="details">message details (optional)</param>
+        </member>
+        <member name="M:ScriptService.Services.WorkableLogger.Error(System.String,System.String)">
+            <summary>
+            logs an error
+            </summary>
+            <param name="message">error message</param>
+            <param name="details">message details (optional)</param>
+        </member>
+        <member name="M:ScriptService.Services.WorkableLogger.Error(System.String,System.Exception)">
+            <summary>
+            logs an error
+            </summary>
+            <param name="message">error message</param>
+            <param name="details">message details (optional)</param>
+        </member>
+        <member name="T:ScriptService.Services.WorkflowExecutionService">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.WorkflowExecutionService.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Services.WorkflowExecutionService},ScriptService.Services.IWorkflowService,ScriptService.Services.ITaskService,ScriptService.Services.Scripts.IScriptCompiler,ScriptService.Services.Cache.ICacheService,ScriptService.Services.IScriptService,ScriptService.Services.IMethodProviderService)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.WorkflowExecutionService"/>
+            </summary>
+            <param name="logger">access to logging</param>
+            <param name="workflowservice">access to workflow data</param>
+            <param name="taskservice">access to task information</param>
+            <param name="compiler">access to script compiling</param>
+            <param name="cache">access to object cache</param>
+            <param name="scriptservice">access to script data</param>
+            <param name="importprovider">access to host imports</param>
+        </member>
+        <member name="M:ScriptService.Services.WorkflowExecutionService.Execute(System.Int64,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.WorkflowExecutionService.Execute(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.WorkflowExecutionService.Execute(ScriptService.Dto.Workflows.WorkflowStructure,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.WorkflowExecutionService.Continue(System.Guid,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Workflows.AssignStateNode">
+            <summary>
+            node used to assign result of another node to a state variable
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.AssignStateNode.#ctor(ScriptService.Services.Workflows.IInstanceNode,System.String)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Workflows.AssignStateNode"/>
+            </summary>
+            <param name="node">node of which to assign result</param>
+            <param name="variableName">name of variable to assign result to</param>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.AssignStateNode.VariableName">
+            <summary>
+            name of variable to assign result to
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.AssignStateNode.NodeName">
+            <inheritdoc />
+        </member>
+        <member name="P:ScriptService.Services.Workflows.AssignStateNode.Transitions">
+            <inheritdoc />
+        </member>
+        <member name="P:ScriptService.Services.Workflows.AssignStateNode.ErrorTransitions">
+            <inheritdoc />
+        </member>
+        <member name="P:ScriptService.Services.Workflows.AssignStateNode.LoopTransitions">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.Workflows.AssignStateNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Workflows.BinaryNode">
+            <summary>
+            node executing a binary operation
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.BinaryNode.#ctor(System.String,ScriptService.Dto.Workflows.Nodes.BinaryOpParameters,ScriptService.Services.Scripts.IScriptCompiler)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Workflows.BinaryNode"/>
+            </summary>
+            <param name="name">name of node</param>
+            <param name="parameters">parameters for operation</param>
+            <param name="compiler">access to code compiler</param>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.BinaryNode.Parameters">
+            <summary>
+            parameters for operation
+            </summary>
+        </member>
+        <member name="T:ScriptService.Services.Workflows.CallNode">
+            <summary>
+            node used to call a method on a host variable
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.CallNode.#ctor(System.String,ScriptService.Dto.Workflows.Nodes.CallParameters,ScriptService.Services.Scripts.IScriptCompiler)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Workflows.CallNode"/>
+            </summary>
+            <param name="nodeName">name of node</param>
+            <param name="parameters">parameters for method call</param>
+            <param name="compiler">parser for script code</param>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.CallNode.Parameters">
+            <summary>
+            parameters for node
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.CallNode.GenerateCode">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Workflows.Commands.IWorkflowCommand">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:ScriptService.Services.Workflows.Commands.LoopCommand">
+            <summary>
+            command used to trigger loop transitions
+            </summary>
+        </member>
+        <member name="T:ScriptService.Services.Workflows.CompiledExpressionNode">
+            <summary>
+            node which compiles a script expression and executes it
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.CompiledExpressionNode.GenerateCode">
+            <summary>
+            generates code for node to execute
+            </summary>
+            <returns>script code to parse and execute</returns>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.CompiledExpressionNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Workflows.ExpressionNode">
+            <summary>
+            node which executes a script
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.ExpressionNode.#ctor(System.String,NightlyCode.Scripting.IScript)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Workflows.ScriptNode"/>
+            </summary>
+            <param name="name">name of node</param>
+            <param name="script">script to execute</param>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.ExpressionNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Workflows.IInstanceNode">
+            <summary>
+            node in an instanced workflow
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.IInstanceNode.NodeName">
+            <summary>
+            name of node
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.IInstanceNode.Transitions">
+            <summary>
+            transitions processed after this node was processed
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.IInstanceNode.ErrorTransitions">
+            <summary>
+            list of transitions without condition
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.IInstanceNode.LoopTransitions">
+            <summary>
+            list of loop transitions
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.IInstanceNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <summary>
+            executes the node
+            </summary>
+        </member>
+        <member name="T:ScriptService.Services.Workflows.InstanceNode">
+            <summary>
+            node instance in a workflow
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.InstanceNode.#ctor(System.String)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Workflows.InstanceNode"/>
+            </summary>
+            <param name="nodeName">name of node</param>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.InstanceNode.NodeName">
+            <inheritdoc />
+        </member>
+        <member name="P:ScriptService.Services.Workflows.InstanceNode.Transitions">
+            <inheritdoc />
+        </member>
+        <member name="P:ScriptService.Services.Workflows.InstanceNode.ErrorTransitions">
+            <inheritdoc />
+        </member>
+        <member name="P:ScriptService.Services.Workflows.InstanceNode.LoopTransitions">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.Workflows.InstanceNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Workflows.InstanceTransition">
+            <summary>
+            transition to another <see cref="T:ScriptService.Services.Workflows.InstanceNode"/>
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.InstanceTransition.Condition">
+            <summary>
+            condition for transition
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.InstanceTransition.Target">
+            <summary>
+            target node to which to change
+            </summary>
+        </member>
+        <member name="T:ScriptService.Services.Workflows.IteratorNode">
+            <summary>
+            node iterating over a collection
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.IteratorNode.#ctor(System.String,ScriptService.Dto.Workflows.Nodes.IteratorParameters,ScriptService.Services.Scripts.IScriptCompiler)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Workflows.IteratorNode"/>
+            </summary>
+            <param name="nodeName">name of node</param>
+            <param name="parameters">parameters to use</param>
+            <param name="compiler">compiler used to compile expressions</param>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.IteratorNode.Parameters">
+            <summary>
+            parameters
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.IteratorNode.Current">
+            <summary>
+            current item in enumeration
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.IteratorNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Workflows.LogNode">
+            <summary>
+            node used to log text
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.LogNode.#ctor(System.String,ScriptService.Services.Scripts.IScriptCompiler,ScriptService.Dto.Workflows.Nodes.LogParameters)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Workflows.LogNode"/>
+            </summary>
+            <param name="nodeName">name of node</param>
+            <param name="compiler">compiler for script code</param>
+            <param name="parameters">parameters for log action</param>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.LogNode.Parameters">
+            <summary>
+            parameters for log node
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.LogNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Workflows.ScriptNode">
+            <summary>
+            node which executes a script
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.ScriptNode.#ctor(System.String,NightlyCode.Scripting.IScript,System.Collections.Generic.IEnumerable{ScriptService.Dto.Workflows.Nodes.ScriptArgument})">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Workflows.ScriptNode"/>
+            </summary>
+            <param name="name">name of node</param>
+            <param name="script">script to execute</param>
+            <param name="parameters">parameters for script</param>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.ScriptNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Workflows.StartNode">
+            <summary>
+            node used to initialize state variables
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.StartNode.#ctor(System.String,ScriptService.Dto.Workflows.Nodes.StartParameters)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Workflows.StartNode"/>
+            </summary>
+            <param name="nodeName">name of node</param>
+            <param name="parameters">parameters for workflow start</param>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.StartNode.Parameters">
+            <summary>
+            parameters for start node
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.StartNode.Arguments">
+            <summary>
+            arguments for start node to transfer
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.StartNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Workflows.StateVariableProvider">
+            <summary>
+            provides state variables to expressions
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.StateVariableProvider.#ctor(NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            creates a new <see cref="T:NightlyCode.Scripting.Parser.VariableProvider"/>
+            </summary>
+            <param name="parentprovider">parent variable scope</param>
+            <param name="variables">variables to provide</param>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.StateVariableProvider.Item(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="P:ScriptService.Services.Workflows.StateVariableProvider.Values">
+            <summary>
+            access to value lookup
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.StateVariableProvider.GetVariable(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.Workflows.StateVariableProvider.ContainsVariable(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.Workflows.StateVariableProvider.ContainsVariableInHierarchy(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.Workflows.StateVariableProvider.GetProvider(System.String)">
+            <summary>
+            get provider in chain which contains a variable with the specified name
+            </summary>
+            <param name="variable">name of variable to check for</param>
+            <returns>this if this provider contains this variable, null otherwise</returns>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.StateVariableProvider.Variables">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Workflows.SuspendNode">
+            <summary>
+            node which suspends execution of workflow
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.SuspendNode.#ctor(System.String,ScriptService.Dto.Workflows.Nodes.SuspendParameters)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Workflows.SuspendNode"/>
+            </summary>
+            <param name="nodeName">name of node</param>
+            <param name="parameters">parameters for operation</param>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.SuspendNode.Parameters">
+            <summary>
+            parameters for operation
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.SuspendNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Workflows.SuspendState">
+            <summary>
+            state used to continue suspended workflows
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.SuspendState.#ctor(ScriptService.Services.Workflows.IInstanceNode,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},ScriptService.Services.Workflows.SuspendState)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Workflows.SuspendState"/>
+            </summary>
+            <param name="node">suspended node</param>
+            <param name="variables">variables of executing workflow</param>
+            <param name="state">state of suspended workflow</param>
+            <param name="subflow">suspended sub workflow (optional)</param>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.SuspendState.Variables">
+            <summary>
+            script variables
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.SuspendState.State">
+            <summary>
+            current variable state
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.SuspendState.Node">
+            <summary>
+            node at which workflow was suspended
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.SuspendState.Subflow">
+            <summary>
+            suspended state of sub workflow
+            </summary>
+        </member>
+        <member name="T:ScriptService.Services.Workflows.ValueNode">
+            <summary>
+            node providing a value to the workflow
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.ValueNode.#ctor(System.String,System.Object,ScriptService.Services.Scripts.IScriptCompiler)">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Workflows.ValueNode"/>
+            </summary>
+            <param name="name">name of node</param>
+            <param name="value">value to provide to workflow</param>
+            <param name="compiler">compiler used to compile generated code</param>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.ValueNode.Value">
+            <summary>
+            value to provide
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.ValueNode.GenerateCode">
+            <inheritdoc />
+        </member>
+        <member name="T:ScriptService.Services.Workflows.WorkflowInstance">
+            <summary>
+            instances workflow
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.WorkflowInstance.Id">
+            <summary>
+            workflow id
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.WorkflowInstance.Revision">
+            <summary>
+            workflow revision
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.WorkflowInstance.Name">
+            <summary>
+            name of workflow
+            </summary>
+        </member>
+        <member name="P:ScriptService.Services.Workflows.WorkflowInstance.StartNode">
+            <summary>
+            node where workflow execution starts
+            </summary>
+        </member>
+        <member name="T:ScriptService.Services.Workflows.WorkflowInstanceNode">
+            <summary>
+            node used to execute a workflow
+            </summary>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.WorkflowInstanceNode.#ctor(System.String,ScriptService.Dto.Workflows.Nodes.CallWorkableParameters,System.Func{System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.Threading.Tasks.Task{ScriptService.Services.Workflows.WorkflowInstance}},System.Func{ScriptService.Services.Workflows.WorkflowInstance,ScriptService.Services.WorkableLogger,System.Threading.CancellationToken,System.Threading.Tasks.Task{System.Object}})">
+            <summary>
+            creates a new <see cref="T:ScriptService.Services.Workflows.WorkflowInstanceNode"/>
+            </summary>
+            <param name="name">name of node</param>
+            <param name="parameters">parameters for workflow call</param>
+            <param name="instanceprovider">used to get workflow instance from name</param>
+            <param name="executor">executes workflows</param>
+        </member>
+        <member name="M:ScriptService.Services.Workflows.WorkflowInstanceNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

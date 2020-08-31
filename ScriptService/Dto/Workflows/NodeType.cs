@@ -59,6 +59,9 @@
         /// </summary>
         Iterator,
 
-
+        /// <summary>
+        /// node used to log messages
+        /// </summary>
+        Log,
     }
 }
