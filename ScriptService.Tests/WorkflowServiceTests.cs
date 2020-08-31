@@ -1,7 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Moq;
+using NightlyCode.Database.Entities;
 using NUnit.Framework;
+using ScriptService.Dto.Workflows;
 using ScriptService.Extensions;
+using ScriptService.Services;
 
 namespace ScriptService.Tests {
 
@@ -23,7 +27,26 @@ namespace ScriptService.Tests {
             array = (List<object>) result; // what a hack ...
             Assert.AreEqual(1, array.Count);
             Assert.That(array[0] is IDictionary<string, object>);
+        }
 
+        [Test, Parallelizable]
+        public async Task GetWorkflowByName() {
+            IEntityManager database = TestSetup.CreateMemoryDatabase();
+            IWorkflowService service = new DatabaseWorkflowService(database, new Mock<IArchiveService>().Object);
+
+            await service.CreateWorkflow(new WorkflowStructure {
+                Name = "Test"
+            });
+            await service.CreateWorkflow(new WorkflowStructure {
+                Name = "Plum"
+            });
+            await service.CreateWorkflow(new WorkflowStructure {
+                Name = "Sollbestand"
+            });
+
+            WorkflowDetails workflow = await service.GetWorkflow("Plum");
+            Assert.NotNull(workflow);
+            Assert.AreEqual("Plum", workflow.Name);
         }
     }
 }

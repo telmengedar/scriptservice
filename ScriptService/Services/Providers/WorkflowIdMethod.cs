@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NightlyCode.Scripting.Data;
 using NightlyCode.Scripting.Parser;
+using ScriptService.Dto;
 using ScriptService.Dto.Tasks;
+using ScriptService.Errors;
 
 namespace ScriptService.Services.Providers {
 
@@ -35,7 +37,7 @@ namespace ScriptService.Services.Providers {
             }
 
             if (!(arguments.FirstOrDefault() is IDictionary scriptarguments))
-                throw new InvalidOperationException("Parameters for a script call need to be a dictionary");
+                throw new InvalidOperationException($"Parameters for a workflow call need to be a dictionary ('{arguments.FirstOrDefault()?.GetType()}')");
 
             if (!(scriptarguments is IDictionary<string, object> parameters)) {
                 parameters=new Dictionary<string, object>();
@@ -46,6 +48,14 @@ namespace ScriptService.Services.Providers {
 
             task = executor.Execute(workflowid, parameters).GetAwaiter().GetResult();
             task.Task.GetAwaiter().GetResult();
+
+            if(task.Status == TaskStatus.Failure) {
+                Exception error = task.Task.Exception?.InnerException ?? task.Task.Exception;
+                if(error != null)
+                    throw error;
+                throw new WorkflowException($"Error executing workflow '{workflowid}'");
+            }
+
             return task.Result;
         }
     }

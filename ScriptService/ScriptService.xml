@@ -89,9 +89,9 @@
         </member>
         <member name="M:ScriptService.Controllers.SenseController.GetHostInfo(System.String)">
             <summary>
-            lists all installed host providers
+            get type information about installed host
             </summary>
-            <returns>installed host providers</returns>
+            <returns>host type information</returns>
         </member>
         <member name="M:ScriptService.Controllers.SenseController.ListTypes">
             <summary>
@@ -1738,7 +1738,7 @@
             </summary>
             <param name="database">access to database</param>
         </member>
-        <member name="M:ScriptService.Services.DatabaseArchiveService.ArchiveObject``1(System.String,System.Int64,System.Int32,``0)">
+        <member name="M:ScriptService.Services.DatabaseArchiveService.ArchiveObject``1(NightlyCode.Database.Clients.Transaction,System.String,System.Int64,System.Int32,``0)">
             <inheritdoc />
         </member>
         <member name="M:ScriptService.Services.DatabaseArchiveService.GetArchivedObject``1(System.String,System.Int64,System.Int32)">
@@ -1813,6 +1813,9 @@
         <member name="M:ScriptService.Services.DatabaseWorkflowService.CreateWorkflow(ScriptService.Dto.Workflows.WorkflowStructure)">
             <inheritdoc />
         </member>
+        <member name="M:ScriptService.Services.DatabaseWorkflowService.UpdateWorkflow(System.Int64,ScriptService.Dto.Workflows.WorkflowStructure)">
+            <inheritdoc />
+        </member>
         <member name="M:ScriptService.Services.DatabaseWorkflowService.GetWorkflow(System.Int64)">
             <inheritdoc />
         </member>
@@ -1820,6 +1823,9 @@
             <inheritdoc />
         </member>
         <member name="M:ScriptService.Services.DatabaseWorkflowService.ListWorkflows(NightlyCode.AspNetCore.Services.Data.ListFilter)">
+            <inheritdoc />
+        </member>
+        <member name="M:ScriptService.Services.DatabaseWorkflowService.PatchWorkflow(System.Int64,ScriptService.Dto.Patches.PatchOperation[])">
             <inheritdoc />
         </member>
         <member name="M:ScriptService.Services.DatabaseWorkflowService.DeleteWorkflow(System.Int64)">
@@ -1894,10 +1900,11 @@
             archives object revisions
             </summary>
         </member>
-        <member name="M:ScriptService.Services.IArchiveService.ArchiveObject``1(System.String,System.Int64,System.Int32,``0)">
+        <member name="M:ScriptService.Services.IArchiveService.ArchiveObject``1(NightlyCode.Database.Clients.Transaction,System.String,System.Int64,System.Int32,``0)">
             <summary>
             archives data of an object
             </summary>
+            <param name="transaction">transaction to use</param>
             <param name="type">type of object to archive</param>
             <param name="id">id of object to archive</param>
             <param name="revision">object revision to archive</param>

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using NightlyCode.AspNetCore.Services.Data;
+using NightlyCode.Database.Clients;
 
 namespace ScriptService.Services {
 
@@ -11,11 +12,12 @@ namespace ScriptService.Services {
         /// <summary>
         /// archives data of an object
         /// </summary>
+        /// <param name="transaction">transaction to use</param>
         /// <param name="type">type of object to archive</param>
         /// <param name="id">id of object to archive</param>
         /// <param name="revision">object revision to archive</param>
         /// <param name="objectdata">data of object to archive</param>
-        Task ArchiveObject<T>(string type, long id, int revision, T objectdata);
+        Task ArchiveObject<T>(Transaction transaction, string type, long id, int revision, T objectdata);
 
         /// <summary>
         /// get an archived object

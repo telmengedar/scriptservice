@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using NightlyCode.AspNetCore.Services.Data;
 using NightlyCode.AspNetCore.Services.Errors.Exceptions;
+using NightlyCode.Database.Clients;
 using NightlyCode.Database.Entities;
 using NightlyCode.Database.Entities.Operations;
 using NightlyCode.Database.Entities.Operations.Prepared;
@@ -75,15 +76,21 @@ namespace ScriptService.Services {
         /// <inheritdoc />
         public async Task PatchScript(long scriptid, PatchOperation[] patches) {
             Script script = await GetScript(scriptid);
-            await archiveservice.ArchiveObject(nameof(Script), script.Id, script.Revision, script);
-            await database.Update<Script>().Set(s => s.Revision == s.Revision + 1).Where(s => s.Id == scriptid).Patch(patches).ExecuteAsync();
+
+            using Transaction transaction = database.Transaction();
+            await archiveservice.ArchiveObject(transaction, nameof(Script), script.Id, script.Revision, script);
+            await database.Update<Script>().Set(s => s.Revision == s.Revision + 1).Where(s => s.Id == scriptid).Patch(patches).ExecuteAsync(transaction);
+            transaction.Commit();
         }
 
         /// <inheritdoc />
         public async Task DeleteScript(long scriptid) {
             Script script = await GetScript(scriptid);
-            await archiveservice.ArchiveObject(nameof(Script), script.Id, script.Revision, script);
-            await deletescript.ExecuteAsync(scriptid);
+
+            using Transaction transaction = database.Transaction();
+            await archiveservice.ArchiveObject(transaction, nameof(Script), script.Id, script.Revision, script);
+            await deletescript.ExecuteAsync(transaction, scriptid);
+            transaction.Commit();
         }
     }
 }

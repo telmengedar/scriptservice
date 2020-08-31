@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NightlyCode.AspNetCore.Services.Data;
 using NightlyCode.AspNetCore.Services.Errors.Exceptions;
+using NightlyCode.Database.Clients;
 using NightlyCode.Database.Entities;
 using NightlyCode.Database.Entities.Operations.Prepared;
 using NightlyCode.Database.Fields;
@@ -31,14 +32,14 @@ namespace ScriptService.Services {
         }
 
         /// <inheritdoc />
-        public async Task ArchiveObject<T>(string type, long id, int revision, T objectdata) {
+        public async Task ArchiveObject<T>(Transaction transaction, string type, long id, int revision, T objectdata) {
             byte[] serialized = JsonSerializer.Serialize(objectdata);
             await using MemoryStream output = new MemoryStream();
             await using (GZipStream gzip = new GZipStream(output, CompressionLevel.Optimal)) {
                 gzip.Write(serialized);
             }
 
-            await insert.ExecuteAsync(type, id, revision, output.ToArray());
+            await insert.ExecuteAsync(transaction, type, id, revision, output.ToArray());
         }
 
         /// <inheritdoc />

@@ -36,9 +36,9 @@ namespace ScriptService.Controllers {
         }
 
         /// <summary>
-        /// lists all installed host providers
+        /// get type information about installed host
         /// </summary>
-        /// <returns>installed host providers</returns>
+        /// <returns>host type information</returns>
         [HttpGet("hosts/{host}")]
         public Task<TypeInfo> GetHostInfo(string host) {
             object hostinstance = hostprovider.GetHost(host);

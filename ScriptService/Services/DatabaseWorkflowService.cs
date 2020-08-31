@@ -57,12 +57,16 @@ namespace ScriptService.Services {
             deleteworkflow = database.Delete<Workflow>().Where(w => w.Id == DBParameter.Int64).Prepare();
 
             loadworkflowbyid = database.LoadEntities<Workflow>().Where(w => w.Id == DBParameter.Int64).Prepare();
-            loadworkflowbyname = database.LoadEntities<Workflow>().Where(w => w.Name != DBParameter.String).Prepare();
+            loadworkflowbyname = database.LoadEntities<Workflow>().Where(w => w.Name == DBParameter.String).Prepare();
 
             loadnodes = database.Load<WorkflowNode>(n => n.Id, n => n.Name, n => n.Type, n => n.Parameters, n=>n.Variable).Where(n => n.WorkflowId == DBParameter.Int64).Prepare();
             loadtransitions = database.Load<WorkflowTransition>(t => t.OriginId, t => t.TargetId, t => t.Condition, t=>t.Type).Where(t => t.WorkflowId == DBParameter.Int64).Prepare();
             insertnode = database.Insert<WorkflowNode>().Columns(n => n.Id, n => n.WorkflowId, n => n.Name, n => n.Type, n => n.Parameters, n=>n.Group, n=>n.Variable).Prepare();
             inserttransition = database.Insert<WorkflowTransition>().Columns(t => t.WorkflowId, t => t.OriginId, t => t.TargetId, t => t.Condition, t=>t.Type).Prepare();
+        }
+
+        async Task<Workflow> LoadWorkflowByName(string name) {
+            return (await loadworkflowbyname.ExecuteAsync(name)).FirstOrDefault();
         }
 
         Task UpdateWorkflow(Transaction transaction, long workflowid, string name) {
@@ -75,6 +79,14 @@ namespace ScriptService.Services {
 
         Task CreateTransition(Transaction transaction, long workflowid, Guid origin, Guid target, string condition, TransitionType type) {
             return inserttransition.ExecuteAsync(transaction, workflowid, origin, target, condition, type);
+        }
+
+        Task DeleteTransitions(Transaction transaction, long workflowid) {
+            return deletetransitions.ExecuteAsync(transaction, workflowid);
+        }
+
+        Task DeleteNodes(Transaction transaction, long workflowid) {
+            return deletenodes.ExecuteAsync(transaction, workflowid);
         }
 
         async Task<WorkflowDetails> FillWorkflow(WorkflowDetails workflow) {
@@ -114,6 +126,7 @@ namespace ScriptService.Services {
             return workflowid;
         }
 
+        /// <inheritdoc />
         public async Task UpdateWorkflow(long workflowid, WorkflowStructure data) {
             if(data.Transitions != null) {
                 int nodecount = data.Nodes?.Length ?? 0;
@@ -126,9 +139,10 @@ namespace ScriptService.Services {
             }
 
             using Transaction transaction = database.Transaction();
-
-            await deletenodes.ExecuteAsync(transaction, workflowid);
-            await deletetransitions.ExecuteAsync(transaction, workflowid);
+            await ArchiveWorkflow(transaction, workflowid);
+            
+            await DeleteNodes(transaction, workflowid);
+            await DeleteTransitions(transaction, workflowid);
             await UpdateWorkflow(transaction, workflowid, data.Name);
             await CreateNodeAndTransitions(transaction, workflowid, data.Nodes, data.Transitions);
             transaction.Commit();
@@ -165,7 +179,7 @@ namespace ScriptService.Services {
 
         /// <inheritdoc />
         public async Task<WorkflowDetails> GetWorkflow(string name) {
-            Workflow workflow = (await loadworkflowbyname.ExecuteAsync(name)).FirstOrDefault();
+            Workflow workflow = await LoadWorkflowByName(name);
             if(workflow == null)
                 throw new NotFoundException(typeof(Workflow), name);
 
@@ -207,15 +221,18 @@ namespace ScriptService.Services {
             throw new ArgumentException($"Patch value type '{value?.GetType()}' not supported");
         }
 
+        /// <inheritdoc />
         public async Task PatchWorkflow(long workflowid, PatchOperation[] patches) {
             if (patches.Length == 0)
                 throw new ArgumentException("Patching without patches is invalid", nameof(patches));
+
+            using Transaction transaction = database.Transaction();
+            await ArchiveWorkflow(transaction, workflowid);
 
             List<PatchOperation> nodepatches = new List<PatchOperation>(patches.Where(p => p.Path == "/nodes"));
             List<PatchOperation> transitionpatches = new List<PatchOperation>(patches.Where(p => p.Path == "/transitions"));
             List<PatchOperation> workflowpatches = new List<PatchOperation>(patches.Except(nodepatches).Except(transitionpatches));
 
-            using Transaction transaction = database.Transaction();
             if (workflowpatches.Count > 0)
                 await database.Update<Workflow>().Set(w => w.Revision == w.Revision + 1).Where(w => w.Id == workflowid).Patch(workflowpatches.ToArray()).ExecuteAsync(transaction);
 
@@ -250,14 +267,19 @@ namespace ScriptService.Services {
             transaction.Commit();
         }
 
+        async Task ArchiveWorkflow(Transaction transaction, long workflowid) {
+            WorkflowDetails old = await GetWorkflow(workflowid);
+            await archiveservice.ArchiveObject(transaction, "Workflow", workflowid, old.Revision, old);
+        }
+
         /// <inheritdoc />
         public async Task DeleteWorkflow(long workflowid) {
-            WorkflowDetails old = await GetWorkflow(workflowid);
-            await archiveservice.ArchiveObject("Workflow", workflowid, old.Revision, old);
-
             using Transaction transaction = database.Transaction();
-            await deletetransitions.ExecuteAsync(transaction, workflowid);
-            await deletenodes.ExecuteAsync(transaction, workflowid);
+            await ArchiveWorkflow(transaction, workflowid);
+
+            
+            await DeleteTransitions(transaction, workflowid);
+            await DeleteNodes(transaction, workflowid);
             await deleteworkflow.ExecuteAsync(transaction, workflowid);
             transaction.Commit();
         }
