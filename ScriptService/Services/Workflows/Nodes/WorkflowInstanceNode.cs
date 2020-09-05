@@ -7,7 +7,7 @@ using NightlyCode.Scripting.Parser;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Extensions;
 
-namespace ScriptService.Services.Workflows {
+namespace ScriptService.Services.Workflows.Nodes {
 
     /// <summary>
     /// node used to execute a workflow

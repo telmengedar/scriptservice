@@ -7,6 +7,7 @@ using ScriptService.Dto;
 using ScriptService.Dto.Tasks;
 using ScriptService.Dto.Workflows;
 using ScriptService.Services;
+using ScriptService.Services.Workflows;
 
 namespace ScriptService.Controllers {
 
@@ -17,6 +18,7 @@ namespace ScriptService.Controllers {
     [ApiController]
     public class WorkflowExecutionController : ControllerBase {
         readonly ILogger<WorkflowExecutionController> logger;
+        readonly IWorkflowCompiler compiler;
         readonly IWorkflowExecutionService executionservice;
 
         /// <summary>
@@ -24,9 +26,11 @@ namespace ScriptService.Controllers {
         /// </summary>
         /// <param name="logger">access to logging</param>
         /// <param name="executionservice">access to workflow execution service</param>
-        public WorkflowExecutionController(ILogger<WorkflowExecutionController> logger, IWorkflowExecutionService executionservice) {
+        /// <param name="compiler">compiles workflow data for execution</param>
+        public WorkflowExecutionController(ILogger<WorkflowExecutionController> logger, IWorkflowExecutionService executionservice, IWorkflowCompiler compiler) {
             this.logger = logger;
             this.executionservice = executionservice;
+            this.compiler = compiler;
         }
 
         /// <summary>
@@ -40,14 +44,14 @@ namespace ScriptService.Controllers {
             if(parameters.Id.HasValue) {
                 if(!string.IsNullOrEmpty(parameters.Name))
                     throw new ArgumentException("Either id or name has to be set, not both");
-                return await executionservice.Execute(parameters.Id.Value, parameters.Parameters, parameters.Wait);
+                return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Id.Value, parameters.Revision, parameters.Parameters), parameters.Wait);
             }
 
             if(!string.IsNullOrEmpty(parameters.Name))
-                return await executionservice.Execute(parameters.Name, parameters.Parameters, parameters.Wait);
+                return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Name, parameters.Revision, parameters.Parameters), parameters.Wait);
 
             if (parameters.Workflow != null)
-                return await executionservice.Execute(parameters.Workflow, parameters.Parameters, parameters.Wait);
+                return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Workflow, parameters.Parameters), parameters.Wait);
 
             throw new ArgumentException("Workflow id or name is required");
         }

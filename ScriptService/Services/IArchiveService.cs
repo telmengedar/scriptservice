@@ -8,25 +8,24 @@ namespace ScriptService.Services {
     /// archives object revisions
     /// </summary>
     public interface IArchiveService {
-
         /// <summary>
         /// archives data of an object
         /// </summary>
         /// <param name="transaction">transaction to use</param>
-        /// <param name="type">type of object to archive</param>
         /// <param name="id">id of object to archive</param>
         /// <param name="revision">object revision to archive</param>
         /// <param name="objectdata">data of object to archive</param>
-        Task ArchiveObject<T>(Transaction transaction, string type, long id, int revision, T objectdata);
+        /// <param name="objectname">name of object type to store (optional)</param>
+        Task ArchiveObject<T>(Transaction transaction, long id, int revision, T objectdata, string objectname=null);
 
         /// <summary>
         /// get an archived object
         /// </summary>
-        /// <param name="type">type of object to retrieve</param>
         /// <param name="id">id of object to retrieve</param>
         /// <param name="revision">object revision to retrieve</param>
+        /// <param name="objectname">name of object type to retrieve (optional)</param>
         /// <returns>archived object data</returns>
-        Task<T> GetArchivedObject<T>(string type, long id, int revision);
+        Task<T> GetArchivedObject<T>(long id, int revision, string objectname=null);
 
         /// <summary>
         /// lists revisions numbers archived for an object

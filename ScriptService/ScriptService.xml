@@ -6,7 +6,7 @@
     <members>
         <member name="T:ScriptService.Controllers.ScriptController">
             <summary>
-            provides endpoints for script code
+            provides endpoints for task code
             </summary>
         </member>
         <member name="M:ScriptService.Controllers.ScriptController.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Controllers.ScriptController},ScriptService.Services.IScriptService)">
@@ -14,45 +14,45 @@
             creates a new <see cref="T:ScriptService.Controllers.ScriptController"/>
             </summary>
             <param name="logger">access to logging</param>
-            <param name="scriptservice">access to script service</param>
+            <param name="taskservice">access to task service</param>
         </member>
         <member name="M:ScriptService.Controllers.ScriptController.CreateScript(ScriptService.Dto.ScriptData)">
             <summary>
-            creates a new script
+            creates a new task
             </summary>
-            <param name="script">data for script to create</param>
-            <returns>id of created script</returns>
+            <param name="task">data for task to create</param>
+            <returns>id of created task</returns>
         </member>
         <member name="M:ScriptService.Controllers.ScriptController.GetScript(System.Int64)">
             <summary>
-            get a script by id
+            get a task by id
             </summary>
-            <param name="scriptid">id of script to get</param>
-            <returns>script with the specified id</returns>
+            <param name="taskid">id of task to get</param>
+            <returns>task with the specified id</returns>
         </member>
         <member name="M:ScriptService.Controllers.ScriptController.ListScripts(NightlyCode.AspNetCore.Services.Data.ListFilter)">
             <summary>
-            lists scripts matching a criteria
+            lists tasks matching a criteria
             </summary>
-            <param name="filter">filter for scripts to match</param>
-            <returns>a page of scripts which match the filter</returns>
+            <param name="filter">filter for tasks to match</param>
+            <returns>a page of tasks which match the filter</returns>
         </member>
         <member name="M:ScriptService.Controllers.ScriptController.PatchScript(System.Int64,ScriptService.Dto.Patches.PatchOperation[])">
             <summary>
-            patches properties of a script
+            patches properties of a task
             </summary>
-            <param name="scriptid">id of script to patch</param>
+            <param name="taskid">id of task to patch</param>
             <param name="patches">patches to apply</param>
         </member>
         <member name="M:ScriptService.Controllers.ScriptController.DeleteScript(System.Int64)">
             <summary>
-            deletes an existing script
+            deletes an existing task
             </summary>
-            <param name="scriptid">id of script to delete</param>
+            <param name="taskid">id of task to delete</param>
         </member>
         <member name="T:ScriptService.Controllers.ScriptExecutionController">
             <summary>
-            provides endpoints for script execution
+            provides endpoints for task execution
             </summary>
         </member>
         <member name="M:ScriptService.Controllers.ScriptExecutionController.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Controllers.ScriptExecutionController},ScriptService.Services.IScriptExecutionService)">
@@ -60,18 +60,18 @@
             creates a new <see cref="T:ScriptService.Controllers.ScriptExecutionController"/>
             </summary>
             <param name="logger">access to logging</param>
-            <param name="executionservice">access to script executor</param>
+            <param name="executionservice">access to task executor</param>
         </member>
         <member name="M:ScriptService.Controllers.ScriptExecutionController.Execute(ScriptService.Dto.ExecuteScriptParameters)">
             <summary>
-            executes a script
+            executes a task
             </summary>
             <param name="parameters"></param>
             <returns></returns>
         </member>
         <member name="T:ScriptService.Controllers.SenseController">
             <summary>
-            endpoints providing context information of installed script types
+            endpoints providing context information of installed task types
             </summary>
         </member>
         <member name="M:ScriptService.Controllers.SenseController.#ctor(ScriptService.Services.Sense.IScriptSenseService,ScriptService.Services.IMethodProviderService)">
@@ -111,21 +111,21 @@
             creates a new <see cref="T:ScriptService.Controllers.TaskController"/>
             </summary>
             <param name="logger">access to logging</param>
-            <param name="scripttaskservice">access to script task service</param>
+            <param name="tasktaskservice">access to task task service</param>
         </member>
         <member name="M:ScriptService.Controllers.TaskController.GetTask(System.Guid)">
             <summary>
-            get information about a script task
+            get information about a task task
             </summary>
-            <param name="id">id of script task</param>
-            <returns>script task</returns>
+            <param name="id">id of task task</param>
+            <returns>task task</returns>
         </member>
         <member name="M:ScriptService.Controllers.TaskController.ListTasks(ScriptService.Dto.Tasks.TaskFilter)">
             <summary>
-            lists script tasks
+            lists task tasks
             </summary>
             <param name="filter">filter for tasks to show</param>
-            <returns>a page of script tasks which match the filter</returns>
+            <returns>a page of task tasks which match the filter</returns>
         </member>
         <member name="M:ScriptService.Controllers.TaskController.CancelTask(System.Guid)">
             <summary>
@@ -200,14 +200,14 @@
         </member>
         <member name="M:ScriptService.Controllers.WorkflowExecutionController.Execute(ScriptService.Dto.ExecuteWorkflowParameters)">
             <summary>
-            executes a script
+            executes a task
             </summary>
             <param name="parameters"></param>
             <returns></returns>
         </member>
         <member name="M:ScriptService.Controllers.WorkflowExecutionController.Continue(System.Guid,ScriptService.Dto.Workflows.ContinueWorkflowBody)">
             <summary>
-            executes a script
+            executes a task
             </summary>
             <param name="taskid">id of task to continue</param>
             <param name="parameters"></param>
@@ -305,17 +305,17 @@
         </member>
         <member name="T:ScriptService.Dto.ExecuteScriptParameters">
             <summary>
-            parameters used when executing a script
+            parameters used when executing a task
             </summary>
         </member>
         <member name="P:ScriptService.Dto.ExecuteScriptParameters.Id">
             <summary>
-            id of script to execute
+            id of task to execute
             </summary>
         </member>
         <member name="P:ScriptService.Dto.ExecuteScriptParameters.Name">
             <summary>
-            name of script to execute
+            name of task to execute
             </summary>
         </member>
         <member name="P:ScriptService.Dto.ExecuteScriptParameters.Code">
@@ -325,7 +325,7 @@
         </member>
         <member name="P:ScriptService.Dto.ExecuteScriptParameters.Parameters">
             <summary>
-            parameters for script execution
+            parameters for task execution
             </summary>
         </member>
         <member name="P:ScriptService.Dto.ExecuteScriptParameters.Wait">
@@ -333,22 +333,22 @@
             specifies time to wait for result
             </summary>
             <remarks>
-            if script doesn't finish in the specified timespan, taskinformation of the running task is returned
+            if task doesn't finish in the specified timespan, taskinformation of the running task is returned
             </remarks>
         </member>
         <member name="T:ScriptService.Dto.ExecuteWorkflowParameters">
             <summary>
-            parameters used when executing a script
+            parameters used when executing a task
             </summary>
         </member>
         <member name="P:ScriptService.Dto.ExecuteWorkflowParameters.Id">
             <summary>
-            id of script to execute
+            id of task to execute
             </summary>
         </member>
         <member name="P:ScriptService.Dto.ExecuteWorkflowParameters.Name">
             <summary>
-            name of script to execute
+            name of task to execute
             </summary>
         </member>
         <member name="P:ScriptService.Dto.ExecuteWorkflowParameters.Workflow">
@@ -361,7 +361,7 @@
         </member>
         <member name="P:ScriptService.Dto.ExecuteWorkflowParameters.Parameters">
             <summary>
-            parameters for script execution
+            parameters for task execution
             </summary>
         </member>
         <member name="P:ScriptService.Dto.ExecuteWorkflowParameters.Wait">
@@ -369,7 +369,7 @@
             specifies time to wait for result
             </summary>
             <remarks>
-            if script doesn't finish in the specified timespan, taskinformation of the running task is returned
+            if task doesn't finish in the specified timespan, taskinformation of the running task is returned
             </remarks>
         </member>
         <member name="T:ScriptService.Dto.LogLevel">
@@ -404,7 +404,7 @@
         </member>
         <member name="P:ScriptService.Dto.NamedCode.Name">
             <summary>
-            name of script to run
+            name of task to run
             </summary>
         </member>
         <member name="T:ScriptService.Dto.Patches.Patch">
@@ -512,12 +512,12 @@
         </member>
         <member name="T:ScriptService.Dto.Script">
             <summary>
-            script for execution
+            task for execution
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Script.Id">
             <summary>
-            script id
+            task id
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Script.Revision">
@@ -527,12 +527,12 @@
         </member>
         <member name="T:ScriptService.Dto.ScriptData">
             <summary>
-            data of a script
+            data of a task
             </summary>
         </member>
         <member name="P:ScriptService.Dto.ScriptData.Name">
             <summary>
-            name of script
+            name of task
             </summary>
         </member>
         <member name="P:ScriptService.Dto.ScriptData.Code">
@@ -583,7 +583,7 @@
         </member>
         <member name="T:ScriptService.Dto.Sense.PropertyInfo">
             <summary>
-            property description
+            property detaskion
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Sense.PropertyInfo.Type">
@@ -604,7 +604,7 @@
             name of entry
             </summary>
         </member>
-        <member name="P:ScriptService.Dto.Sense.SenseEntry.Description">
+        <member name="P:ScriptService.Dto.Sense.SenseEntry.Detaskion">
             <summary>
             documentation for entry
             </summary>
@@ -642,27 +642,27 @@
         </member>
         <member name="T:ScriptService.Dto.TaskStatus">
             <summary>
-            status of a script instance
+            status of a task instance
             </summary>
         </member>
         <member name="F:ScriptService.Dto.TaskStatus.Canceled">
             <summary>
-            execution of script was canceled
+            execution of task was canceled
             </summary>
         </member>
         <member name="F:ScriptService.Dto.TaskStatus.Failure">
             <summary>
-            script failed to execute
+            task failed to execute
             </summary>
         </member>
         <member name="F:ScriptService.Dto.TaskStatus.Success">
             <summary>
-            script was executed successfully
+            task was executed successfully
             </summary>
         </member>
         <member name="F:ScriptService.Dto.TaskStatus.Running">
             <summary>
-            script is still running
+            task is still running
             </summary>
         </member>
         <member name="F:ScriptService.Dto.TaskStatus.Suspended">
@@ -675,12 +675,12 @@
         </member>
         <member name="T:ScriptService.Dto.Tasks.TaskDb">
             <summary>
-            script task archived in database
+            task task archived in database
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskDb.Id">
             <summary>
-            id of script instance
+            id of task instance
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskDb.Type">
@@ -690,52 +690,52 @@
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskDb.WorkableId">
             <summary>
-            id of executing script
+            id of executing task
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskDb.WorkableRevision">
             <summary>
-            executing script revision
+            executing task revision
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskDb.WorkableName">
             <summary>
-            name of executing script
+            name of executing task
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskDb.Parameters">
             <summary>
-            script variables passed to script
+            task variables passed to task
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskDb.Log">
             <summary>
-            script log
+            task log
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskDb.Started">
             <summary>
-            time when script was started
+            time when task was started
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskDb.Finished">
             <summary>
-            time when script finished
+            time when task finished
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskDb.Status">
             <summary>
-            status of script
+            status of task
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskDb.Result">
             <summary>
-            script result
+            task result
             </summary>
         </member>
         <member name="T:ScriptService.Dto.Tasks.TaskFilter">
             <summary>
-            list filter for script tasks
+            list filter for task tasks
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskFilter.Status">
@@ -755,17 +755,17 @@
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskFilter.WorkableId">
             <summary>
-            id of script to filter for
+            id of task to filter for
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.TaskFilter.WorkableName">
             <summary>
-            name of script to filter for
+            name of task to filter for
             </summary>
         </member>
         <member name="T:ScriptService.Dto.Tasks.WorkableTask">
             <summary>
-            currently executing script
+            currently executing task
             </summary>
         </member>
         <member name="M:ScriptService.Dto.Tasks.WorkableTask.#ctor">
@@ -777,7 +777,7 @@
             <summary>
             creates a new <see cref="T:ScriptService.Dto.Tasks.WorkableTask"/>
             </summary>
-            <param name="other">script task copy values from</param>
+            <param name="other">task task copy values from</param>
         </member>
         <member name="P:ScriptService.Dto.Tasks.WorkableTask.Id">
             <summary>
@@ -791,57 +791,57 @@
         </member>
         <member name="P:ScriptService.Dto.Tasks.WorkableTask.WorkableId">
             <summary>
-            id of executing script
+            id of executing task
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.WorkableTask.WorkableRevision">
             <summary>
-            executing script revision
+            executing task revision
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.WorkableTask.WorkableName">
             <summary>
-            name of executing script
+            name of executing task
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.WorkableTask.Parameters">
             <summary>
-            script variables passed to script
+            task variables passed to task
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.WorkableTask.Log">
             <summary>
-            script log
+            task log
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.WorkableTask.Started">
             <summary>
-            time when script was started
+            time when task was started
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.WorkableTask.Finished">
             <summary>
-            time when script finished
+            time when task finished
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.WorkableTask.Runtime">
             <summary>
-            time script ran
+            time task ran
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.WorkableTask.Status">
             <summary>
-            status of script
+            status of task
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.WorkableTask.Result">
             <summary>
-            script result
+            task result
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.WorkableTask.Task">
             <summary>
-            internal task used to run the script
+            internal task used to run the task
             </summary>
         </member>
         <member name="P:ScriptService.Dto.Tasks.WorkableTask.Token">
@@ -861,7 +861,7 @@
         </member>
         <member name="F:ScriptService.Dto.WorkableType.Script">
             <summary>
-            script code
+            task code
             </summary>
         </member>
         <member name="F:ScriptService.Dto.WorkableType.Workflow">
@@ -884,7 +884,7 @@
             specifies time to wait for result
             </summary>
             <remarks>
-            if script doesn't finish in the specified timespan, taskinformation of the running task is returned
+            if task doesn't finish in the specified timespan, taskinformation of the running task is returned
             </remarks>
         </member>
         <member name="T:ScriptService.Dto.Workflows.ImportType">
@@ -899,7 +899,7 @@
         </member>
         <member name="F:ScriptService.Dto.Workflows.ImportType.Script">
             <summary>
-            script
+            task
             </summary>
         </member>
         <member name="F:ScriptService.Dto.Workflows.ImportType.Workflow">
@@ -1149,7 +1149,7 @@
         </member>
         <member name="P:ScriptService.Dto.Workflows.Nodes.CallWorkableParameters.Arguments">
             <summary>
-            parameters for script to call
+            parameters for task to call
             </summary>
         </member>
         <member name="T:ScriptService.Dto.Workflows.Nodes.ExecuteExpressionParameters">
@@ -1159,7 +1159,7 @@
         </member>
         <member name="P:ScriptService.Dto.Workflows.Nodes.ExecuteExpressionParameters.Code">
             <summary>
-            name of script to call
+            name of task to call
             </summary>
         </member>
         <member name="T:ScriptService.Dto.Workflows.Nodes.ImportDeclaration">
@@ -1179,7 +1179,7 @@
         </member>
         <member name="P:ScriptService.Dto.Workflows.Nodes.ImportDeclaration.Name">
             <summary>
-            name of host, script or method
+            name of host, task or method
             </summary>
         </member>
         <member name="T:ScriptService.Dto.Workflows.Nodes.IteratorParameters">
@@ -1214,7 +1214,7 @@
         </member>
         <member name="T:ScriptService.Dto.Workflows.Nodes.ScriptArgument">
             <summary>
-            argument for a script
+            argument for a task
             </summary>
         </member>
         <member name="M:ScriptService.Dto.Workflows.Nodes.ScriptArgument.#ctor(System.String,ScriptService.Dto.Workflows.Nodes.ArgumentSourceType,System.Object)">
@@ -1237,7 +1237,7 @@
         </member>
         <member name="P:ScriptService.Dto.Workflows.Nodes.ScriptArgument.Value">
             <summary>
-            value for script
+            value for task
             </summary>
         </member>
         <member name="T:ScriptService.Dto.Workflows.Nodes.StartParameters">
@@ -1296,12 +1296,12 @@
         </member>
         <member name="F:ScriptService.Dto.Workflows.NodeType.Expression">
             <summary>
-            direct script code
+            direct task code
             </summary>
         </member>
         <member name="F:ScriptService.Dto.Workflows.NodeType.Script">
             <summary>
-            script call
+            task call
             </summary>
         </member>
         <member name="F:ScriptService.Dto.Workflows.NodeType.BinaryOperation">
@@ -1565,7 +1565,7 @@
             builds node arguments from a dictionary
             </summary>
             <param name="data"></param>
-            <returns>collection of prepared script arguments</returns>
+            <returns>collection of prepared task arguments</returns>
         </member>
         <member name="M:ScriptService.Extensions.DictionaryExtensions.BuildArguments(ScriptService.Dto.Workflows.Nodes.ScriptArgument[],System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
@@ -1746,7 +1746,7 @@
         </member>
         <member name="T:ScriptService.Services.DatabaseScriptService">
             <summary>
-            stores and retrieves scripts using a database
+            stores and retrieves tasks using a database
             </summary>
         </member>
         <member name="M:ScriptService.Services.DatabaseScriptService.#ctor(NightlyCode.Database.Entities.IEntityManager,ScriptService.Services.IArchiveService)">
@@ -1930,7 +1930,7 @@
         </member>
         <member name="T:ScriptService.Services.IMethodProviderService">
             <summary>
-            service which provides hosts to scripts and workflows
+            service which provides hosts to tasks and workflows
             </summary>
         </member>
         <member name="P:ScriptService.Services.IMethodProviderService.Hosts">
@@ -1947,93 +1947,93 @@
         </member>
         <member name="T:ScriptService.Services.IScriptExecutionService">
             <summary>
-            executes scripts
+            executes tasks
             </summary>
         </member>
         <member name="M:ScriptService.Services.IScriptExecutionService.Execute(System.Int64,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
             <summary>
-            executes a script by specifying its id
+            executes a task by specifying its id
             </summary>
-            <param name="id">id of script to execute</param>
-            <param name="variables">variables to pass to script</param>
-            <param name="wait">time to wait for script to finish</param>
-            <returns>script task information</returns>
+            <param name="id">id of task to execute</param>
+            <param name="variables">variables to pass to task</param>
+            <param name="wait">time to wait for task to finish</param>
+            <returns>task task information</returns>
         </member>
         <member name="M:ScriptService.Services.IScriptExecutionService.Execute(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
             <summary>
-            executes a script by specifying its name
+            executes a task by specifying its name
             </summary>
-            <param name="name">name of script to execute</param>
-            <param name="variables">variables to pass to script</param>
-            <param name="wait">time to wait for script to finish</param>
-            <returns>script task information</returns>
+            <param name="name">name of task to execute</param>
+            <param name="variables">variables to pass to task</param>
+            <param name="wait">time to wait for task to finish</param>
+            <returns>task task information</returns>
         </member>
         <member name="M:ScriptService.Services.IScriptExecutionService.Execute(ScriptService.Dto.NamedCode,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
             <summary>
-            executes script code
+            executes task code
             </summary>
             <param name="code">code with a scope to execute</param>
-            <param name="variables">variables to pass to script</param>
-            <param name="wait">time to wait for script to finish</param>
-            <returns>script task information</returns>
+            <param name="variables">variables to pass to task</param>
+            <param name="wait">time to wait for task to finish</param>
+            <returns>task task information</returns>
         </member>
         <member name="T:ScriptService.Services.IScriptService">
             <summary>
-            script data management
+            task data management
             </summary>
         </member>
         <member name="M:ScriptService.Services.IScriptService.CreateScript(ScriptService.Dto.ScriptData)">
             <summary>
-            creates a new script
+            creates a new task
             </summary>
-            <param name="script">data for script to create</param>
-            <returns>id of created script</returns>
+            <param name="task">data for task to create</param>
+            <returns>id of created task</returns>
         </member>
         <member name="M:ScriptService.Services.IScriptService.GetScript(System.Int64)">
             <summary>
-            get a script by id
+            get a task by id
             </summary>
-            <param name="scriptid">id of script to get</param>
-            <returns>script with the specified id</returns>
+            <param name="taskid">id of task to get</param>
+            <returns>task with the specified id</returns>
         </member>
         <member name="M:ScriptService.Services.IScriptService.GetScript(System.String)">
             <summary>
-            get a script by scriptname
+            get a task by taskname
             </summary>
-            <param name="scriptname">name of script</param>
-            <returns>script with the specified name</returns>
+            <param name="taskname">name of task</param>
+            <returns>task with the specified name</returns>
         </member>
         <member name="M:ScriptService.Services.IScriptService.ListScripts(NightlyCode.AspNetCore.Services.Data.ListFilter)">
             <summary>
-            lists scripts matching a criteria
+            lists tasks matching a criteria
             </summary>
-            <param name="filter">filter for scripts to match</param>
-            <returns>a page of scripts which match the filter</returns>
+            <param name="filter">filter for tasks to match</param>
+            <returns>a page of tasks which match the filter</returns>
         </member>
         <member name="M:ScriptService.Services.IScriptService.PatchScript(System.Int64,ScriptService.Dto.Patches.PatchOperation[])">
             <summary>
-            patches properties of a script
+            patches properties of a task
             </summary>
-            <param name="scriptid">id of script to patch</param>
+            <param name="taskid">id of task to patch</param>
             <param name="patches">patches to apply</param>
         </member>
         <member name="M:ScriptService.Services.IScriptService.DeleteScript(System.Int64)">
             <summary>
-            deletes an existing script
+            deletes an existing task
             </summary>
-            <param name="scriptid">id of script to delete</param>
+            <param name="taskid">id of task to delete</param>
         </member>
         <member name="T:ScriptService.Services.ITaskService">
             <summary>
-            handles script instance data
+            handles task instance data
             </summary>
         </member>
         <member name="M:ScriptService.Services.ITaskService.CreateTask(ScriptService.Dto.WorkableType,System.Int64,System.Int32,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-            creates new meta info for a script task
+            creates new meta info for a task task
             </summary>
             <param name="workablename">name of workable</param>
-            <param name="variables">variables used to start script</param>
+            <param name="variables">variables used to start task</param>
             <param name="type">type of workable task is created for</param>
             <param name="workableid">id of workable</param>
             <param name="workablerevision">revision number of workable</param>
@@ -2041,21 +2041,21 @@
         </member>
         <member name="M:ScriptService.Services.ITaskService.GetTask(System.Guid)">
             <summary>
-            get information about a script task
+            get information about a task task
             </summary>
-            <param name="id">id of script task</param>
-            <returns>script task</returns>
+            <param name="id">id of task task</param>
+            <returns>task task</returns>
         </member>
         <member name="M:ScriptService.Services.ITaskService.ListTasks(ScriptService.Dto.Tasks.TaskFilter)">
             <summary>
-            lists script tasks
+            lists task tasks
             </summary>
             <param name="filter">filter for tasks to show</param>
-            <returns>a page of script tasks which match the filter</returns>
+            <returns>a page of task tasks which match the filter</returns>
         </member>
         <member name="M:ScriptService.Services.ITaskService.FinishTask(System.Guid)">
             <summary>
-            finishes execution of a script task
+            finishes execution of a task task
             </summary>
             <param name="id">id of task which has finished</param>
         </member>
@@ -2161,7 +2161,7 @@
         </member>
         <member name="T:ScriptService.Services.MethodProviderService">
             <summary>
-            service used to provide methods to scripts and workflows
+            service used to provide methods to tasks and workflows
             </summary>
         </member>
         <member name="M:ScriptService.Services.MethodProviderService.#ctor(Microsoft.Extensions.Logging.ILogger{ScriptService.Services.MethodProviderService},System.IServiceProvider,Microsoft.Extensions.Configuration.IConfiguration)">
@@ -2169,7 +2169,7 @@
             creates a new <see cref="T:ScriptService.Services.MethodProviderService"/>
             </summary>
             <param name="logger">access to logging</param>
-            <param name="serviceprovider">used to provide script and workflow executor on first request (to prevent cyclic dependencies)</param>
+            <param name="serviceprovider">used to provide task and workflow executor on first request (to prevent cyclic dependencies)</param>
             <param name="configuration">configuration containing hosts to load</param>
         </member>
         <member name="P:ScriptService.Services.MethodProviderService.Hosts">
@@ -2185,30 +2185,30 @@
         </member>
         <member name="T:ScriptService.Services.Providers.ScriptIdMethod">
             <summary>
-            executes a script by id
+            executes a task by id
             </summary>
         </member>
         <member name="M:ScriptService.Services.Providers.ScriptIdMethod.#ctor(System.Int64,ScriptService.Services.IScriptExecutionService)">
             <summary>
             creates a new <see cref="T:ScriptService.Services.Providers.ScriptIdMethod"/>
             </summary>
-            <param name="scriptid">id of script</param>
-            <param name="executor">executor used to execute script</param>
+            <param name="taskid">id of task</param>
+            <param name="executor">executor used to execute task</param>
         </member>
         <member name="M:ScriptService.Services.Providers.ScriptIdMethod.Invoke(NightlyCode.Scripting.Parser.IVariableProvider,System.Object[])">
             <inheritdoc />
         </member>
         <member name="T:ScriptService.Services.Providers.ScriptNameMethod">
             <summary>
-            method which executes a script by name
+            method which executes a task by name
             </summary>
         </member>
         <member name="M:ScriptService.Services.Providers.ScriptNameMethod.#ctor(System.String,ScriptService.Services.IScriptExecutionService)">
             <summary>
             creates a new <see cref="T:ScriptService.Services.Providers.ScriptIdMethod"/>
             </summary>
-            <param name="scriptname">name of script</param>
-            <param name="executor">executor used to execute script</param>
+            <param name="taskname">name of task</param>
+            <param name="executor">executor used to execute task</param>
         </member>
         <member name="M:ScriptService.Services.Providers.ScriptNameMethod.Invoke(NightlyCode.Scripting.Parser.IVariableProvider,System.Object[])">
             <inheritdoc />
@@ -2222,7 +2222,7 @@
             <summary>
             creates a new <see cref="T:ScriptService.Services.Providers.ScriptIdMethod"/>
             </summary>
-            <param name="workflowid">id of script</param>
+            <param name="workflowid">id of task</param>
             <param name="executor">executor used to execute workflow</param>
         </member>
         <member name="M:ScriptService.Services.Providers.WorkflowIdMethod.Invoke(NightlyCode.Scripting.Parser.IVariableProvider,System.Object[])">
@@ -2230,7 +2230,7 @@
         </member>
         <member name="T:ScriptService.Services.Providers.WorkflowNameMethod">
             <summary>
-            method which executes a script by name
+            method which executes a task by name
             </summary>
         </member>
         <member name="M:ScriptService.Services.Providers.WorkflowNameMethod.#ctor(System.String,ScriptService.Services.IWorkflowExecutionService)">
@@ -2251,9 +2251,9 @@
             creates a new <see cref="T:ScriptService.Services.ScriptExecutionService"/>
             </summary>
             <param name="logger">access to logging</param>
-            <param name="scriptservice">service used to get script code to execute</param>
-            <param name="scriptinstances">access to script instances</param>
-            <param name="scriptcompiler">compiles code to executable scripts</param>
+            <param name="taskservice">service used to get task code to execute</param>
+            <param name="taskinstances">access to task instances</param>
+            <param name="taskcompiler">compiles code to executable tasks</param>
         </member>
         <member name="M:ScriptService.Services.ScriptExecutionService.Execute(System.Int64,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
             <inheritdoc />
@@ -2266,27 +2266,27 @@
         </member>
         <member name="T:ScriptService.Services.Scripts.IScriptCompiler">
             <summary>
-            compiles code to executable script
+            compiles code to executable task
             </summary>
         </member>
         <member name="M:ScriptService.Services.Scripts.IScriptCompiler.CompileCode(System.Int64,System.Int32,System.String)">
             <summary>
-            compiles a code to an executable script based on an id and revision
+            compiles a code to an executable task based on an id and revision
             </summary>
             <remarks>
             this method is meant to implement caching
             </remarks>
-            <param name="id">id of script</param>
-            <param name="revision">script revision</param>
+            <param name="id">id of task</param>
+            <param name="revision">task revision</param>
             <param name="code">code to compile</param>
-            <returns>compiled script</returns>
+            <returns>compiled task</returns>
         </member>
         <member name="M:ScriptService.Services.Scripts.IScriptCompiler.CompileCode(System.String)">
             <summary>
-            compiles a code to an executable script based on an id and revision
+            compiles a code to an executable task based on an id and revision
             </summary>
             <param name="code">code to compile</param>
-            <returns>compiled script</returns>
+            <returns>compiled task</returns>
         </member>
         <member name="T:ScriptService.Services.Scripts.ScriptCompiler">
             <inheritdoc />
@@ -2296,9 +2296,9 @@
             creates a new <see cref="T:ScriptService.Services.Scripts.ScriptCompiler"/>
             </summary>
             <param name="logger">access to logging</param>
-            <param name="parser">parser used to parse scripts</param>
+            <param name="parser">parser used to parse tasks</param>
             <param name="cache">access to object cache</param>
-            <param name="methodprovider">provides managed method hosts to scripts</param>
+            <param name="methodprovider">provides managed method hosts to tasks</param>
         </member>
         <member name="M:ScriptService.Services.Scripts.ScriptCompiler.CompileCode(System.Int64,System.Int32,System.String)">
             <inheritdoc />
@@ -2308,12 +2308,12 @@
         </member>
         <member name="T:ScriptService.Services.Sense.IScriptSenseService">
             <summary>
-            provides information about script environment
+            provides information about task environment
             </summary>
         </member>
         <member name="M:ScriptService.Services.Sense.IScriptSenseService.GetTypeInfo(System.String)">
             <summary>
-            get info about a script type
+            get info about a task type
             </summary>
             <returns>type info</returns>
         </member>
@@ -2321,7 +2321,7 @@
             <summary>
             get installed type providers
             </summary>
-            <returns>type providers available to scripts</returns>
+            <returns>type providers available to tasks</returns>
         </member>
         <member name="M:ScriptService.Services.Sense.IScriptSenseService.GetHostProviders">
             <summary>
@@ -2337,7 +2337,7 @@
             creates a new <see cref="T:ScriptService.Services.Sense.ScriptSenseService"/>
             </summary>
             <param name="logger">access to logging</param>
-            <param name="parser">parser used to get script environment information</param>
+            <param name="parser">parser used to get task environment information</param>
             <param name="methodprovider">provider for installed host types</param>
         </member>
         <member name="M:ScriptService.Services.Sense.ScriptSenseService.GetTypeInfo(System.String)">
@@ -2359,7 +2359,7 @@
             creates a new <see cref="T:ScriptService.Services.WorkableLogger"/>
             </summary>
             <param name="logger">logger to send logs to</param>
-            <param name="instance">script instance to add logs to</param>
+            <param name="instance">task instance to add logs to</param>
         </member>
         <member name="M:ScriptService.Services.WorkableLogger.Log(ScriptService.Dto.LogLevel,System.String,System.String)">
             <summary>
@@ -2407,9 +2407,9 @@
             <param name="logger">access to logging</param>
             <param name="workflowservice">access to workflow data</param>
             <param name="taskservice">access to task information</param>
-            <param name="compiler">access to script compiling</param>
+            <param name="compiler">access to task compiling</param>
             <param name="cache">access to object cache</param>
-            <param name="scriptservice">access to script data</param>
+            <param name="taskservice">access to task data</param>
             <param name="importprovider">access to host imports</param>
         </member>
         <member name="M:ScriptService.Services.WorkflowExecutionService.Execute(System.Int64,System.Collections.Generic.IDictionary{System.String,System.Object},System.Nullable{System.TimeSpan})">
@@ -2485,7 +2485,7 @@
             </summary>
             <param name="nodeName">name of node</param>
             <param name="parameters">parameters for method call</param>
-            <param name="compiler">parser for script code</param>
+            <param name="compiler">parser for task code</param>
         </member>
         <member name="P:ScriptService.Services.Workflows.CallNode.Parameters">
             <summary>
@@ -2507,21 +2507,21 @@
         </member>
         <member name="T:ScriptService.Services.Workflows.CompiledExpressionNode">
             <summary>
-            node which compiles a script expression and executes it
+            node which compiles a task expression and executes it
             </summary>
         </member>
         <member name="M:ScriptService.Services.Workflows.CompiledExpressionNode.GenerateCode">
             <summary>
             generates code for node to execute
             </summary>
-            <returns>script code to parse and execute</returns>
+            <returns>task code to parse and execute</returns>
         </member>
         <member name="M:ScriptService.Services.Workflows.CompiledExpressionNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:ScriptService.Services.Workflows.ExpressionNode">
             <summary>
-            node which executes a script
+            node which executes a task
             </summary>
         </member>
         <member name="M:ScriptService.Services.Workflows.ExpressionNode.#ctor(System.String,NightlyCode.Scripting.IScript)">
@@ -2529,7 +2529,7 @@
             creates a new <see cref="T:ScriptService.Services.Workflows.ScriptNode"/>
             </summary>
             <param name="name">name of node</param>
-            <param name="script">script to execute</param>
+            <param name="task">task to execute</param>
         </member>
         <member name="M:ScriptService.Services.Workflows.ExpressionNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
             <inheritdoc />
@@ -2641,7 +2641,7 @@
             creates a new <see cref="T:ScriptService.Services.Workflows.LogNode"/>
             </summary>
             <param name="nodeName">name of node</param>
-            <param name="compiler">compiler for script code</param>
+            <param name="compiler">compiler for task code</param>
             <param name="parameters">parameters for log action</param>
         </member>
         <member name="P:ScriptService.Services.Workflows.LogNode.Parameters">
@@ -2654,7 +2654,7 @@
         </member>
         <member name="T:ScriptService.Services.Workflows.ScriptNode">
             <summary>
-            node which executes a script
+            node which executes a task
             </summary>
         </member>
         <member name="M:ScriptService.Services.Workflows.ScriptNode.#ctor(System.String,NightlyCode.Scripting.IScript,System.Collections.Generic.IEnumerable{ScriptService.Dto.Workflows.Nodes.ScriptArgument})">
@@ -2662,8 +2662,8 @@
             creates a new <see cref="T:ScriptService.Services.Workflows.ScriptNode"/>
             </summary>
             <param name="name">name of node</param>
-            <param name="script">script to execute</param>
-            <param name="parameters">parameters for script</param>
+            <param name="task">task to execute</param>
+            <param name="parameters">parameters for task</param>
         </member>
         <member name="M:ScriptService.Services.Workflows.ScriptNode.Execute(ScriptService.Services.WorkableLogger,NightlyCode.Scripting.Parser.IVariableProvider,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
             <inheritdoc />
@@ -2768,7 +2768,7 @@
         </member>
         <member name="P:ScriptService.Services.Workflows.SuspendState.Variables">
             <summary>
-            script variables
+            task variables
             </summary>
         </member>
         <member name="P:ScriptService.Services.Workflows.SuspendState.State">

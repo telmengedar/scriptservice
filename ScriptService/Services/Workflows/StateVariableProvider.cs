@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NightlyCode.Scripting.Data;
 using NightlyCode.Scripting.Errors;
 using NightlyCode.Scripting.Parser;
 
@@ -10,6 +11,17 @@ namespace ScriptService.Services.Workflows {
     /// </summary>
     public class StateVariableProvider : IVariableProvider {
         readonly IVariableProvider parentprovider;
+
+        /// <summary>
+        /// creates a new <see cref="VariableProvider"/>
+        /// </summary>
+        /// <param name="variables">variables to provide</param>
+        /// <param name="additional">additional variables to add to variable pool</param>
+        public StateVariableProvider(IDictionary<string, object> variables, params Variable[] additional) {
+            Values = variables ?? new Dictionary<string, object>();
+            foreach (Variable variable in additional)
+                Values[variable.Name] = variable.Value;
+        }
 
         /// <summary>
         /// creates a new <see cref="VariableProvider"/>

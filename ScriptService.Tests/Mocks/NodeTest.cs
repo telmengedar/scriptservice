@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using NightlyCode.Scripting.Parser;
 using ScriptService.Dto.Tasks;
 using ScriptService.Services;
-using ScriptService.Services.Workflows;
+using ScriptService.Services.Workflows.Nodes;
 
 namespace ScriptService.Tests.Mocks {
     public class NodeTest {

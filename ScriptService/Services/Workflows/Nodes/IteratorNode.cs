@@ -9,7 +9,7 @@ using ScriptService.Errors;
 using ScriptService.Services.Scripts;
 using ScriptService.Services.Workflows.Commands;
 
-namespace ScriptService.Services.Workflows {
+namespace ScriptService.Services.Workflows.Nodes {
 
     /// <summary>
     /// node iterating over a collection

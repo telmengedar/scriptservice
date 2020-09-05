@@ -19,6 +19,11 @@ namespace ScriptService.Dto {
         public string Name { get; set; }
 
         /// <summary>
+        /// revision of script to execute
+        /// </summary>
+        public int? Revision { get; set; }
+
+        /// <summary>
         /// code to execute
         /// </summary>
         public NamedCode Code { get; set; }

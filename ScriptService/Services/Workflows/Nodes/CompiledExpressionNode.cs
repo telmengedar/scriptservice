@@ -6,7 +6,7 @@ using NightlyCode.Scripting;
 using NightlyCode.Scripting.Parser;
 using ScriptService.Services.Scripts;
 
-namespace ScriptService.Services.Workflows {
+namespace ScriptService.Services.Workflows.Nodes {
 
     /// <summary>
     /// node which compiles a script expression and executes it

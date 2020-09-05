@@ -78,7 +78,7 @@ namespace ScriptService.Services {
             Script script = await GetScript(scriptid);
 
             using Transaction transaction = database.Transaction();
-            await archiveservice.ArchiveObject(transaction, nameof(Script), script.Id, script.Revision, script);
+            await archiveservice.ArchiveObject(transaction, script.Id, script.Revision, script);
             await database.Update<Script>().Set(s => s.Revision == s.Revision + 1).Where(s => s.Id == scriptid).Patch(patches).ExecuteAsync(transaction);
             transaction.Commit();
         }
@@ -88,7 +88,7 @@ namespace ScriptService.Services {
             Script script = await GetScript(scriptid);
 
             using Transaction transaction = database.Transaction();
-            await archiveservice.ArchiveObject(transaction, nameof(Script), script.Id, script.Revision, script);
+            await archiveservice.ArchiveObject(transaction, script.Id, script.Revision, script);
             await deletescript.ExecuteAsync(transaction, scriptid);
             transaction.Commit();
         }

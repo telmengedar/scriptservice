@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using NightlyCode.AspNetCore.Services.Errors.Exceptions;
 using NightlyCode.Scripting.Data;
 using ScriptService.Services.Providers;
+using ScriptService.Services.Scripts;
+using ScriptService.Services.Workflows;
 
 namespace ScriptService.Services {
 
@@ -14,10 +16,11 @@ namespace ScriptService.Services {
     /// service used to provide methods to scripts and workflows
     /// </summary>
     public class MethodProviderService : IMethodProviderService {
-        readonly ILogger<MethodProviderService> logger;
         readonly IServiceProvider serviceprovider;
-        IScriptExecutionService scriptexecutor;
         IWorkflowExecutionService workflowexecutor;
+        IWorkflowService workflowservice;
+        IScriptCompiler compiler;
+        IWorkflowCompiler workflowcompiler;
         readonly Dictionary<string, object> hosts=new Dictionary<string, object>();
 
         /// <summary>
@@ -27,13 +30,12 @@ namespace ScriptService.Services {
         /// <param name="serviceprovider">used to provide script and workflow executor on first request (to prevent cyclic dependencies)</param>
         /// <param name="configuration">configuration containing hosts to load</param>
         public MethodProviderService(ILogger<MethodProviderService> logger, IServiceProvider serviceprovider, IConfiguration configuration) {
-            this.logger = logger;
             this.serviceprovider = serviceprovider;
             IConfigurationSection servicesection = configuration.GetSection("Services");
             if (servicesection != null) {
                 logger.LogInformation("Loading service hosts from configuration");
                 foreach (IConfigurationSection service in servicesection.GetChildren()) {
-                    this.logger.LogInformation($"Loading service '{service.Key}'");
+                    logger.LogInformation($"Loading service '{service.Key}'");
                     Type hosttype = Type.GetType(service["Service"] ?? service["Implementation"]);
 
                     if (hosttype == null) {
@@ -80,10 +82,16 @@ namespace ScriptService.Services {
             }
         }
 
-        IScriptExecutionService ScriptExecutor {
+        IScriptCompiler Compiler {
             get {
-                scriptexecutor ??= serviceprovider.GetService<IScriptExecutionService>();
-                return scriptexecutor;
+                compiler ??= serviceprovider.GetService<IScriptCompiler>();
+                return compiler;
+            }
+        }
+
+        IWorkflowCompiler WorkflowCompiler {
+            get {
+                return workflowcompiler ??= serviceprovider.GetService<IWorkflowCompiler>();
             }
         }
 
@@ -94,15 +102,25 @@ namespace ScriptService.Services {
             }
         }
 
+        IWorkflowService WorkflowService {
+            get {
+                return workflowservice ??= serviceprovider.GetService<IWorkflowService>();
+            }
+        }
+
         IExternalMethod ProvideWorkflow(object[] parameters) {
             if(parameters.Length < 2)
                 throw new ArgumentException("Name or id of workflow to import is required");
 
-            if(parameters[0] is long workflowid)
-                return new WorkflowIdMethod(workflowid, WorkflowExecutor);
+            int? revision = null;
+            if (parameters.Length > 2 && parameters[2] is int revisionargument)
+                revision = revisionargument;
+
+            if(parameters[1] is long workflowid)
+                return new WorkflowIdMethod(workflowid, revision, WorkflowService, WorkflowExecutor, WorkflowCompiler);
 
             if(parameters[1] is string workflowname)
-                return new WorkflowNameMethod(workflowname, WorkflowExecutor);
+                return new WorkflowNameMethod(workflowname, revision, WorkflowService, WorkflowExecutor, WorkflowCompiler);
 
             throw new ArgumentException($"Invalid workflow id/name '{parameters[1]}'");
 
@@ -113,10 +131,10 @@ namespace ScriptService.Services {
                 throw new ArgumentException("Name or id of script to import is required");
 
             if (parameters[0] is long scriptid)
-                return new ScriptIdMethod(scriptid, ScriptExecutor);
+                return new ScriptIdMethod(scriptid, Compiler);
 
             if (parameters[1] is string scriptname)
-                return new ScriptNameMethod(scriptname, ScriptExecutor);
+                return new ScriptNameMethod(scriptname, Compiler);
 
             throw new ArgumentException($"Invalid script id/name '{parameters[1]}'");
         }

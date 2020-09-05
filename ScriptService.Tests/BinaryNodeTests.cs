@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using NUnit.Framework;
 using ScriptService.Dto.Workflows.Nodes;
-using ScriptService.Services.Workflows;
+using ScriptService.Services.Workflows.Nodes;
 using ScriptService.Tests.Mocks;
 
 namespace ScriptService.Tests {

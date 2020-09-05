@@ -1,12 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using NightlyCode.Scripting;
-using NightlyCode.Scripting.Parser;
-using ScriptService.Dto.Workflows.Nodes;
+﻿using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Services.Scripts;
 
-namespace ScriptService.Services.Workflows {
+namespace ScriptService.Services.Workflows.Nodes {
 
     /// <summary>
     /// node used to call a method on a host variable

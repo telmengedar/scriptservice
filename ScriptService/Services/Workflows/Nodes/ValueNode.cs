@@ -1,6 +1,6 @@
 ﻿using ScriptService.Services.Scripts;
 
-namespace ScriptService.Services.Workflows {
+namespace ScriptService.Services.Workflows.Nodes {
 
     /// <summary>
     /// node providing a value to the workflow

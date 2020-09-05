@@ -1,62 +1,35 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using NightlyCode.Scripting.Data;
-using NightlyCode.Scripting.Parser;
-using ScriptService.Dto;
-using ScriptService.Dto.Tasks;
-using ScriptService.Errors;
+﻿using System.Threading.Tasks;
+using ScriptService.Dto.Workflows;
+using ScriptService.Services.Workflows;
 
 namespace ScriptService.Services.Providers {
 
     /// <summary>
     /// method which executes a script by name
     /// </summary>
-    public class WorkflowNameMethod : IExternalMethod {
+    public class WorkflowNameMethod : WorkflowMethod {
         readonly string workflowname;
-        readonly IWorkflowExecutionService executor;
+        readonly int? revision;
+        readonly IWorkflowService workflowservice;
 
         /// <summary>
         /// creates a new <see cref="ScriptIdMethod"/>
         /// </summary>
         /// <param name="workflowname">name of workflow</param>
+        /// <param name="revision">revision of workflow to execute</param>
+        /// <param name="workflowservice">access to workflow data</param>
         /// <param name="executor">executor used to execute workflow</param>
-        public WorkflowNameMethod(string workflowname, IWorkflowExecutionService executor) {
+        /// <param name="compiler">compiles workflow data for execution</param>
+        public WorkflowNameMethod(string workflowname, int? revision, IWorkflowService workflowservice, IWorkflowExecutionService executor, IWorkflowCompiler compiler) 
+        : base(executor, compiler) {
             this.workflowname = workflowname;
-            this.executor = executor;
+            this.revision = revision;
+            this.workflowservice = workflowservice;
         }
 
         /// <inheritdoc />
-        public object Invoke(IVariableProvider variables, params object[] arguments) {
-            WorkableTask task;
-            if (arguments.Length == 0) {
-                task=executor.Execute(workflowname).GetAwaiter().GetResult();
-                task.Task.GetAwaiter().GetResult();
-                return task.Result;
-            }
-
-            if (!(arguments.FirstOrDefault() is IDictionary scriptarguments))
-                throw new InvalidOperationException($"Parameters for a workflow call need to be a dictionary ('{arguments.FirstOrDefault()?.GetType()}')");
-
-            if (!(scriptarguments is IDictionary<string, object> parameters)) {
-                parameters=new Dictionary<string, object>();
-                foreach (object key in scriptarguments.Keys) {
-                    parameters[key.ToString() ?? string.Empty] = scriptarguments[key];
-                }
-            }
-
-            task = executor.Execute(workflowname, parameters).GetAwaiter().GetResult();
-            task.Task.GetAwaiter().GetResult();
-
-            if (task.Status == TaskStatus.Failure) {
-                Exception error= task.Task.Exception?.InnerException ?? task.Task.Exception;
-                if (error != null)
-                    throw error;
-                throw new WorkflowException($"Error executing workflow '{workflowname}'");
-            }
-
-            return task.Result;
+        protected override Task<WorkflowDetails> LoadWorkflow() {
+            return workflowservice.GetWorkflow(workflowname, revision);
         }
     }
 }

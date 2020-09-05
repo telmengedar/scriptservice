@@ -6,7 +6,7 @@ using NightlyCode.Scripting.Parser;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Services.Scripts;
 
-namespace ScriptService.Services.Workflows {
+namespace ScriptService.Services.Workflows.Nodes {
 
     /// <summary>
     /// node used to log text

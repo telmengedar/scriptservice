@@ -19,19 +19,32 @@ using NightlyCode.Database.Clients;
 using NightlyCode.Database.Entities;
 using NightlyCode.Database.Info;
 using NightlyCode.Scripting.Parser;
-using NightlyCode.Scripting.Providers;
 using Npgsql;
 using ScriptService.Services;
 using ScriptService.Services.Cache;
 using ScriptService.Services.Scripts;
 using ScriptService.Services.Sense;
+using ScriptService.Services.Tasks;
+using ScriptService.Services.Workflows;
 
 namespace ScriptService {
+
+    /// <summary>
+    /// startup for asp service initialization
+    /// </summary>
     public class Startup {
+
+        /// <summary>
+        /// creates a new <see cref="Startup"/>
+        /// </summary>
+        /// <param name="configuration">service configuration</param>
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// access to configuration
+        /// </summary>
         public IConfiguration Configuration { get; }
 
         IEntityManager ConnectDatabase() {
@@ -45,7 +58,10 @@ namespace ScriptService {
             }
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// configures services used by the script service
+        /// </summary>
+        /// <param name="services">access to service collection</param>
         public void ConfigureServices(IServiceCollection services) {
             
             services.AddControllers();
@@ -60,6 +76,9 @@ namespace ScriptService {
             services.AddSingleton<ITaskService, DatabaseTaskService>();
             services.AddSingleton<IMethodProviderService, MethodProviderService>();
             services.AddSingleton<IScriptSenseService, ScriptSenseService>();
+            services.AddSingleton<IScheduledTaskService, DatabaseScheduledTaskService>();
+            services.AddSingleton<IWorkflowCompiler, WorkflowCompiler>();
+            services.AddHostedService<TaskScheduler>();
             services.AddSingleton(s => ConnectDatabase());
             services.AddErrorHandlers();
             services.AddSingleton<IConfigureOptions<MvcOptions>, MvcConfiguration>();
@@ -106,15 +125,19 @@ namespace ScriptService {
                         logger.LogWarning($"Unable to setup service '{service.Key}' using '{servicename}'->'{implementationname}'");
                         continue;
                     }
-                    else
-                        logger.LogInformation($"Adding service '{service.Key}' using '{servicename}'->'{implementationname}'");
+
+                    logger.LogInformation($"Adding service '{service.Key}' using '{servicename}'->'{implementationname}'");
 
                     services.AddSingleton(servicetype, implementationtype);
                 }
             }
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// configures middleware of this service
+        /// </summary>
+        /// <param name="app">app to which to add middleware</param>
+        /// <param name="env">runtime environment</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
             if(env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();

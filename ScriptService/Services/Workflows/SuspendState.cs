@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using NightlyCode.Scripting.Parser;
+using ScriptService.Services.Workflows.Nodes;
 
 namespace ScriptService.Services.Workflows {
 

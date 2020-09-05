@@ -20,6 +20,11 @@ namespace ScriptService.Dto {
         public string Name { get; set; }
 
         /// <summary>
+        /// workflow revision to execute
+        /// </summary>
+        public int? Revision { get; set; }
+
+        /// <summary>
         /// complete workflow data for execution
         /// </summary>
         /// <remarks>

@@ -1,30 +1,30 @@
-﻿using ScriptService.Services.Workflows.Nodes;
+﻿using NightlyCode.Scripting;
 
-namespace ScriptService.Services.Workflows {
+namespace ScriptService.Dto.Scripts {
 
     /// <summary>
-    /// instances workflow
+    /// compiled script with meta data
     /// </summary>
-    public class WorkflowInstance {
+    public class CompiledScript {
 
         /// <summary>
-        /// workflow id
+        /// id of script
         /// </summary>
         public long Id { get; set; }
 
         /// <summary>
-        /// workflow revision
+        /// script revision
         /// </summary>
         public int Revision { get; set; }
 
         /// <summary>
-        /// name of workflow
+        /// name of script
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// node where workflow execution starts
+        /// compiled script instance
         /// </summary>
-        public StartNode StartNode { get; set; }
+        public IScript Instance { get; set; }
     }
 }

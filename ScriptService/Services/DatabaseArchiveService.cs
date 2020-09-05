@@ -10,7 +10,7 @@ using NightlyCode.Database.Entities.Operations.Prepared;
 using NightlyCode.Database.Fields;
 using ScriptService.Dto;
 using ScriptService.Extensions;
-using Utf8Json;
+using JsonSerializer = Utf8Json.JsonSerializer;
 
 namespace ScriptService.Services {
     /// <inheritdoc />
@@ -32,22 +32,25 @@ namespace ScriptService.Services {
         }
 
         /// <inheritdoc />
-        public async Task ArchiveObject<T>(Transaction transaction, string type, long id, int revision, T objectdata) {
+        public async Task ArchiveObject<T>(Transaction transaction, long id, int revision, T objectdata, string typename=null) {
+            typename ??= typeof(T).Name;
             byte[] serialized = JsonSerializer.Serialize(objectdata);
             await using MemoryStream output = new MemoryStream();
             await using (GZipStream gzip = new GZipStream(output, CompressionLevel.Optimal)) {
                 gzip.Write(serialized);
             }
 
-            await insert.ExecuteAsync(transaction, type, id, revision, output.ToArray());
+            await insert.ExecuteAsync(transaction, typename, id, revision, output.ToArray());
         }
 
         /// <inheritdoc />
-        public async Task<T> GetArchivedObject<T>(string type, long id, int revision) {
-            ArchivedObject data = (await load.ExecuteAsync(type, id, revision)).FirstOrDefault();
+        public async Task<T> GetArchivedObject<T>(long id, int revision, string typename=null) {
+            typename ??= typeof(T).Name;
+            
+            ArchivedObject data = (await load.ExecuteAsync(typename, id, revision)).FirstOrDefault();
 
             if (data == null)
-                throw new NotFoundException(typeof(ArchivedObject), $"{type}/{id}.{revision}");
+                throw new NotFoundException(typeof(ArchivedObject), $"{typeof(T).Name}/{id}.{revision}");
 
             await using MemoryStream source = new MemoryStream(data.Data);
             await using GZipStream gzip = new GZipStream(source, CompressionMode.Decompress);
@@ -55,6 +58,7 @@ namespace ScriptService.Services {
             return JsonSerializer.Deserialize<T>(gzip);
         }
 
+        /// <inheritdoc />
         public async Task<Page<int>> ListRevisions(string type, long id, ListFilter filter = null) {
             filter??=new ListFilter();
             return Page<int>.Create(

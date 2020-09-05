@@ -7,6 +7,10 @@ using ScriptService.Dto.Tasks;
 using ScriptService.Services;
 
 namespace ScriptService.Controllers {
+
+    /// <summary>
+    /// provides endpoints for running tasks
+    /// </summary>
     [Route("api/v1/tasks")]
     [ApiController]
     public class TaskController : ControllerBase {

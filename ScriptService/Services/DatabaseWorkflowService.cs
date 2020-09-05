@@ -165,10 +165,13 @@ namespace ScriptService.Services {
         }
 
         /// <inheritdoc />
-        public async Task<WorkflowDetails> GetWorkflow(long workflowid) {
+        public async Task<WorkflowDetails> GetWorkflow(long workflowid, int? revision=null) {
             Workflow workflow = (await loadworkflowbyid.ExecuteAsync(workflowid)).FirstOrDefault();
             if (workflow == null)
                 throw new NotFoundException(typeof(Workflow), workflowid);
+
+            if (revision.HasValue && workflow.Revision != revision.Value)
+                return await archiveservice.GetArchivedObject<WorkflowDetails>(workflowid, revision.Value, ArchiveTypes.Workflow);
 
             return await FillWorkflow(new WorkflowDetails {
                 Id = workflow.Id,
@@ -178,10 +181,13 @@ namespace ScriptService.Services {
         }
 
         /// <inheritdoc />
-        public async Task<WorkflowDetails> GetWorkflow(string name) {
+        public async Task<WorkflowDetails> GetWorkflow(string name, int? revision=null) {
             Workflow workflow = await LoadWorkflowByName(name);
             if(workflow == null)
                 throw new NotFoundException(typeof(Workflow), name);
+
+            if(revision.HasValue && workflow.Revision != revision.Value)
+                return await archiveservice.GetArchivedObject<WorkflowDetails>(workflow.Id, revision.Value, ArchiveTypes.Workflow);
 
             return await FillWorkflow(new WorkflowDetails {
                 Id = workflow.Id,
@@ -269,7 +275,7 @@ namespace ScriptService.Services {
 
         async Task ArchiveWorkflow(Transaction transaction, long workflowid) {
             WorkflowDetails old = await GetWorkflow(workflowid);
-            await archiveservice.ArchiveObject(transaction, "Workflow", workflowid, old.Revision, old);
+            await archiveservice.ArchiveObject(transaction, workflowid, old.Revision, old, ArchiveTypes.Workflow);
         }
 
         /// <inheritdoc />

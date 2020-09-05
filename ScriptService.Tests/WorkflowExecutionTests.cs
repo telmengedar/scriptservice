@@ -10,6 +10,7 @@ using ScriptService.Dto.Workflows;
 using ScriptService.Services;
 using ScriptService.Services.Cache;
 using ScriptService.Services.Scripts;
+using ScriptService.Services.Workflows;
 using TaskStatus = ScriptService.Dto.TaskStatus;
 
 namespace ScriptService.Tests {
@@ -21,9 +22,11 @@ namespace ScriptService.Tests {
         public async Task SuspendAndContinue() {
             IEntityManager database = TestSetup.CreateMemoryDatabase();
             CacheService cache = new CacheService(new NullLogger<CacheService>());
-            WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new Mock<IWorkflowService>().Object, new DatabaseTaskService(database), new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null), cache, new Mock<IScriptService>().Object, null);
+            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object);
+            WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new DatabaseTaskService(database), null);
+            WorkflowCompiler workflowcompiler = new WorkflowCompiler(new NullLogger<WorkflowCompiler>(), cache, null, compiler, executionservice);
 
-            WorkableTask task = await executionservice.Execute(new WorkflowStructure {
+            WorkableTask task = await executionservice.Execute(await workflowcompiler.BuildWorkflow(new WorkflowStructure {
                 Name = "Test",
                 Nodes = new [] {
                     new NodeData {
@@ -63,7 +66,7 @@ namespace ScriptService.Tests {
                         TargetIndex = 3,
                     }
                 }
-            });
+            }));
 
             await task.Task;
 
@@ -81,9 +84,11 @@ namespace ScriptService.Tests {
         public async Task SuspendAndContinueWithParameters() {
             IEntityManager database = TestSetup.CreateMemoryDatabase();
             CacheService cache = new CacheService(new NullLogger<CacheService>());
-            WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new Mock<IWorkflowService>().Object, new DatabaseTaskService(database), new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null), cache, new Mock<IScriptService>().Object, null);
+            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object);
+            WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new DatabaseTaskService(database), null);
+            WorkflowCompiler workflowcompiler = new WorkflowCompiler(new NullLogger<WorkflowCompiler>(), cache, null, compiler, executionservice);
 
-            WorkableTask task = await executionservice.Execute(new WorkflowStructure {
+            WorkableTask task = await executionservice.Execute(await workflowcompiler.BuildWorkflow(new WorkflowStructure {
                 Name = "Test",
                 Nodes = new[] {
                     new NodeData {
@@ -123,7 +128,7 @@ namespace ScriptService.Tests {
                         TargetIndex = 3,
                     }
                 }
-            });
+            }));
 
             await task.Task;
 

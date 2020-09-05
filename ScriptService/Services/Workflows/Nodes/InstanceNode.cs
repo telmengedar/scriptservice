@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NightlyCode.Scripting.Parser;
 
-namespace ScriptService.Services.Workflows {
+namespace ScriptService.Services.Workflows.Nodes {
 
     /// <summary>
     /// node instance in a workflow

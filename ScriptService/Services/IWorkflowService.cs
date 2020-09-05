@@ -28,15 +28,17 @@ namespace ScriptService.Services {
         /// get a workflow from backend
         /// </summary>
         /// <param name="workflowid">workflowid of workflow to get</param>
+        /// <param name="revision">revision of workflow to get</param>
         /// <returns>full workflow information</returns>
-        Task<WorkflowDetails> GetWorkflow(long workflowid);
+        Task<WorkflowDetails> GetWorkflow(long workflowid, int? revision=null);
 
         /// <summary>
         /// get a workflow from backend
         /// </summary>
         /// <param name="name">name of workflow to get</param>
+        /// <param name="revision">revision of workflow to get</param>
         /// <returns>full workflow information</returns>
-        Task<WorkflowDetails> GetWorkflow(string name);
+        Task<WorkflowDetails> GetWorkflow(string name, int? revision = null);
 
         /// <summary>
         /// lists workflows using a filter

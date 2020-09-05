@@ -39,11 +39,11 @@ namespace ScriptService.Controllers {
             if (parameters.Id.HasValue) {
                 if (!string.IsNullOrEmpty(parameters.Name))
                     throw new ArgumentException("Either id or name has to be set, not both");
-                return await executionservice.Execute(parameters.Id.Value, parameters.Parameters, parameters.Wait);
+                return await executionservice.Execute(parameters.Id.Value, parameters.Revision, parameters.Parameters, parameters.Wait);
             }
 
             if (!string.IsNullOrEmpty(parameters.Name))
-                return await executionservice.Execute(parameters.Name, parameters.Parameters, parameters.Wait);
+                return await executionservice.Execute(parameters.Name, parameters.Revision, parameters.Parameters, parameters.Wait);
 
             if (parameters.Code != null)
                 return await executionservice.Execute(parameters.Code, parameters.Parameters, parameters.Wait);

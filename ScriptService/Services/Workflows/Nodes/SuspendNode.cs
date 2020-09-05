@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using NightlyCode.Scripting.Parser;
 using ScriptService.Dto.Workflows.Nodes;
 
-namespace ScriptService.Services.Workflows {
+namespace ScriptService.Services.Workflows.Nodes {
 
     /// <summary>
     /// node which suspends execution of workflow

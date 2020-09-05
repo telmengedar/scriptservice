@@ -1,14 +1,20 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using NightlyCode.Scripting;
 using NightlyCode.Scripting.Parser;
+using ScriptService.Dto.Scripts;
 using ScriptService.Services.Scripts;
 
 namespace ScriptService.Tests.Mocks {
     public class TestCompiler : IScriptCompiler {
         readonly IScriptParser parser = new ScriptParser();
 
-        public Task<IScript> CompileCode(long id, int revision, string code) {
-            return CompileCode(code);
+        public Task<CompiledScript> CompileScript(long id, int? revision=null) {
+            throw new NotImplementedException();
+        }
+
+        public Task<CompiledScript> CompileScript(string name, int? revision=null) {
+            throw new NotImplementedException();
         }
 
         public Task<IScript> CompileCode(string code) {

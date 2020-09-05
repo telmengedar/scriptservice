@@ -2,7 +2,7 @@
 using ScriptService.Extensions;
 using ScriptService.Services.Scripts;
 
-namespace ScriptService.Services.Workflows {
+namespace ScriptService.Services.Workflows.Nodes {
 
     /// <summary>
     /// node executing a binary operation

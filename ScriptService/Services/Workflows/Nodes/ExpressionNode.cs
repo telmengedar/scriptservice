@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using NightlyCode.Scripting;
 using NightlyCode.Scripting.Parser;
 
-namespace ScriptService.Services.Workflows {
+namespace ScriptService.Services.Workflows.Nodes {
 
     /// <summary>
     /// node which executes a script
