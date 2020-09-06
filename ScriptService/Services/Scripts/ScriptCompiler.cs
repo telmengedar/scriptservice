@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NightlyCode.Scripting;
 using NightlyCode.Scripting.Parser;
 using ScriptService.Dto;
 using ScriptService.Dto.Scripts;
 using ScriptService.Services.Cache;
+using ScriptService.Services.Scripts.Extensions;
 
 namespace ScriptService.Services.Scripts {
 
@@ -31,6 +33,8 @@ namespace ScriptService.Services.Scripts {
             this.scriptservice = scriptservice;
             this.archive = archive;
             this.logger = logger;
+            parser.Extensions.AddExtensions(typeof(Math));
+            parser.Extensions.AddExtensions<ScriptEnumerations>();
             parser.ImportProvider = methodprovider;
         }
 
