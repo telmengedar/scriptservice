@@ -1,3 +1,5 @@
+import { TransitionType } from './transitionType';
+
 /**
  * transition from one {@link WorkflowNode} to another
  */
@@ -21,5 +23,5 @@ export interface Transition {
     /**
      * determines whether transition is used for error handling
      */
-    error: boolean
+    type: TransitionType
 }

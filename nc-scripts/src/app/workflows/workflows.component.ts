@@ -44,7 +44,7 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
     });
   }
 
-    /**
+  /**
    * deletes a workflow
    * @param workflowId id of workflow to delete
    */

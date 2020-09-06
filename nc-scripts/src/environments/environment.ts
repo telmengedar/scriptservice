@@ -3,8 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  requiresLogin: true,
   production: false,
-  apiUrl: 'http://localhost:5000/api'
+  apiUrl: 'https://dev.mamgo.io/api'
 };
 
 /*

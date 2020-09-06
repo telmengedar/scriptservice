@@ -1,0 +1,70 @@
+<app-navigation-path [path]="navigationPath"></app-navigation-path>
+<div class="content-page">
+  <div class="side-panel">
+    <div class="container">
+      <div class="row header">
+        <div class="col-12">Task</div>
+      </div>
+      <div class="row">
+        <div class="col-2">Id</div>
+        <div class="col-10">{{task.id}}</div>
+      </div>
+      <div class="row">
+        <div class="col-2">Target</div>
+        <div class="col-10">{{task.target}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="content-panel">
+    <div class="container">
+      <div class="row header">
+        <div class="col-12">Task</div>
+      </div>  
+      <div class="row">
+        <div class="col-2">Task Name</div>
+        <div class="col-10"><input [(ngModel)]="task.name" (ngModelChange)="changed=true"></div>
+      </div>
+      <div class="row">
+        <div class="col-2">Type</div>
+        <div class="col-10">
+          <ngx-select [(ngModel)]="task.workableType" [items]="workableTypes" (change)="changed=true" optionValueField="type" optionTextField="name">
+            <ng-template ngx-select-option let-option>
+              <span>{{option.data.name}}</span><br>
+              <small>{{option.data.description}}</small>
+            </ng-template>
+          </ngx-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2">Workable Name</div>
+        <div class="col-10"><input [(ngModel)]="task.workableName" (ngModelChange)="changed=true"></div>
+      </div>
+      <div class="row">
+        <div class="col-2">Workable Revision</div>
+        <div class="col-10"><input [(ngModel)]="task.workableRevision" (ngModelChange)="changed=true"></div>
+      </div>
+      <div class="row">
+        <div class="col-2">Interval</div>
+        <div class="col-10"><input [(ngModel)]="task.interval" (ngModelChange)="changed=true"></div>
+      </div>
+      <div class="row">
+        <div class="col-2">Days</div>
+        <div class="col-10">
+          <mat-checkbox [checked]="hasDay(ScheduledDays.Monday)" (change)="toggleDay(ScheduledDays.Monday)">Monday</mat-checkbox><br>
+          <mat-checkbox [checked]="hasDay(ScheduledDays.Tuesday)" (change)="toggleDay(ScheduledDays.Tuesday)">Tuesday</mat-checkbox><br>
+          <mat-checkbox [checked]="hasDay(ScheduledDays.Wednesday)" (change)="toggleDay(ScheduledDays.Wednesday)">Wednesday</mat-checkbox><br>
+          <mat-checkbox [checked]="hasDay(ScheduledDays.Thursday)" (change)="toggleDay(ScheduledDays.Thursday)">Thursday</mat-checkbox><br>
+          <mat-checkbox [checked]="hasDay(ScheduledDays.Friday)" (change)="toggleDay(ScheduledDays.Friday)">Friday</mat-checkbox><br>
+          <mat-checkbox [checked]="hasDay(ScheduledDays.Saturday)" (change)="toggleDay(ScheduledDays.Saturday)">Saturday</mat-checkbox><br>
+          <mat-checkbox [checked]="hasDay(ScheduledDays.Sunday)" (change)="toggleDay(ScheduledDays.Sunday)">Sunday</mat-checkbox>
+        </div>
+      </div>
+    </div>
+    <p></p>
+    <div class="container">
+      <div class="actionbutton">
+        <button mat-button [disabled]="!changed" (click)="save()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

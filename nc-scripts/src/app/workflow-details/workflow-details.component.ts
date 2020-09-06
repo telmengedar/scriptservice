@@ -17,6 +17,12 @@ import { Transition } from '../dto/workflows/transition';
 import { NodeEditorComponent } from './node-editor/node-editor.component';
 import { WorkflowStructure } from '../dto/workflows/workflowstructure';
 import { WorkflowNode } from '../dto/workflows/workflownode';
+import { NodeEditorParameters } from '../dto/workflows/nodeeditorparameters';
+import { ImportDeclaration } from '../dto/workflows/importdeclaration';
+import { TransitionType } from '../dto/workflows/transitionType';
+import { NodeType } from '../dto/workflows/nodetype';
+import { Parameter } from '../dto/scripts/parameter';
+import { NavigationItem } from '../dto/navigation/navigationItem';
 
 @Component({
   selector: 'app-workflow-details',
@@ -24,6 +30,11 @@ import { WorkflowNode } from '../dto/workflows/workflownode';
   styleUrls: ['./workflow-details.component.css']
 })
 export class WorkflowDetailsComponent implements OnInit, OnDestroy {
+  NodeType=NodeType;
+
+  navigationPath: NavigationItem[]=[
+    {url: "/workflows", display: "Workflows"}
+  ]
   workflowid?: number;
 
   task: WorkableTask;
@@ -47,20 +58,32 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
   parameters: any={};
   tasksub: Subscription;
 
+  newparameter: Parameter = {
+    name: "",
+    value: ""
+  }
+
   @ViewChild(MatMenuTrigger)
   contextMenu: MatMenuTrigger;
   contextMenuPosition = { x: '0px', y: '0px' };
 
   constructor(private workflowservice: WorkflowService, private taskservice: TaskService, private location: Location, route: ActivatedRoute, private dialogservice: MatDialog) { 
-    if(route.snapshot.params.workflowId!=="create")
-      this.workflowid=route.snapshot.params.workflowId;
+    if(route.snapshot.params.workflowId!=="create") {
+        this.workflowid=route.snapshot.params.workflowId;
+        this.navigationPath.push({
+          display: this.workflowid.toString()
+        });
+    }
+    else this.navigationPath.push({
+      display: "New Workflow"
+    });
   }
 
   ngOnInit() {
     this.createNode({
       id: guid(),
       name: "Start",
-      type: "Start",
+      type: NodeType.Start,
       parameters: {}
     });
 
@@ -79,7 +102,11 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
     });
     data.transitions.forEach(t=>{
       this.createTransition(t);
-    })
+    });
+
+    if(this.workflow.name)
+      this.navigationPath[this.navigationPath.length-1].display=this.workflow.name;
+    else this.navigationPath[this.navigationPath.length-1].display=`${this.workflow.id}.${this.workflow.revision}`;
   }
 
   private createNode(node: WorkflowNode): void {
@@ -116,31 +143,6 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
       this.tasksub.unsubscribe();
   }
 
-  determineColor(type: string, highlight: boolean): string {
-    if(highlight)
-      return '#e5e5e5';
-
-    switch(type) {
-      case 'Start':
-        return '#c0ffbd';
-      case 'Expression':
-        return '#ade4ff';
-        case 'Script':
-          case 'Workflow':          
-        return '#fffeba';
-      case 'BinaryOperation':
-        return '#edbaff';
-      case 'Value':
-        return '#bbadff';
-      case 'Suspend':
-        return '#ff9191';
-      case 'Call':
-        return '#91ffdc';
-      default:
-        return '#ebebeb';
-    }
-  }
-
   /**
    * opens a dialog used to edit a transition
    * @param edge edge representing transition to edit
@@ -162,6 +164,13 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  private determineImports(): ImportDeclaration[] {
+    let startnode=this.nodes.find(n=>NodeType.getNodeTypeValue(n.data.type)===NodeType.Start);
+    if(!startnode)
+      return [];
+    
+    return startnode.data.parameters.imports;
+  }
   /**
    * opens a dialog used to edit a node
    * @param event mouse event which triggered this method
@@ -175,12 +184,16 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
       this.createTransition({
         originId: node.id,
         targetId: nodeid,
-        error: false
+        type: TransitionType.Standard
       });
       this.refreshLayout();
     } else {
-      let nodedialog=this.dialogservice.open<NodeEditorComponent, NodeData>(NodeEditorComponent, {
-        data: node.data.node,
+      let nodedialog=this.dialogservice.open<NodeEditorComponent, NodeEditorParameters>(NodeEditorComponent, {
+        data: {
+          node: node.data.node,
+          imports: this.determineImports(),
+        },
+        panelClass: 'editor-dialog-container',
         width: '50%'
       });
       nodedialog.afterClosed().subscribe(n=>{
@@ -199,9 +212,13 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
   /**
    * adds a new parameter for workflow test execution
    */
-  addParameter(target: any): void {
-    this.parameters[target.value]="";
-    target.value="";
+  addParameter(): void {
+    if(!this.newparameter.name||this.newparameter.name==="")
+      return;
+
+    this.parameters[this.newparameter.name]=this.newparameter.value;
+    this.newparameter.name="";
+    this.newparameter.value="";
   }
 
   /**
@@ -258,7 +275,7 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
 
   private taskLoaded(task: WorkableTask): void {
     this.task=task;
-    if(task.status!=="Running")
+    if(this.tasksub && task.status!=="Running")
       this.tasksub.unsubscribe();
   }
 
@@ -280,7 +297,7 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
         originIndex: this.getNodeIndex(t.source),
         targetIndex: this.getNodeIndex(t.target),
         condition: t.data.transition.condition,
-        error: t.data.transition.error
+        type: t.data.transition.type
       });
     });
     return result;
@@ -298,7 +315,7 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
   addNode(): string {
     let n: NodeData={
       name: "New Node",
-      type: "Node",
+      type: NodeType.Node,
       parameters: {}
     }
 
@@ -370,7 +387,7 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
           this.createTransition({
             originId: this.selectedNode.id,
             targetId: node.id,
-            error: false
+            type: TransitionType.Standard
           });
           this.changed=true;
           this.refreshLayout();

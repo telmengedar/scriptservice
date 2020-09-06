@@ -1,5 +1,4 @@
 <h2>Node Editor</h2>
-<mat-dialog-content>
   <div class="row">
     <div class="col-2">Name</div>
     <div class="col-10">
@@ -12,67 +11,74 @@
       <input [(ngModel)]="node.group">
     </div>
   </div>
-  <div class="row" *ngIf="node.type!=='Start'">
+  <div class="row" *ngIf="NodeType.getNodeTypeName(node.type)!=='Start'">
     <div class="col-2">Node Type</div>
     <div class="col-10">
-      <select [(ngModel)]="node.type">
-        <option value="Node">Node</option>
-        <option value="Expression">Expression</option>
-        <option value="BinaryOperation">Binary Operation</option>
-        <option value="Value">Value</option>
-        <option value="Call">Call</option>
-        <option value="Script">Script</option>
-        <option value="Workflow">Workflow</option>
-        <option value="Suspend">Suspend</option>
-      </select>
+      <ngx-select [(ngModel)]="node.type" [items]="nodetypes" (change)="loadHostMethods()" optionValueField="type" optionTextField="name">
+        <ng-template ngx-select-option let-option>
+          <span>{{option.data.name}}</span><br>
+          <small>{{option.data.description}}</small>
+        </ng-template>
+      </ngx-select>
     </div>
   </div>
 
-  <div [ngSwitch]="node.type">
+  <div [ngSwitch]="NodeType.getNodeTypeValue(node.type)">
 
     <!-- Parameters for 'Start' Nodes -->
-    <div *ngSwitchCase="'Start'">
+    <div *ngSwitchCase="NodeType.Start">
       <div class="row header">
         <div class="col-12">Imports</div>
       </div>  
       <div class="row" *ngFor="let import of node.parameters.imports">
-        <div class="col-3">
-          <input [(ngModel)]="import.variable">
-        </div>
-        <div class="col-8">
-          <input [(ngModel)]="import.name">
-        </div>
+        <div class="col-2">{{import.variable}}</div>
+        <div class="col-9">{{import.name}}</div>
         <div class="col-1">
           <button mat-icon-button (click)="deleteImport(import.variable)"><mat-icon>delete</mat-icon></button>
         </div>
-      </div>    
+      </div>
       <div class="row">
-        <div class="col-12">
-          <input (change)="addImport($event.target)">
+        <div class="col-2">
+          <input [(ngModel)]="importname">
+        </div>
+        <div class="col-9">
+          <select [(ngModel)]="importvalue">
+            <option *ngFor="let host of hosts" [ngValue]="host.name">{{host.name}} - {{host.description}}</option>
+          </select>
+        </div>
+        <div class="col-1">
+          <button mat-icon-button (click)="addImport()"><mat-icon>add_circle</mat-icon></button>
         </div>
       </div>
     </div>
 
     <!-- Parameters for 'Call' Nodes -->
-    <div *ngSwitchCase="'Call'">
+    <div *ngSwitchCase="NodeType.Call">
       <div class="row">
         <div class="col-2">Host</div>
         <div class="col-10">
-          <input [(ngModel)]="node.parameters.host">
+          <input [(ngModel)]="node.parameters.host" list="hosts" (change)="loadHostMethods()">
+          <datalist id="hosts">
+            <option *ngFor="let import of imported">{{import.variable}}</option>
+          </datalist>
         </div>  
       </div>  
       <div class="row">
         <div class="col-2">Method</div>
         <div class="col-10">
-          <input [(ngModel)]="node.parameters.method">
+          <input [(ngModel)]="node.parameters.method" list="methods" (change)="selectMethod()">
+          <datalist id="methods">
+            <option *ngFor="let method of methods;index as i" [value]="method.name">{{method.description}}</option>
+          </datalist>
         </div>  
       </div>  
       <div class="row header">
         <div class="col-12">Arguments</div>
       </div>  
       <div class="row" *ngFor="let argument of node.parameters.arguments;index as i">
-        <div class="col-11">
-          <input [(ngModel)]="argument">
+        <div class="col-2">{{getParameterName(i)}}</div>
+        <div class="col-9">
+          <input [(ngModel)]="argument" (change)="node.parameters.arguments[i]=$event.target.value">
         </div>
         <div class="col-1">
           <button mat-icon-button (click)="deleteArgument(i)"><mat-icon>delete</mat-icon></button>
@@ -86,7 +92,7 @@
     </div>
     
     <!-- Parameters for 'Binary' Nodes -->
-    <div class="row" *ngSwitchCase="'BinaryOperation'">
+    <div class="row" *ngSwitchCase="NodeType.BinaryOperation">
       <div class="col-5">
         <input [(ngModel)]="node.parameters.lhs">
       </div>
@@ -123,14 +129,14 @@
     </div>
 
     <!-- Parameters for 'Expression' Nodes -->
-    <div *ngSwitchCase="'Expression'">
+    <div *ngSwitchCase="NodeType.Expression">
       <div class="row">
         <ngx-monaco-editor class="codeeditor" [options]="editorOptions" [(ngModel)]="node.parameters.code"></ngx-monaco-editor>
       </div>
     </div>
 
     <!-- Parameters for 'Value' Nodes -->
-    <div *ngSwitchCase="'Value'">
+    <div *ngSwitchCase="NodeType.Value">
       <div class="row">
         <div class="col-2">Value</div>
         <div class="col-10">
@@ -140,7 +146,7 @@
     </div>
 
     <!-- Parameters for 'Script' Nodes -->
-    <div *ngSwitchCase="'Script'">
+    <div *ngSwitchCase="NodeType.Script">
       <div class="row">
         <div class="col-2">Name</div>
         <div class="col-10">
@@ -150,7 +156,7 @@
     </div>
 
     <!-- Parameters for 'Workflow' Nodes -->
-    <div *ngSwitchCase="'Workflow'">
+    <div *ngSwitchCase="NodeType.Workflow">
       <div class="row">
         <div class="col-2">Name</div>
         <div class="col-10">
@@ -160,23 +166,57 @@
     </div>    
 
     <!-- Parameters for 'Suspend' Nodes -->
-    <div *ngSwitchCase="'Suspend'">
+    <div *ngSwitchCase="NodeType.Suspend">
       <div class="row">
         <div class="col-2">Variable</div>
         <div class="col-10">
           <input [(ngModel)]="node.parameters.variable">
         </div>
       </div>    
-    </div>    
-  </div>
+    </div>
 
-</mat-dialog-content>
-<div class="row" *ngIf="node.type!=='Start'">
-  <div class="col-2">Return</div>
-  <div class="col-10">
-    <input [(ngModel)]="node.variable">
+    <!-- Parameters for 'Log' Nodes -->
+    <div *ngSwitchCase="NodeType.Iterator">
+      <div class="row">
+        <div class="col-2">Collection</div>
+        <div class="col-10">
+          <input [(ngModel)]="node.parameters.collection">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2">Item</div>
+        <div class="col-10">
+          <input [(ngModel)]="node.parameters.item">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Parameters for 'Log' Nodes -->
+    <div *ngSwitchCase="NodeType.Log">
+      <div class="row">
+        <div class="col-2">Type</div>
+        <div class="col-10">
+          <select [(ngModel)]="node.parameters.type">
+            <option>Info</option>
+            <option>Warning</option>
+            <option>Error</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2">Text</div>
+        <div class="col-10">
+          <input [(ngModel)]="node.parameters.text">
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+  <div class="row" *ngIf="NodeType.getNodeTypeValue(node.type)!==NodeType.Start">
+    <div class="col-2">Return</div>
+    <div class="col-10">
+      <input [(ngModel)]="node.variable">
+    </div>
+  </div>  
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Done</button>
 </mat-dialog-actions>

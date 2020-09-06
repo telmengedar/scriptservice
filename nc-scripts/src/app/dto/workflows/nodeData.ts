@@ -1,3 +1,5 @@
+import { NodeType } from './nodetype';
+
 /**
  * data of a workflow node
  */
@@ -16,7 +18,7 @@ export interface NodeData {
     /**
      * type of node
      */
-    type: string,
+    type: NodeType,
 
     /**
      * node parameters

@@ -9,8 +9,10 @@ import { Transition } from 'src/app/dto/workflows/transition';
   styleUrls: ['./transition-editor.component.css']
 })
 export class TransitionEditorComponent implements OnInit {
+  transition: Transition;
 
-  constructor(private dialog: MatDialogRef<TransitionEditorComponent>, @Inject(MAT_DIALOG_DATA)private transition: Transition) { 
+  constructor(private dialog: MatDialogRef<TransitionEditorComponent>, @Inject(MAT_DIALOG_DATA)transition: Transition) { 
+    this.transition=transition;
   }
 
   ngOnInit() {

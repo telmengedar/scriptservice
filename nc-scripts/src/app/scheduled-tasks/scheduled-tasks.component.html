@@ -1,0 +1,34 @@
+<app-navigation-path [path]="navigationPath"></app-navigation-path>
+<div class="content-page">
+  <div class="side-panel">
+    <h2>Task Scheduler</h2>
+    <p>Manages tasks which are to be executed periodically</p>
+  </div>
+  <div class="content-panel">
+    <div class="container">
+      <div class="row header">
+        <div class="col-1">Id</div>
+        <div class="col-3">Name</div>
+        <div class="col-1">Type</div>
+        <div class="col-4">Workable</div>
+        <div class="col-1">Revision</div>
+        <div class="col-1">Interval</div>
+        <div class="col-1"></div>
+      </div>
+      <div class="row" *ngFor="let task of tasks">
+        <div class="col-1" (click)="editTask(task.id)">{{task.id}}</div>
+        <div class="col-3" (click)="editTask(task.id)">{{task.name}}</div>
+        <div class="col-1" (click)="editTask(task.id)">{{task.workableType}}</div>
+        <div class="col-4" (click)="editTask(task.id)">{{task.workableName}}</div>
+        <div class="col-1" (click)="editTask(task.id)">{{task.workableRevision}}</div>
+        <div class="col-1" (click)="editTask(task.id)">{{task.interval}}</div>
+        <div class="col-1"><button mat-icon-button (click)="deleteTask(task.id)"><mat-icon>delete</mat-icon></button></div>
+      </div>
+      <div class="row footer">
+        <div class="col-3"><button mat-icon-button (click)="newTask()"><mat-icon>add_circle</mat-icon></button></div>
+        <div class="col-6 text-center align-self-center">Page {{page}}/{{pages}}</div>
+        <div class="col-3"></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,19 @@
 <h2>Transition Editor</h2>
 <mat-dialog-content>
   <div class="row">
-    <mat-checkbox [(ngModel)]="transition.error">Error</mat-checkbox>
+    <div class="col-2">Type</div>
+    <div class="col-3">
+      <select [(ngModel)]="transition.type">
+        <option>Standard</option>
+        <option>Error</option>
+        <option>Loop</option>
+      </select>
+    </div>
+    <div class="col-7" [ngSwitch]="transition.type">
+      <div *ngSwitchCase="'Standard'">Transition is considered for process when node has executed successfully.</div>
+      <div *ngSwitchCase="'Error'">Transition is considered for process when node execution was aborted due to an exception. For conditional evaluation the exception is provided as Variable 'error' to conditions.</div>
+      <div *ngSwitchCase="'Loop'">Transition is considered for process when node is a loop node and the loop condition is still met.</div>
+    </div>
   </div>
   <div class="row">
     <div class="col-2">Condition</div>

@@ -28,9 +28,9 @@ export class Patch {
     public static generatePatches(original: any, changed: any): PatchOperation[] {
         let operations: PatchOperation[]=[];
 
-        for(const [key,value] of Object.entries(original)) {
-            if(value!==changed[key])
-                operations.push(this.replace(key, changed[key]));
+        for(const [key,value] of Object.entries(changed)) {
+            if(value!==original[key])
+                operations.push(this.replace(key, value));
         }
 
         return operations;

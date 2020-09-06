@@ -1,0 +1,6 @@
+<div class="navigationrow">
+  <button mat-icon-button><mat-icon>subdirectory_arrow_right</mat-icon></button>
+  <span *ngFor="let item of path">
+    <button class="actionbutton" (click)="navigateTo(item)">{{item.display}}</button>
+  </span>
+</div>

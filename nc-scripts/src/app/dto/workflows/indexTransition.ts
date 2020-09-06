@@ -1,3 +1,5 @@
+import { TransitionType } from './transitionType';
+
 /**
  * transition using node indices as arguments
  */
@@ -21,5 +23,5 @@ export interface IndexTransition {
     /**
      * determines whether transition is used for error handling
      */
-    error: boolean
+    type: TransitionType
 }

@@ -17,6 +17,62 @@
     stroke: red;
 }
 
+.transitionloop {
+    stroke: greenyellow;
+}
+
 .callnode {
     fill: #ff9191;
+}
+
+.workflownode {
+    fill: #ebebeb;
+}
+
+.nodetypestart {
+    fill: #c0ffbd;
+}
+
+.nodetypeexpression {
+    fill: #ade4ff;
+}
+
+.nodetypescript {
+    fill: #fffeba;
+}
+
+.nodetypeworkflow {
+    fill: #fffeba;
+}
+
+.nodetypebinaryoperation {
+    fill: #edbaff;
+}
+
+.nodetypevalue {
+    fill: #bbadff;
+}
+
+.nodetypesuspend {
+    fill: #ff9191;
+}
+
+.nodetypecall {
+    fill: #91ffdc;
+}
+
+.nodetypelog {
+    fill: #f5ce42;
+}
+
+.nodetypeiterator {
+    fill: #b6f542;
+}
+
+.nodehighlight {
+    fill: whitesmoke;
+}
+
+.workflowgraph {
+    overflow: hidden;
 }

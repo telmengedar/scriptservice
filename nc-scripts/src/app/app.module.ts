@@ -1,6 +1,7 @@
+import { ReactiveFormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {CommonModule} from "@angular/common"
 
 import { AppComponent } from './app.component';
@@ -15,14 +16,16 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSelectModule} from '@angular/material/select';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { TasksComponent } from './tasks/tasks.component';
 import { TaskDetailsComponent } from './taskdetails/taskdetails.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ScriptsComponent } from './scripts/scripts.component';
 import { ScriptDetailsComponent } from './scriptdetails/scriptdetails.component';
 
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
+import { NgxSelectModule } from 'ngx-select-ex';
 
 import {TooltipModule} from "ngx-tooltip";
 
@@ -32,7 +35,11 @@ import { WorkflowsComponent } from './workflows/workflows.component';
 import { WorkflowDetailsComponent } from './workflow-details/workflow-details.component';
 import { TransitionEditorComponent } from './workflow-details/transition-editor/transition-editor.component';
 import { NodeEditorComponent } from './workflow-details/node-editor/node-editor.component';
-
+import { LoginComponent } from './login/login.component';
+import { TokenInterceptor } from './services/token.interceptor';
+import { NavigationPathComponent } from './navigation-path/navigation-path.component';
+import { ScheduledTasksComponent } from './scheduled-tasks/scheduled-tasks.component';
+import { ScheduledTaskEditorComponent } from './scheduled-task-editor/scheduled-task-editor.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +51,11 @@ import { NodeEditorComponent } from './workflow-details/node-editor/node-editor.
     WorkflowsComponent,
     WorkflowDetailsComponent,
     TransitionEditorComponent,
-    NodeEditorComponent
+    NodeEditorComponent,
+    LoginComponent,
+    NavigationPathComponent,
+    ScheduledTasksComponent,
+    ScheduledTaskEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -61,22 +72,26 @@ import { NodeEditorComponent } from './workflow-details/node-editor/node-editor.
     MatInputModule,
     MatCheckboxModule,
     MatDatepickerModule,
-    NgbModule,
     MatNativeDateModule,
     FormsModule,
     CommonModule,
     NgxGraphModule,
     NgxChartsModule,
+    NgxSelectModule,
     TooltipModule,
     MatMenuModule,
     MatDialogModule,
-    MonacoEditorModule.forRoot()
+    ReactiveFormsModule,
+    NgbModule,
+    MonacoEditorModule.forRoot(),
   ],
   entryComponents: [
     TransitionEditorComponent,
     NodeEditorComponent
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

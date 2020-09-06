@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  requiresLogin: true,
+  production: true,
+  apiUrl: 'https://dev.mamgo.io/api'
 };
