@@ -2,10 +2,13 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+declare let ENV_VARS: {[key: string]: string};
+
 export const environment = {
   requiresLogin: true,
   production: false,
-  apiUrl: 'https://dev.mamgo.io/api'
+  apiUrl: 'https://dev.mamgo.io/api',
+  environment: ENV_VARS
 };
 
 /*

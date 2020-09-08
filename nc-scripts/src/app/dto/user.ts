@@ -4,5 +4,6 @@ export interface User {
     roles: string[],
     refresh: string,
     expires: number,
-    refreshexpires: number
+    refreshexpires: number,
+    expires_in: number
 }

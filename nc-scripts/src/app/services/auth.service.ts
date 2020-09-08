@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthToken } from '../dto/authtoken';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +21,10 @@ export class AuthService {
     body.set("grant_type", "password");
     body.set("username", username);
     body.set("password", password);
-    body.set("client_id", appprocess.env.CLIENT_ID);
-    body.set("client_secret", appprocess.env.CLIENT_SECRET);
+    body.set("client_id", environment.environment.CLIENT_ID);
+    body.set("client_secret", environment.environment.CLIENT_SECRET);
 
-    return this.http.post<AuthToken>(appprocess.env.AUTH_URL, body.toString(), options);
+    return this.http.post<AuthToken>(environment.environment.AUTH_URL, body.toString(), options);
   }
 
   refreshToken(token: string): Observable<AuthToken> {
@@ -34,9 +35,9 @@ export class AuthService {
 
     body.set("grant_type", "refresh_token");
     body.set("refresh_token", token);
-    body.set("client_id", appprocess.env.CLIENT_ID);
-    body.set("client_secret", appprocess.env.CLIENT_SECRET);
+    body.set("client_id", environment.environment.CLIENT_ID);
+    body.set("client_secret", environment.environment.CLIENT_SECRET);
 
-    return this.http.post<AuthToken>(appprocess.env.AUTH_URL, body.toString(), options);
+    return this.http.post<AuthToken>(environment.environment.AUTH_URL, body.toString(), options);
   }
 }

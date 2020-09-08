@@ -3,12 +3,16 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable } from 'rxjs';
 import { LoginService } from './login.service';
 import { User } from '../dto/user';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
     constructor(private loginservice: LoginService) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        if(!environment.requiresLogin || request.url.startsWith(environment.environment.AUTH_URL))
+            return next.handle(request);
+
         const user: User=this.loginservice.getUser();
         if(user)
         {
