@@ -83,7 +83,7 @@ import { ScheduledTaskEditorComponent } from './scheduled-task-editor/scheduled-
     MatDialogModule,
     ReactiveFormsModule,
     NgbModule,
-    MonacoEditorModule.forRoot(),
+    MonacoEditorModule.forRoot({baseUrl: "./assets"}),
   ],
   entryComponents: [
     TransitionEditorComponent,
