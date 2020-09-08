@@ -1,8 +1,16 @@
 FROM node:12.16.1-alpine AS build
+ARG AUTH_URL_ARG=""
+ARG CLIENT_ID_ARG=""
+ARG CLIENT_SECRET_ARG=""
+
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
+
+ENV AUTH_URL=$AUTH_URL_ARG
+ENV CLIENT_ID=$CLIENT_ID_ARG
+ENV CLIENT_SECRET=$CLIENT_SECRET_ARG
 RUN npm run build --prod
 
 FROM nginx:1.15.8-alpine
