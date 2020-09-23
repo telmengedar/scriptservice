@@ -19,6 +19,7 @@ using NightlyCode.Database.Clients;
 using NightlyCode.Database.Entities;
 using NightlyCode.Database.Info;
 using NightlyCode.Scripting.Parser;
+using NightlyCode.Scripting.Providers;
 using Npgsql;
 using ScriptService.Services;
 using ScriptService.Services.Cache;
@@ -58,15 +59,34 @@ namespace ScriptService {
             }
         }
 
+        IScriptParser SetupScriptParser() {
+            ILogger logger = LoggerFactory.Create(builder => {
+                builder.SetMinimumLevel(LogLevel.Information);
+                builder.AddConsole();
+                builder.AddEventSourceLogger();
+            }).CreateLogger("Startup");
+
+            ScriptParser parser =new ScriptParser();
+            IConfigurationSection typesection = Configuration.GetSection("Types");
+            foreach (IConfigurationSection type in typesection.GetChildren()) {
+                Type typedef = Type.GetType(type["Type"]);
+                if (typedef == null) {
+                    logger.LogWarning($"Unable to find type '{type["Type"]}'");
+                    continue;
+                }
+                parser.Types.AddType(type["Name"], new TypeInstanceProvider(typedef, parser.MethodCallResolver));
+            }
+            return parser;
+        }
+
         /// <summary>
         /// configures services used by the script service
         /// </summary>
         /// <param name="services">access to service collection</param>
         public void ConfigureServices(IServiceCollection services) {
-            
             services.AddControllers();
             services.AddSingleton<ICacheService, CacheService>();
-            services.AddSingleton<IScriptParser, ScriptParser>();
+            services.AddSingleton<IScriptParser>(s => SetupScriptParser());
             services.AddSingleton<IScriptCompiler, ScriptCompiler>();
             services.AddSingleton<IScriptService, DatabaseScriptService>();
             services.AddSingleton<IScriptExecutionService, ScriptExecutionService>();

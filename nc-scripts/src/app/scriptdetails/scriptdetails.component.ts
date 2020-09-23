@@ -7,6 +7,7 @@ import { Patch } from '../helpers/patch';
 import { ActivatedRoute } from '@angular/router';
 import { WorkableTask } from '../dto/workabletask';
 import { TaskService } from '../services/task.service';
+import { NavigationItem } from '../dto/navigation/navigationItem';
 
 /**
  * editor component for a single script.
@@ -18,6 +19,10 @@ import { TaskService } from '../services/task.service';
   styleUrls: ['./scriptdetails.component.css']
 })
 export class ScriptDetailsComponent implements OnInit, OnDestroy {
+  navigationPath: NavigationItem[]=[
+    {url: "/scripts", display: "Scripts"}
+  ]
+
   script: Script={
     scope: "",
     name: "",
@@ -48,8 +53,16 @@ export class ScriptDetailsComponent implements OnInit, OnDestroy {
   isdestroyed:boolean=false;
 
   constructor(private scriptservice: ScriptService, private taskservice: TaskService, private location: Location, route: ActivatedRoute) { 
-    if(route.snapshot.params.scriptId!=="create")
+    if(route.snapshot.params.scriptId!=="create") {
       this.script.id=route.snapshot.params.scriptId;
+      this.navigationPath.push({
+        display: this.script.id.toString()
+      });
+    } else {
+      this.navigationPath.push({
+        display: "New Script"
+      });
+    }
   }
 
   ngOnInit() {

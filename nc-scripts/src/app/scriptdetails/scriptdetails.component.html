@@ -1,8 +1,21 @@
+<app-navigation-path [path]="navigationPath"></app-navigation-path>
 <div class="content-page">
   <div class="side-panel">
-  <button mat-icon-button (click)="back()" id="back"><mat-icon>arrow_back</mat-icon>back to scripts</button>
+  <div class="container">
+    <div class="row header">
+      <div class="col-12">Script <span>{{script.id}}.{{script.revision}}</span></div>
+    </div>
+    <div class="row">
+      <div class="col-2 property align-self-center">Name</div>
+      <div class="col-10 value">
+      <mat-form-field>
+        <input matInput [(ngModel)]="script.name" (ngModelChange)="changed=true">
+      </mat-form-field>
+      </div>
+    </div>
+  </div>  
   <p></p>
-  <h5>Test Script</h5>
+  <h5>Test</h5>
   <div class="container">
     <div class="row header">
       <div class="col-12">Parameters</div>
@@ -25,11 +38,9 @@
     </div>
   </div>
   <p></p>
-  
     <div class="actionbutton">
       <button mat-button [disabled]="taskrunning" (click)="executeTest()">Test</button>
     </div>
-  
   <p></p>
   <div class="container">
     <div class="row header">
@@ -53,28 +64,6 @@
   </div>  
   </div>
   <div class="content-panel">
-  <div class="container">
-    <div class="row header">
-      <div class="col-12">Script <span>{{script.id}}.{{script.revision}}</span></div>
-    </div>
-    <div class="row">
-      <div class="col-2 property align-self-center">Scope</div>
-      <div class="col-10 value">
-      <mat-form-field>
-        <input matInput [(ngModel)]="script.scope" (ngModelChange)="changed=true">
-      </mat-form-field>
-      </div>  
-    </div>
-    <div class="row">
-      <div class="col-2 property align-self-center">Name</div>
-      <div class="col-10 value">
-      <mat-form-field>
-        <input matInput [(ngModel)]="script.name" (ngModelChange)="changed=true">
-      </mat-form-field>
-      </div>
-    </div>
-  </div>
-    <p></p>
     <div class="container">
       <div class="row header">
         <div class="col-12">Code</div>
