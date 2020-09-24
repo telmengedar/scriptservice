@@ -69,12 +69,12 @@ namespace ScriptService {
             ScriptParser parser =new ScriptParser();
             IConfigurationSection typesection = Configuration.GetSection("Types");
             foreach (IConfigurationSection type in typesection.GetChildren()) {
-                Type typedef = Type.GetType(type["Type"]);
+                Type typedef = Type.GetType(type.Value);
                 if (typedef == null) {
-                    logger.LogWarning($"Unable to find type '{type["Type"]}'");
+                    logger.LogWarning($"Unable to find type '{type.Value}'");
                     continue;
                 }
-                parser.Types.AddType(type["Name"], new TypeInstanceProvider(typedef, parser.MethodCallResolver));
+                parser.Types.AddType(type.Key, new TypeInstanceProvider(typedef, parser.MethodCallResolver));
             }
             return parser;
         }

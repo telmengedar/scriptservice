@@ -36,6 +36,9 @@ namespace ScriptService.Services {
                 logger.LogInformation("Loading service hosts from configuration");
                 foreach (IConfigurationSection service in servicesection.GetChildren()) {
                     logger.LogInformation($"Loading service '{service.Key}'");
+                    if (service["Hidden"] == "true")
+                        continue;
+
                     Type hosttype = Type.GetType(service["Service"] ?? service["Implementation"]);
 
                     if (hosttype == null) {
