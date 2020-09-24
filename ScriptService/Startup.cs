@@ -68,15 +68,32 @@ namespace ScriptService {
 
             ScriptParser parser =new ScriptParser();
             IConfigurationSection typesection = Configuration.GetSection("Types");
-            foreach (IConfigurationSection type in typesection.GetChildren()) {
-                Type typedef = Type.GetType(type.Value);
-                if (typedef == null) {
-                    logger.LogWarning($"Unable to find type '{type.Value}'");
-                    continue;
-                }
+            if (typesection != null) {
+                foreach (IConfigurationSection type in typesection.GetChildren()) {
+                    Type typedef = Type.GetType(type.Value);
+                    if (typedef == null) {
+                        logger.LogWarning($"Unable to find type '{type.Value}'");
+                        continue;
+                    }
 
-                logger.LogInformation($"Adding '{typedef}' as '{type.Key}'");
-                parser.Types.AddType(type.Key, new TypeInstanceProvider(typedef, parser.MethodCallResolver));
+                    logger.LogInformation($"Adding '{typedef}' as '{type.Key}'");
+                    parser.Types.AddType(type.Key, new TypeInstanceProvider(typedef, parser.MethodCallResolver));
+                }
+            }
+
+            IConfigurationSection extensionssection = Configuration.GetSection("Extensions");
+            string[] extensions = extensionssection?.Get<string[]>();
+            if (extensions != null) {
+                foreach (string extension in extensions) {
+                    Type typedef = Type.GetType(extension);
+                    if(typedef == null) {
+                        logger.LogWarning($"Unable to find extension type '{extension}'");
+                        continue;
+                    }
+
+                    logger.LogInformation($"Adding extension '{typedef}'");
+                    parser.Extensions.AddExtensions(typedef);
+                }
             }
             return parser;
         }
