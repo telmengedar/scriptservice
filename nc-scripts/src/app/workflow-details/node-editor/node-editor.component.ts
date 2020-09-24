@@ -76,8 +76,8 @@ export class NodeEditorComponent implements OnInit {
   imported: ImportDeclaration[]=[];
   methods: MethodInfo[]=[];
 
-  importname: string;
-  importvalue: string;
+  inputkey: string;
+  inputvalue: string;
 
   node: NodeData;
 
@@ -109,25 +109,25 @@ export class NodeEditorComponent implements OnInit {
    * adds a new import declaration
    * @param target element invoking the event
    */
-  addImport(): void {
+  addImport(key: string, value: string): void {
     if(!this.node.parameters.imports)
       this.node.parameters.imports=[];
     
-    if(!this.importname||!this.importvalue|| this.importname===""||this.importvalue==="")
+    if(!key||!value|| key===""||value==="")
       return;
 
-    let index: number=this.node.parameters.imports.findIndex(i=>i.variable===this.importname || i.name===this.importvalue);
+    let index: number=this.node.parameters.imports.findIndex(i=>i.variable===key || i.name===value);
     if(index>=0)
       return;
 
     this.node.parameters.imports.push({
       type: "Host",
-      variable: this.importname,
-      name: this.importvalue
+      variable: key,
+      name: value
     });
 
-    this.importname="";
-    this.importvalue="";
+    this.inputkey="";
+    this.inputvalue="";
   }
 
   /**
@@ -173,6 +173,16 @@ export class NodeEditorComponent implements OnInit {
   }
 
   /**
+   * get name of parameter at specified index or index itself if parameter does not exist
+   */
+  getArgumentName(index: number): string {
+    if(!this.parametertemplates||index<0||index>=this.parametertemplates.length)
+      return '?';
+    
+    return this.parametertemplates[index].name;
+  }
+
+  /**
    * adds an argument to the argument list
    * @param target element invoking the event
    */
@@ -183,11 +193,31 @@ export class NodeEditorComponent implements OnInit {
   }
 
   /**
+   * adds a parameter to the workable parameter list
+   * @param target element invoking the event
+   */
+  addWorkableParameter(key: string, value: string): void {
+    if(!this.node.parameters.parameters)
+      this.node.parameters.parameters={};
+    this.node.parameters.parameters[key]=value;
+    this.inputkey="";
+    this.inputvalue="";
+  }
+
+  /**
    * deletes an argument from the argument list
    * @param index index of argument to remove
    */
   deleteArgument(index: number): void {
     this.node.parameters.arguments.splice(index, 1);
+  }
+
+  /**
+   * deletes a parameter from the workable parameter list
+   * @param index index of argument to remove
+   */
+  deleteWorkableParameter(key: string): void {
+    delete this.node.parameters.parameters[key];
   }
 
   /**
@@ -240,15 +270,5 @@ export class NodeEditorComponent implements OnInit {
         this.node.parameters.arguments.push("");
       }
     }
-  }
-
-  /**
-   * get name of parameter at specified index or index itself if parameter does not exist
-   */
-  getParameterName(index: number): string {
-    if(!this.parametertemplates||index<0||index>=this.parametertemplates.length)
-      return '?';
-    
-    return this.parametertemplates[index].name;
   }
 }

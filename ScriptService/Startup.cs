@@ -86,7 +86,7 @@ namespace ScriptService {
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers();
             services.AddSingleton<ICacheService, CacheService>();
-            services.AddSingleton<IScriptParser>(s => SetupScriptParser());
+            services.AddSingleton(s => SetupScriptParser());
             services.AddSingleton<IScriptCompiler, ScriptCompiler>();
             services.AddSingleton<IScriptService, DatabaseScriptService>();
             services.AddSingleton<IScriptExecutionService, ScriptExecutionService>();

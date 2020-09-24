@@ -39,15 +39,15 @@
       </div>
       <div class="row">
         <div class="col-2">
-          <input [(ngModel)]="importname">
+          <input [(ngModel)]="inputkey">
         </div>
         <div class="col-9">
-          <select [(ngModel)]="importvalue">
+          <select [(ngModel)]="inputvalue">
             <option *ngFor="let host of hosts" [ngValue]="host.name">{{host.name}} - {{host.description}}</option>
           </select>
         </div>
         <div class="col-1">
-          <button mat-icon-button (click)="addImport()"><mat-icon>add_circle</mat-icon></button>
+          <button mat-icon-button (click)="addImport(inputkey, inputvalue)"><mat-icon>add_circle</mat-icon></button>
         </div>
       </div>
     </div>
@@ -76,7 +76,7 @@
         <div class="col-12">Arguments</div>
       </div>  
       <div class="row" *ngFor="let argument of node.parameters.arguments;index as i">
-        <div class="col-2">{{getParameterName(i)}}</div>
+        <div class="col-2">{{getArgumentName(i)}}</div>
         <div class="col-9">
           <input [(ngModel)]="argument" (change)="node.parameters.arguments[i]=$event.target.value">
         </div>
@@ -152,7 +152,28 @@
         <div class="col-10">
           <input [(ngModel)]="node.parameters.name">
         </div>
-      </div>    
+      </div>
+      <div class="row header">
+        <div class="col-12">Parameters</div>
+      </div>  
+      <div class="row" *ngFor="let parameter of node.parameters.parameters|keyvalue">
+        <div class="col-2">{{parameter.key}}</div>
+        <div class="col-9">{{parameter.value}}</div>
+        <div class="col-1">
+          <button mat-icon-button (click)="deleteWorkableParameter(parameter.key)"><mat-icon>delete</mat-icon></button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2">
+          <input [(ngModel)]="inputkey">
+        </div>
+        <div class="col-9">
+          <input [(ngModel)]="inputvalue">
+        </div>
+        <div class="col-1">
+          <button mat-icon-button (click)="addWorkableParameter(inputkey, inputvalue)"><mat-icon>add_circle</mat-icon></button>
+        </div>
+      </div>
     </div>
 
     <!-- Parameters for 'Workflow' Nodes -->
@@ -162,7 +183,28 @@
         <div class="col-10">
           <input [(ngModel)]="node.parameters.name">
         </div>
-      </div>    
+      </div>
+      <div class="row header">
+        <div class="col-12">Parameters</div>
+      </div>  
+      <div class="row" *ngFor="let parameter of node.parameters.parameters|keyvalue">
+        <div class="col-2">{{parameter.key}}</div>
+        <div class="col-9">{{parameter.value}}</div>
+        <div class="col-1">
+          <button mat-icon-button (click)="deleteWorkableParameter(parameter.key)"><mat-icon>delete</mat-icon></button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2">
+          <input [(ngModel)]="inputkey">
+        </div>
+        <div class="col-9">
+          <input [(ngModel)]="inputvalue">
+        </div>
+        <div class="col-1">
+          <button mat-icon-button (click)="addWorkableParameter(inputkey, inputvalue)"><mat-icon>add_circle</mat-icon></button>
+        </div>
+      </div>
     </div>    
 
     <!-- Parameters for 'Suspend' Nodes -->

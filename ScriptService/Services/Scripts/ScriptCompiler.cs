@@ -57,9 +57,9 @@ namespace ScriptService.Services.Scripts {
                 return script;
 
             Script scriptdata = await scriptservice.GetScript(id);
-            if (revision != 0) {
+            if (revision.HasValue && revision.Value != 0) {
                 if (revision != scriptdata.Revision)
-                    scriptdata = await archive.GetArchivedObject<Script>(id, revision??0);
+                    scriptdata = await archive.GetArchivedObject<Script>(id, revision.Value);
             }
 
             script = await Parse(scriptdata);
@@ -74,9 +74,9 @@ namespace ScriptService.Services.Scripts {
                 return script;
 
             Script scriptdata = await scriptservice.GetScript(name);
-            if(revision != 0) {
+            if(revision.HasValue && revision.Value != 0) {
                 if(revision != scriptdata.Revision)
-                    scriptdata = await archive.GetArchivedObject<Script>(scriptdata.Id, revision??0);
+                    scriptdata = await archive.GetArchivedObject<Script>(scriptdata.Id, revision.Value);
             }
 
             script = await Parse(scriptdata);
