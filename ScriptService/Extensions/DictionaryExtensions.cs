@@ -157,6 +157,28 @@ namespace ScriptService.Extensions {
         }
 
         /// <summary>
+        /// translates workable variables to parameter values
+        /// </summary>
+        /// <param name="variables">variables to translate</param>
+        /// <param name="compiler">compiler to use to parse variable scripts</param>
+        /// <returns>workable parameter variables</returns>
+        public static async Task<IDictionary<string, object>> TranslateVariables(this IDictionary<string, object> variables, IScriptCompiler compiler) {
+            if(variables == null)
+                return null;
+
+            Dictionary<string, object> translated = new Dictionary<string, object>();
+            foreach(KeyValuePair<string, object> kvp in variables) {
+                if(kvp.Value is string code) {
+                    translated[kvp.Key] = await (await compiler.CompileCodeAsync(code)).ExecuteAsync();
+                }
+                else
+                    translated[kvp.Key] = kvp.Value;
+            }
+
+            return translated;
+        }
+
+        /// <summary>
         /// evaluates argument scripts and returns values to use as parameters
         /// </summary>
         /// <param name="arguments">arguments to evaluate</param>

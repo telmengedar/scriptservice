@@ -9,6 +9,7 @@ using NightlyCode.Scripting.Parser;
 using ScriptService.Dto;
 using ScriptService.Dto.Scripts;
 using ScriptService.Dto.Tasks;
+using ScriptService.Extensions;
 using ScriptService.Services.Scripts;
 using ScriptService.Services.Workflows;
 using TaskStatus = ScriptService.Dto.TaskStatus;
@@ -66,25 +67,10 @@ namespace ScriptService.Services {
             return scripttask;
         }
 
-        async Task<IDictionary<string, object>> TranslateVariables(IDictionary<string, object> variables) {
-            if (variables == null)
-                return null;
-
-            Dictionary<string, object> translated=new Dictionary<string, object>();
-            foreach (KeyValuePair<string, object> kvp in variables) {
-                if (kvp.Value is string code) {
-                    translated[kvp.Key] = await (await scriptcompiler.CompileCodeAsync(code)).ExecuteAsync();
-                }
-                else translated[kvp.Key] = kvp.Value;
-            }
-
-            return translated;
-        }
-
         /// <inheritdoc />
         public async Task<WorkableTask> Execute(long id, int? revision=null, IDictionary<string, object> variables = null, TimeSpan? wait=null) {
             CompiledScript script = await scriptcompiler.CompileScript(id, revision);
-            IDictionary<string, object> runtimevariables = await TranslateVariables(variables);
+            IDictionary<string, object> runtimevariables = await variables.TranslateVariables(scriptcompiler);
             WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, script.Id, script.Revision, script.Name, runtimevariables);
             return await Execute(script.Instance, scripttask, runtimevariables, wait);
         }
@@ -92,14 +78,14 @@ namespace ScriptService.Services {
         /// <inheritdoc />
         public async Task<WorkableTask> Execute(string name, int? revision=null, IDictionary<string, object> variables=null, TimeSpan? wait = null) {
             CompiledScript script = await scriptcompiler.CompileScript(name, revision);
-            IDictionary<string, object> runtimevariables = await TranslateVariables(variables);
+            IDictionary<string, object> runtimevariables = await variables.TranslateVariables(scriptcompiler);
             WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, script.Id, script.Revision, script.Name, runtimevariables);
             return await Execute(script.Instance, scripttask, runtimevariables, wait);
         }
 
         /// <inheritdoc />
         public async Task<WorkableTask> Execute(NamedCode code, IDictionary<string, object> variables = null, TimeSpan? wait = null) {
-            IDictionary<string, object> runtimevariables = await TranslateVariables(variables);
+            IDictionary<string, object> runtimevariables = await variables.TranslateVariables(scriptcompiler);
             WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, 0, 0, code.Name, runtimevariables);
             return await Execute(await scriptcompiler.CompileCodeAsync(code.Code), scripttask, runtimevariables, wait);
         }

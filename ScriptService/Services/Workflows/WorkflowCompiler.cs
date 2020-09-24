@@ -46,6 +46,7 @@ namespace ScriptService.Services.Workflows {
         /// <inheritdoc />
         public async Task<WorkflowInstance> BuildWorkflow(WorkflowStructure workflow, IDictionary<string, object> variables=null) {
             logger.LogInformation($"Building workflow '{workflow.Name}'");
+            variables = await variables.TranslateVariables(compiler);
             int startcount = workflow.Nodes.Count(n => n.Type == NodeType.Start);
             if(startcount == 0)
                 throw new ArgumentException("Workflow has no start node");
@@ -185,11 +186,13 @@ namespace ScriptService.Services.Workflows {
 
         /// <inheritdoc />
         public async Task<WorkflowInstance> BuildWorkflow(long workflowid, int? revision = null, IDictionary<string, object> variables = null) {
+            variables = await variables.TranslateVariables(compiler);
             return await BuildWorkflow(await workflowservice.GetWorkflow(workflowid, revision), variables);
         }
 
         /// <inheritdoc />
         public async Task<WorkflowInstance> BuildWorkflow(string workflowname, int? revision = null, IDictionary<string, object> variables = null) {
+            variables = await variables.TranslateVariables(compiler);
             return await BuildWorkflow(await workflowservice.GetWorkflow(workflowname, revision), variables);
         }
     }
