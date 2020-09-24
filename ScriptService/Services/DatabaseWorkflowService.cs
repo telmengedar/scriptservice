@@ -28,10 +28,10 @@ namespace ScriptService.Services {
         readonly PreparedOperation deletenodes;
         readonly PreparedOperation deleteworkflow;
 
-        readonly PreparedLoadEntitiesOperation<Workflow> loadworkflowbyid;
-        readonly PreparedLoadEntitiesOperation<Workflow> loadworkflowbyname;
-        readonly PreparedLoadValuesOperation loadtransitions;
-        readonly PreparedLoadValuesOperation loadnodes;
+        readonly PreparedLoadOperation<Workflow> loadworkflowbyid;
+        readonly PreparedLoadOperation<Workflow> loadworkflowbyname;
+        readonly PreparedLoadOperation loadtransitions;
+        readonly PreparedLoadOperation loadnodes;
 
         readonly PreparedOperation insertnode;
         readonly PreparedOperation inserttransition;
@@ -56,8 +56,8 @@ namespace ScriptService.Services {
             deletenodes = database.Delete<WorkflowNode>().Where(n => n.WorkflowId == DBParameter.Int64).Prepare();
             deleteworkflow = database.Delete<Workflow>().Where(w => w.Id == DBParameter.Int64).Prepare();
 
-            loadworkflowbyid = database.LoadEntities<Workflow>().Where(w => w.Id == DBParameter.Int64).Prepare();
-            loadworkflowbyname = database.LoadEntities<Workflow>().Where(w => w.Name == DBParameter.String).Prepare();
+            loadworkflowbyid = database.Load<Workflow>().Where(w => w.Id == DBParameter.Int64).Prepare();
+            loadworkflowbyname = database.Load<Workflow>().Where(w => w.Name == DBParameter.String).Prepare();
 
             loadnodes = database.Load<WorkflowNode>(n => n.Id, n => n.Name, n => n.Type, n => n.Parameters, n=>n.Variable).Where(n => n.WorkflowId == DBParameter.Int64).Prepare();
             loadtransitions = database.Load<WorkflowTransition>(t => t.OriginId, t => t.TargetId, t => t.Condition, t=>t.Type).Where(t => t.WorkflowId == DBParameter.Int64).Prepare();
@@ -65,8 +65,8 @@ namespace ScriptService.Services {
             inserttransition = database.Insert<WorkflowTransition>().Columns(t => t.WorkflowId, t => t.OriginId, t => t.TargetId, t => t.Condition, t=>t.Type).Prepare();
         }
 
-        async Task<Workflow> LoadWorkflowByName(string name) {
-            return (await loadworkflowbyname.ExecuteAsync(name)).FirstOrDefault();
+        Task<Workflow> LoadWorkflowByName(string name) {
+            return loadworkflowbyname.ExecuteEntityAsync(name);
         }
 
         Task UpdateWorkflow(Transaction transaction, long workflowid, string name) {
@@ -166,12 +166,14 @@ namespace ScriptService.Services {
 
         /// <inheritdoc />
         public async Task<WorkflowDetails> GetWorkflow(long workflowid, int? revision=null) {
-            Workflow workflow = (await loadworkflowbyid.ExecuteAsync(workflowid)).FirstOrDefault();
+            Workflow workflow = await loadworkflowbyid.ExecuteEntityAsync(workflowid);
             if (workflow == null)
                 throw new NotFoundException(typeof(Workflow), workflowid);
 
-            if (revision.HasValue && workflow.Revision != revision.Value)
-                return await archiveservice.GetArchivedObject<WorkflowDetails>(workflowid, revision.Value, ArchiveTypes.Workflow);
+            if (revision.HasValue && workflow.Revision != revision.Value) {
+                if(revision.Value != workflow.Revision)
+                    return await archiveservice.GetArchivedObject<WorkflowDetails>(workflowid, revision.Value, ArchiveTypes.Workflow);
+            }
 
             return await FillWorkflow(new WorkflowDetails {
                 Id = workflow.Id,
@@ -186,8 +188,10 @@ namespace ScriptService.Services {
             if(workflow == null)
                 throw new NotFoundException(typeof(Workflow), name);
 
-            if(revision.HasValue && workflow.Revision != revision.Value)
-                return await archiveservice.GetArchivedObject<WorkflowDetails>(workflow.Id, revision.Value, ArchiveTypes.Workflow);
+            if (revision.HasValue && workflow.Revision != revision.Value) {
+                if(revision.Value!=workflow.Revision)
+                    return await archiveservice.GetArchivedObject<WorkflowDetails>(workflow.Id, revision.Value, ArchiveTypes.Workflow);
+            }
 
             return await FillWorkflow(new WorkflowDetails {
                 Id = workflow.Id,
@@ -199,11 +203,11 @@ namespace ScriptService.Services {
         /// <inheritdoc />
         public async Task<Page<Workflow>> ListWorkflows(ListFilter filter = null) {
             filter??=new ListFilter();
-            LoadEntitiesOperation<Workflow> operation = database.LoadEntities<Workflow>();
+            LoadOperation<Workflow> operation = database.Load<Workflow>();
 
 
             return Page<Workflow>.Create(
-                await operation.ApplyFilter(filter).ExecuteAsync(),
+                await operation.ApplyFilter(filter).ExecuteEntitiesAsync(),
                 await database.Load<Workflow>(w => DBFunction.Count()).ExecuteScalarAsync<long>(),
                 filter.Continue
             );

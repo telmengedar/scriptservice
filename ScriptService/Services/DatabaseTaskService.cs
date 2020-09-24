@@ -24,7 +24,7 @@ namespace ScriptService.Services {
         readonly ConcurrentDictionary<Guid, WorkableTask> runningtasks=new ConcurrentDictionary<Guid, WorkableTask>();
 
         readonly PreparedOperation insert;
-        readonly PreparedLoadEntitiesOperation<TaskDb> loadtask;
+        readonly PreparedLoadOperation<TaskDb> loadtask;
 
         /// <summary>
         /// creates a new <see cref="DatabaseTaskService"/>
@@ -34,7 +34,7 @@ namespace ScriptService.Services {
             this.database = database;
             database.UpdateSchema<TaskDb>();
             insert = database.Insert<TaskDb>().Columns(t => t.Id, t=>t.Type, t => t.WorkableId, t => t.WorkableRevision, t => t.WorkableName, t => t.Parameters, t => t.Started, t => t.Finished, t => t.Status, t => t.Result, t => t.Log).Prepare();
-            loadtask = database.LoadEntities<TaskDb>().Where(t => t.Id == DBParameter.Guid).Prepare();
+            loadtask = database.Load<TaskDb>().Where(t => t.Id == DBParameter.Guid).Prepare();
         }
 
         /// <inheritdoc />
@@ -61,7 +61,7 @@ namespace ScriptService.Services {
             if (runningtasks.TryGetValue(id, out WorkableTask task))
                 return task;
 
-            TaskDb dbtask = (await loadtask.ExecuteAsync(id)).FirstOrDefault();
+            TaskDb dbtask = await loadtask.ExecuteEntityAsync(id);
             if (dbtask == null)
                 throw new NotFoundException(typeof(WorkableTask), id.ToString());
 
@@ -97,7 +97,7 @@ namespace ScriptService.Services {
                 match.AddRange(runningtasks.Values.Where(t=>filter.Status.Contains(t.Status)).Take((int) filter.Count.Value).Select(t => new WorkableTask(t)));
 
             long left = filter.Count.Value - match.Count;
-            if (left > 0 && filter.Status.Any(s => s != TaskStatus.Running || s != TaskStatus.Suspended)) {
+            if (left > 0 && filter.Status.Any(s => s != TaskStatus.Running && s != TaskStatus.Suspended)) {
                 PredicateExpression<TaskDb> tasks = null;
                 if (filter.Status?.Length > 0)
                     tasks &= t => t.Status.In(filter.Status);

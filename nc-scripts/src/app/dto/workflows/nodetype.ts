@@ -63,13 +63,17 @@ export enum NodeType {
 export namespace NodeType {
 
     export function getNodeTypeName(type: any): string {
-        if(type as string)
+        if(typeof type === "number")
+            return NodeType[type];
+
+        if(typeof type === "string")
         {
             let num=parseInt(type)
             if(num>=0)
-            return NodeType[num];
+                return NodeType[num];
         }
-        return type;
+
+        return type.toString();
     }
 
     export function getNodeTypeValue(type: any): NodeType {

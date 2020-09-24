@@ -22,7 +22,7 @@ namespace ScriptService.Services.Tasks {
         readonly IEntityManager database;
 
         readonly PreparedOperation insert;
-        readonly PreparedLoadEntitiesOperation<ScheduledTask> loadbyid;
+        readonly PreparedLoadOperation<ScheduledTask> loadbyid;
         readonly PreparedOperation delete;
         readonly PreparedOperation updatescheduletime;
         readonly PreparedOperation updateexecution;
@@ -36,7 +36,7 @@ namespace ScriptService.Services.Tasks {
             database.UpdateSchema<ScheduledTask>();
             insert = database.Insert<ScheduledTask>().Columns(t => t.Name, t => t.WorkableType, t => t.WorkableName, t => t.WorkableRevision, t => t.Target, t => t.Days, t => t.Interval).Prepare();
             delete = database.Delete<ScheduledTask>().Where(t => t.Id == DBParameter.Int64).Prepare();
-            loadbyid = database.LoadEntities<ScheduledTask>().Where(t => t.Id == DBParameter.Int64).Prepare();
+            loadbyid = database.Load<ScheduledTask>().Where(t => t.Id == DBParameter.Int64).Prepare();
             updatescheduletime = database.Update<ScheduledTask>().Set(t => t.Target == DBParameter<DateTime?>.Value).Where(t => t.Id == DBParameter.Int64).Prepare();
             updateexecution = database.Update<ScheduledTask>().Set(t => t.LastExecution == DBParameter<DateTime?>.Value, t => t.Target == DBParameter<DateTime?>.Value).Where(t => t.Id == DBParameter.Int64).Prepare();
         }
@@ -53,7 +53,7 @@ namespace ScriptService.Services.Tasks {
 
         /// <inheritdoc />
         public async Task<ScheduledTask> GetById(long id) {
-            ScheduledTask task = (await loadbyid.ExecuteAsync(id)).FirstOrDefault();
+            ScheduledTask task = await loadbyid.ExecuteEntityAsync(id);
             if (task == null)
                 throw new NotFoundException(typeof(ScheduledTask), id);
             return task;
@@ -62,7 +62,7 @@ namespace ScriptService.Services.Tasks {
         /// <inheritdoc />
         public async Task<Page<ScheduledTask>> List(ScheduledTaskFilter filter = null) {
             filter ??= new ScheduledTaskFilter();
-            LoadEntitiesOperation<ScheduledTask> operation = database.LoadEntities<ScheduledTask>();
+            LoadOperation<ScheduledTask> operation = database.Load<ScheduledTask>();
             operation.ApplyFilter(filter);
 
             PredicateExpression<ScheduledTask> predicate = null;
@@ -73,7 +73,7 @@ namespace ScriptService.Services.Tasks {
                 operation.Where(predicate.Content);
 
             return Page<ScheduledTask>.Create(
-                await operation.ExecuteAsync<ScheduledTask>(),
+                await operation.ExecuteEntitiesAsync<ScheduledTask>(),
                 await database.Load<ScheduledTask>(t => DBFunction.Count()).Where(predicate?.Content).ExecuteScalarAsync<long>(),
                 filter.Continue);
         }

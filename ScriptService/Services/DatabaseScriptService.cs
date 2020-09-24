@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NightlyCode.AspNetCore.Services.Data;
 using NightlyCode.AspNetCore.Services.Errors.Exceptions;
 using NightlyCode.Database.Clients;
@@ -21,8 +20,8 @@ namespace ScriptService.Services {
         readonly IArchiveService archiveservice;
 
         readonly PreparedOperation insertscript;
-        readonly PreparedLoadEntitiesOperation<Script> getscript;
-        readonly PreparedLoadEntitiesOperation<Script> getscriptbyname;
+        readonly PreparedLoadOperation<Script> getscript;
+        readonly PreparedLoadOperation<Script> getscriptbyname;
         readonly PreparedOperation deletescript;
 
         /// <summary>
@@ -35,8 +34,8 @@ namespace ScriptService.Services {
             this.archiveservice = archiveservice;
             database.UpdateSchema<Script>();
             insertscript = database.Insert<Script>().Columns(s => s.Revision, s => s.Name, s => s.Code).ReturnID().Prepare();
-            getscript = database.LoadEntities<Script>().Where(s => s.Id == DBParameter.Int64).Prepare();
-            getscriptbyname = database.LoadEntities<Script>().Where(s => s.Name == DBParameter.String).Prepare();
+            getscript = database.Load<Script>().Where(s => s.Id == DBParameter.Int64).Prepare();
+            getscriptbyname = database.Load<Script>().Where(s => s.Name == DBParameter.String).Prepare();
             deletescript = database.Delete<Script>().Where(s => s.Id == DBParameter.Int64).Prepare();
         }
 
@@ -47,7 +46,7 @@ namespace ScriptService.Services {
 
         /// <inheritdoc />
         public async Task<Script> GetScript(long scriptid) {
-            Script script = (await getscript.ExecuteAsync(scriptid)).FirstOrDefault();
+            Script script = await getscript.ExecuteEntityAsync(scriptid);
             if (script == null)
                 throw new NotFoundException(typeof(Script), scriptid);
             return script;
@@ -55,7 +54,7 @@ namespace ScriptService.Services {
 
         /// <inheritdoc />
         public async Task<Script> GetScript(string scriptname) {
-            Script script = (await getscriptbyname.ExecuteAsync(scriptname)).FirstOrDefault();
+            Script script = await getscriptbyname.ExecuteEntityAsync(scriptname);
             if(script == null)
                 throw new NotFoundException(typeof(Script), scriptname);
             return script;
@@ -64,10 +63,10 @@ namespace ScriptService.Services {
         /// <inheritdoc />
         public async Task<Page<Script>> ListScripts(ListFilter filter = null) {
             filter ??= new ListFilter();
-            LoadEntitiesOperation<Script> operation = database.LoadEntities<Script>();
+            LoadOperation<Script> operation = database.Load<Script>();
             operation.ApplyFilter(filter);
             return Page<Script>.Create(
-                await operation.ExecuteAsync(),
+                await operation.ExecuteEntitiesAsync(),
                 await database.Load<Script>(s => DBFunction.Count()).ExecuteScalarAsync<long>(),
                 filter.Continue
             );

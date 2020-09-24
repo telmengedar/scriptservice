@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Threading.Tasks;
 using NightlyCode.AspNetCore.Services.Data;
 using NightlyCode.AspNetCore.Services.Errors.Exceptions;
@@ -18,7 +17,7 @@ namespace ScriptService.Services {
         readonly IEntityManager database;
 
         readonly PreparedOperation insert;
-        readonly PreparedLoadEntitiesOperation<ArchivedObject> load;
+        readonly PreparedLoadOperation<ArchivedObject> load;
 
         /// <summary>
         /// creates a new <see cref="DatabaseArchiveService"/>
@@ -28,7 +27,7 @@ namespace ScriptService.Services {
             this.database = database;
             database.UpdateSchema<ArchivedObject>();
             insert = database.Insert<ArchivedObject>().Columns(o => o.Type, o => o.ObjectId, o => o.Revision, o => o.Data).Prepare();
-            load = database.LoadEntities<ArchivedObject>().Where(o => o.Type == DBParameter.String && o.ObjectId == DBParameter.Int64 && o.Revision == DBParameter.Int32).Prepare();
+            load = database.Load<ArchivedObject>().Where(o => o.Type == DBParameter.String && o.ObjectId == DBParameter.Int64 && o.Revision == DBParameter.Int32).Prepare();
         }
 
         /// <inheritdoc />
@@ -47,7 +46,7 @@ namespace ScriptService.Services {
         public async Task<T> GetArchivedObject<T>(long id, int revision, string typename=null) {
             typename ??= typeof(T).Name;
             
-            ArchivedObject data = (await load.ExecuteAsync(typename, id, revision)).FirstOrDefault();
+            ArchivedObject data = await load.ExecuteEntityAsync(typename, id, revision);
 
             if (data == null)
                 throw new NotFoundException(typeof(ArchivedObject), $"{typeof(T).Name}/{id}.{revision}");
