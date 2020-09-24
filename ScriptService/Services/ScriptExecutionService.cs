@@ -66,24 +66,39 @@ namespace ScriptService.Services {
             return scripttask;
         }
 
+        async Task<IDictionary<string, object>> TranslateVariables(IDictionary<string, object> variables) {
+            if (variables == null)
+                return null;
+
+            Dictionary<string, object> translated=new Dictionary<string, object>();
+            foreach (KeyValuePair<string, object> kvp in variables) {
+                if (kvp.Value is string code) {
+                    translated[kvp.Key] = await (await scriptcompiler.CompileCodeAsync(code)).ExecuteAsync();
+                }
+                else translated[kvp.Key] = kvp.Value;
+            }
+
+            return translated;
+        }
+
         /// <inheritdoc />
         public async Task<WorkableTask> Execute(long id, int? revision=null, IDictionary<string, object> variables = null, TimeSpan? wait=null) {
             CompiledScript script = await scriptcompiler.CompileScript(id, revision);
-            WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, script.Id, script.Revision, script.Name, variables);
+            WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, script.Id, script.Revision, script.Name, await TranslateVariables(variables));
             return await Execute(script.Instance, scripttask, variables, wait);
         }
 
         /// <inheritdoc />
         public async Task<WorkableTask> Execute(string name, int? revision=null, IDictionary<string, object> variables=null, TimeSpan? wait = null) {
             CompiledScript script = await scriptcompiler.CompileScript(name, revision);
-            WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, script.Id, script.Revision, script.Name, variables);
+            WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, script.Id, script.Revision, script.Name, await TranslateVariables(variables));
             return await Execute(script.Instance, scripttask, variables, wait);
         }
 
         /// <inheritdoc />
         public async Task<WorkableTask> Execute(NamedCode code, IDictionary<string, object> variables = null, TimeSpan? wait = null) {
-            WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, 0, 0, code.Name, variables);
-            return await Execute(await scriptcompiler.CompileCode(code.Code), scripttask, variables, wait);
+            WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, 0, 0, code.Name, await TranslateVariables(variables));
+            return await Execute(await scriptcompiler.CompileCodeAsync(code.Code), scripttask, variables, wait);
         }
     }
 }

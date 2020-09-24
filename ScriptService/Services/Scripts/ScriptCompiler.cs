@@ -40,7 +40,7 @@ namespace ScriptService.Services.Scripts {
 
         async Task<CompiledScript> Parse(Script scriptdata) {
             logger.LogInformation($"Parsing script '{scriptdata.Id}.{scriptdata.Revision}'");
-            IScript script = await CompileCode(scriptdata.Code);
+            IScript script = await CompileCodeAsync(scriptdata.Code);
 
             return new CompiledScript {
                 Id = scriptdata.Id,
@@ -85,7 +85,14 @@ namespace ScriptService.Services.Scripts {
         }
 
         /// <inheritdoc />
-        public Task<IScript> CompileCode(string code) {
+        public IScript CompileCode(string code) {
+            if (string.IsNullOrEmpty(code))
+                return null;
+            return parser.Parse(code);
+        }
+
+        /// <inheritdoc />
+        public Task<IScript> CompileCodeAsync(string code) {
             if (string.IsNullOrEmpty(code))
                 return Task.FromResult<IScript>(null);
             return parser.ParseAsync(code);

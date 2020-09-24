@@ -2269,7 +2269,7 @@
             compiles code to executable task
             </summary>
         </member>
-        <member name="M:ScriptService.Services.Scripts.IScriptCompiler.CompileCode(System.Int64,System.Int32,System.String)">
+        <member name="M:ScriptService.Services.Scripts.IScriptCompiler.CompileCodeAsync(System.Int64,System.Int32,System.String)">
             <summary>
             compiles a code to an executable task based on an id and revision
             </summary>
@@ -2281,7 +2281,7 @@
             <param name="code">code to compile</param>
             <returns>compiled task</returns>
         </member>
-        <member name="M:ScriptService.Services.Scripts.IScriptCompiler.CompileCode(System.String)">
+        <member name="M:ScriptService.Services.Scripts.IScriptCompiler.CompileCodeAsync(System.String)">
             <summary>
             compiles a code to an executable task based on an id and revision
             </summary>
@@ -2300,10 +2300,10 @@
             <param name="cache">access to object cache</param>
             <param name="methodprovider">provides managed method hosts to tasks</param>
         </member>
-        <member name="M:ScriptService.Services.Scripts.ScriptCompiler.CompileCode(System.Int64,System.Int32,System.String)">
+        <member name="M:ScriptService.Services.Scripts.ScriptCompiler.CompileCodeAsync(System.Int64,System.Int32,System.String)">
             <inheritdoc />
         </member>
-        <member name="M:ScriptService.Services.Scripts.ScriptCompiler.CompileCode(System.String)">
+        <member name="M:ScriptService.Services.Scripts.ScriptCompiler.CompileCodeAsync(System.String)">
             <inheritdoc />
         </member>
         <member name="T:ScriptService.Services.Sense.IScriptSenseService">

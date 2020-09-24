@@ -37,6 +37,13 @@ namespace ScriptService.Services.Scripts {
         /// </summary>
         /// <param name="code">code to compile</param>
         /// <returns>compiled script</returns>
-        Task<IScript> CompileCode(string code);
+        IScript CompileCode(string code);
+
+        /// <summary>
+        /// compiles a code to an executable script based on an id and revision
+        /// </summary>
+        /// <param name="code">code to compile</param>
+        /// <returns>compiled script</returns>
+        Task<IScript> CompileCodeAsync(string code);
     }
 }

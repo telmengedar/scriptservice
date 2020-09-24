@@ -40,7 +40,7 @@ namespace ScriptService.Services.Workflows.Nodes {
         public IEnumerator Current { get; private set; }
 
         async Task CreateEnumerator(IVariableProvider variables, CancellationToken token) {
-            IScript enumerationscript = await compiler.CompileCode(Parameters.Collection);
+            IScript enumerationscript = await compiler.CompileCodeAsync(Parameters.Collection);
             if (!(await enumerationscript.ExecuteAsync(variables, token) is IEnumerable enumerable))
                 throw new WorkflowException("Can not enumerate null");
 

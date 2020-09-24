@@ -74,6 +74,8 @@ namespace ScriptService {
                     logger.LogWarning($"Unable to find type '{type.Value}'");
                     continue;
                 }
+
+                logger.LogInformation($"Adding '{typedef}' as '{type.Key}'");
                 parser.Types.AddType(type.Key, new TypeInstanceProvider(typedef, parser.MethodCallResolver));
             }
             return parser;

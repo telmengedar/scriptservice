@@ -20,10 +20,19 @@ namespace ScriptService.Dto.Cache {
             Revision = revision;
         }
 
+        /// <summary>
+        /// type of cached object
+        /// </summary>
         public Type ObjectType { get; }
 
+        /// <summary>
+        /// id of cached object
+        /// </summary>
         public T Id { get; }
 
+        /// <summary>
+        /// cached object revision
+        /// </summary>
         public int Revision { get; }
 
         bool Equals(CacheKey<T> other) {

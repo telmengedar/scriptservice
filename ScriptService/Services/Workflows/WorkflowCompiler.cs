@@ -75,7 +75,7 @@ namespace ScriptService.Services.Workflows {
         }
 
         async Task BuildTransition<T>(T source, T target, Transition data, Func<T, IInstanceNode> nodegetter) {
-            IScript condition = string.IsNullOrEmpty(data.Condition) ? null : await compiler.CompileCode(data.Condition);
+            IScript condition = string.IsNullOrEmpty(data.Condition) ? null : await compiler.CompileCodeAsync(data.Condition);
             List<InstanceTransition> transitions;
             switch(data.Type) {
             case TransitionType.Standard:
@@ -105,7 +105,7 @@ namespace ScriptService.Services.Workflows {
                 break;
             case NodeType.Expression:
                 ExecuteExpressionParameters parameters = node.Parameters.Deserialize<ExecuteExpressionParameters>();
-                instance = new ExpressionNode(node.Name, await compiler.CompileCode(parameters.Code));
+                instance = new ExpressionNode(node.Name, await compiler.CompileCodeAsync(parameters.Code));
                 break;
             case NodeType.Script:
                 instance = new ScriptNode(node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), compiler);

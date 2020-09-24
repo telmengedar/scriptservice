@@ -197,9 +197,9 @@ export class NodeEditorComponent implements OnInit {
    * @param target element invoking the event
    */
   addWorkableParameter(key: string, value: string): void {
-    if(!this.node.parameters.parameters)
-      this.node.parameters.parameters={};
-    this.node.parameters.parameters[key]=value;
+    if(!this.node.parameters.arguments)
+      this.node.parameters.arguments={};
+    this.node.parameters.arguments[key]=value;
     this.inputkey="";
     this.inputvalue="";
   }
@@ -217,7 +217,7 @@ export class NodeEditorComponent implements OnInit {
    * @param index index of argument to remove
    */
   deleteWorkableParameter(key: string): void {
-    delete this.node.parameters.parameters[key];
+    delete this.node.parameters.arguments[key];
   }
 
   /**

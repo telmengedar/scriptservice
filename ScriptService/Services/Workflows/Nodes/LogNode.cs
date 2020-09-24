@@ -33,7 +33,7 @@ namespace ScriptService.Services.Workflows.Nodes {
 
         /// <inheritdoc />
         public override async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
-            logparameter ??= await compiler.CompileCode(Parameters.Text);
+            logparameter ??= await compiler.CompileCodeAsync(Parameters.Text);
             logger.Log(Parameters.Type, await logparameter.ExecuteAsync<string>(new VariableProvider(variables, state), token));
             return null;
         }

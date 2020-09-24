@@ -28,7 +28,7 @@ namespace ScriptService.Services.Workflows.Nodes {
 
         /// <inheritdoc />
         public override async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
-            expression ??= await compiler.CompileCode(GenerateCode());
+            expression ??= await compiler.CompileCodeAsync(GenerateCode());
             object result = await expression.ExecuteAsync(new VariableProvider(variables, state), token);
             if (result is Task task) {
                 await task;

@@ -17,7 +17,11 @@ namespace ScriptService.Tests.Mocks {
             throw new NotImplementedException();
         }
 
-        public Task<IScript> CompileCode(string code) {
+        public IScript CompileCode(string code) {
+            return parser.Parse(code);
+        }
+
+        public Task<IScript> CompileCodeAsync(string code) {
             return parser.ParseAsync(code);
         }
     }
