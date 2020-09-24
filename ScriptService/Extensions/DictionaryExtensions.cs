@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using NightlyCode.AspNetCore.Services.Convert;
+using NightlyCode.Scripting;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Errors;
+using ScriptService.Services.Scripts;
 
 namespace ScriptService.Extensions {
 
@@ -131,5 +135,45 @@ namespace ScriptService.Extensions {
 
             return scriptparameters;
         }
+
+        /// <summary>
+        /// builds argument scripts for workflow nodes
+        /// </summary>
+        /// <param name="arguments">arguments to use as code source</param>
+        /// <param name="compiler">compiler used to compile scripts</param>
+        /// <returns></returns>
+        public static IDictionary<string, IScript> BuildArguments(this IDictionary<string, object> arguments, IScriptCompiler compiler) {
+            if (arguments == null)
+                return null;
+
+            Dictionary<string, IScript> result=new Dictionary<string, IScript>();
+            foreach ((string key, object value) in arguments) {
+                if (value is string code)
+                    result[key] = compiler.CompileCode(code) ?? new ConstantValueScript(null);
+                else result[key] = new ConstantValueScript(value);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// evaluates argument scripts and returns values to use as parameters
+        /// </summary>
+        /// <param name="arguments">arguments to evaluate</param>
+        /// <param name="state">state to use as variable source</param>
+        /// <param name="token">token used for cancellation</param>
+        /// <returns>workable parameter values</returns>
+        public static async Task<IDictionary<string, object>> EvaluateArguments(this IDictionary<string, IScript> arguments, IDictionary<string, object> state, CancellationToken token) {
+            if (arguments == null)
+                return new Dictionary<string, object>();
+
+            Dictionary<string, object> result = new Dictionary<string, object>();
+            foreach((string key, IScript value) in arguments) {
+                result[key] = await value.ExecuteAsync(state, token);
+            }
+
+            return result;
+        }
+
     }
 }

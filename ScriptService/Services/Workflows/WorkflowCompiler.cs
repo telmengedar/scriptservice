@@ -111,7 +111,7 @@ namespace ScriptService.Services.Workflows {
                 instance = new ScriptNode(node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), compiler);
                 break;
             case NodeType.Workflow:
-                instance = new WorkflowInstanceNode(node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), GetWorkflowInstance, workflowexecutor.Execute);
+                instance = new WorkflowInstanceNode(node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), GetWorkflowInstance, workflowexecutor.Execute, compiler);
                 break;
             case NodeType.BinaryOperation:
                 BinaryOpParameters binparameters = node.Parameters.Deserialize<BinaryOpParameters>();

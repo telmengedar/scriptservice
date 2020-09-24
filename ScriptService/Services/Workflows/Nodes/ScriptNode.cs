@@ -6,6 +6,7 @@ using NightlyCode.Scripting;
 using NightlyCode.Scripting.Parser;
 using ScriptService.Dto.Scripts;
 using ScriptService.Dto.Workflows.Nodes;
+using ScriptService.Extensions;
 using ScriptService.Services.Scripts;
 
 namespace ScriptService.Services.Workflows.Nodes {
@@ -15,8 +16,6 @@ namespace ScriptService.Services.Workflows.Nodes {
     /// </summary>
     public class ScriptNode : InstanceNode {
         readonly IScriptCompiler compiler;
-
-        
 
         /// <summary>
         /// creates a new <see cref="ScriptNode"/>
@@ -28,11 +27,7 @@ namespace ScriptService.Services.Workflows.Nodes {
         : base(name) {
             this.compiler = compiler;
             Name = parameters.Name;
-            
-            if (parameters.Arguments != null) {
-                foreach (KeyValuePair<string, object> kvp in parameters.Arguments)
-                    Arguments[kvp.Key] = compiler.CompileCode(kvp.Value?.ToString());
-            }
+            Arguments = parameters.Arguments.BuildArguments(compiler);
         }
 
         
@@ -44,21 +39,12 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// <summary>
         /// arguments for script call
         /// </summary>
-        IDictionary<string, IScript> Arguments { get; } = new Dictionary<string, IScript>();
-
-        async Task<IDictionary<string, object>> GetArguments(IDictionary<string, object> state, CancellationToken token) {
-            Dictionary<string, object> arguments=new Dictionary<string, object>();
-            foreach (KeyValuePair<string, IScript> argument in Arguments) {
-                arguments[argument.Key] = await argument.Value.ExecuteAsync(state, token);
-            }
-
-            return arguments;
-        }
+        IDictionary<string, IScript> Arguments { get; }
 
         /// <inheritdoc />
         public override async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
             CompiledScript script = await compiler.CompileScript(Name);
-            IDictionary<string, object> arguments = await GetArguments(state, token);
+            IDictionary<string, object> arguments = await Arguments.EvaluateArguments(state, token);
             variables = new StateVariableProvider(variables, arguments);
             logger.Info($"Executing script '{script.Name}'", string.Join("\n", arguments.Select(p => $"{p.Key}: {p.Value}")));
             return await script.Instance.ExecuteAsync(variables, token);
