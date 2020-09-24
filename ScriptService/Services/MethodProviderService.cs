@@ -31,6 +31,25 @@ namespace ScriptService.Services {
         /// <param name="configuration">configuration containing hosts to load</param>
         public MethodProviderService(ILogger<MethodProviderService> logger, IServiceProvider serviceprovider, IConfiguration configuration) {
             this.serviceprovider = serviceprovider;
+            IConfigurationSection hostsection = configuration.GetSection("Hosts");
+            if (hostsection != null) {
+                logger.LogInformation("Loading script hosts from configuration");
+                foreach (IConfigurationSection section in hostsection.GetChildren()) {
+                    Type hosttype = Type.GetType(section.Value);
+                    if (hosttype == null) {
+                        logger.LogWarning($"Type '{section.Value}' not found.");
+                        continue;
+                    }
+
+                    try {
+                        hosts[section.Key] = Activator.CreateInstance(hosttype);
+                    }
+                    catch (Exception e) {
+                        logger.LogError(e, $"Error creating host '{hosttype}'");
+                    }
+                }
+            }
+
             IConfigurationSection servicesection = configuration.GetSection("Services");
             if (servicesection != null) {
                 logger.LogInformation("Loading service hosts from configuration");
