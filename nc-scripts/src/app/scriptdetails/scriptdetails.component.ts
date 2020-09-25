@@ -47,7 +47,7 @@ export class ScriptDetailsComponent implements OnInit, OnDestroy {
       description: "JavaScript"
     }
   ];
-  
+
   editorOptions = {
     theme: 'vs-dark', 
     language: 'csharp',
@@ -168,6 +168,7 @@ export class ScriptDetailsComponent implements OnInit, OnDestroy {
 
   private scriptLoaded(script: Script): void {
     this.script=script;
+    this.script.language=ScriptLanguage.getNodeTypeValue(this.script.language);
     this.oldscript=Object.assign({}, this.script);
     this.changed=false;
   }

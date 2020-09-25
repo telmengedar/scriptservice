@@ -11,13 +11,15 @@ namespace ScriptService.Services.JavaScript {
     /// </summary>
     public class JavascriptTypeConverter : ITypeConverter {
 
+        /// <inheritdoc />
         public object Convert(object value, Type type, IFormatProvider formatProvider) {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public bool TryConvert(object value, Type type, IFormatProvider formatProvider, out object converted) {
             if (value is IDictionary<string, object> dic) {
-                converted = dic.Deserialize(type);
+                converted = type == typeof(IDictionary<string, object>) ? dic : dic.Deserialize(type);
                 return true;
             }
 
