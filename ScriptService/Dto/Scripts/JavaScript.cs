@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Jint;
-using Jint.Constraints;
 using NightlyCode.AspNetCore.Services.Convert;
 using NightlyCode.Scripting;
 using NightlyCode.Scripting.Parser;
@@ -43,7 +42,7 @@ namespace ScriptService.Dto.Scripts {
             WorkableLogger logger=variables.GetProvider("log").GetVariable("log") as WorkableLogger;
             
             Engine engine=new Engine();
-            engine.SetValue("import", importservice.Clone(logger));
+            engine.SetValue("load", importservice.Clone(logger));
             
             foreach (string name in variables.Variables) {
                 

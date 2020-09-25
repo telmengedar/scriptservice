@@ -72,7 +72,16 @@ namespace ScriptService.Services {
             CompiledScript script = await scriptcompiler.CompileScriptAsync(id, revision);
             IDictionary<string, object> runtimevariables = await variables.TranslateVariables(scriptcompiler);
             WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, script.Id, script.Revision, script.Name, runtimevariables);
-            return await Execute(script.Instance, scripttask, runtimevariables, wait);
+            try {
+                return await Execute(script.Instance, scripttask, runtimevariables, wait);
+            }
+            catch (Exception e) {
+                scripttask.Log.Add(e.ToString());
+                scripttask.Status = TaskStatus.Failure;
+                await scriptinstances.FinishTask(scripttask.Id);
+            }
+
+            return scripttask;
         }
 
         /// <inheritdoc />
@@ -80,14 +89,32 @@ namespace ScriptService.Services {
             CompiledScript script = await scriptcompiler.CompileScriptAsync(name, revision);
             IDictionary<string, object> runtimevariables = await variables.TranslateVariables(scriptcompiler);
             WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, script.Id, script.Revision, script.Name, runtimevariables);
-            return await Execute(script.Instance, scripttask, runtimevariables, wait);
+            try {
+                return await Execute(script.Instance, scripttask, runtimevariables, wait);
+            }
+            catch (Exception e) {
+                scripttask.Log.Add(e.ToString());
+                scripttask.Status = TaskStatus.Failure;
+                await scriptinstances.FinishTask(scripttask.Id);
+            }
+
+            return scripttask;
         }
 
         /// <inheritdoc />
         public async Task<WorkableTask> Execute(NamedCode code, IDictionary<string, object> variables = null, TimeSpan? wait = null) {
             IDictionary<string, object> runtimevariables = await variables.TranslateVariables(scriptcompiler);
             WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, 0, 0, code.Name, runtimevariables);
-            return await Execute(await scriptcompiler.CompileCodeAsync(code.Code, code.Language), scripttask, runtimevariables, wait);
+            try {
+                return await Execute(await scriptcompiler.CompileCodeAsync(code.Code, code.Language), scripttask, runtimevariables, wait);
+            }
+            catch (Exception e) {
+                scripttask.Log.Add(e.ToString());
+                scripttask.Status = TaskStatus.Failure;
+                await scriptinstances.FinishTask(scripttask.Id);
+            }
+
+            return scripttask;
         }
     }
 }
