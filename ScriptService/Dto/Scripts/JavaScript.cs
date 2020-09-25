@@ -40,8 +40,10 @@ namespace ScriptService.Dto.Scripts {
                 throw new InvalidOperationException("Javascript execution needs global variables");
 
             WorkableLogger logger=variables.GetProvider("log").GetVariable("log") as WorkableLogger;
-            
-            Engine engine=new Engine();
+
+            Engine engine = new Engine {
+                ClrTypeConverter = new JavascriptTypeConverter()
+            };
             engine.SetValue("load", importservice.Clone(logger));
             
             foreach (string name in variables.Variables) {

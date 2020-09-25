@@ -28,7 +28,7 @@ namespace ScriptService.Tests.Mocks {
             case ScriptLanguage.NCScript:
                 return parser.Parse(code);
             case ScriptLanguage.JavaScript:
-                return new JavaScript(jsparser.Parse(code), null);
+                return new JavaScript(jsparser.Parse(code), new JavascriptImportService(null));
             default:
                 throw new ArgumentException($"Unsupported script language '{language}'");
             }
@@ -42,7 +42,7 @@ namespace ScriptService.Tests.Mocks {
             case ScriptLanguage.NCScript:
                 return await parser.ParseAsync(code);
             case ScriptLanguage.JavaScript:
-                return new JavaScript(await jsparser.ParseAsync(code), null);
+                return new JavaScript(await jsparser.ParseAsync(code), new JavascriptImportService(null));
             default:
                 throw new ArgumentException($"Unsupported script language '{language}'");
             }
