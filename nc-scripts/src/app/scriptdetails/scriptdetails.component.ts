@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Script } from '../dto/script';
+import { Script } from '../dto/scripts/script';
 import {Location} from '@angular/common';
 import { ScriptService } from '../services/script.service';
 import { PatchOperation } from '../dto/patchoperation';
@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { WorkableTask } from '../dto/workabletask';
 import { TaskService } from '../services/task.service';
 import { NavigationItem } from '../dto/navigation/navigationItem';
+import { ScriptLanguage } from '../dto/scripts/scriptlanguage';
 
 /**
  * editor component for a single script.
@@ -24,15 +25,29 @@ export class ScriptDetailsComponent implements OnInit, OnDestroy {
   ]
 
   script: Script={
-    scope: "",
     name: "",
-    code: ""
+    code: "",
+    language: ScriptLanguage.JavaScript
   };
+
   oldscript: Script;
 
   parameters: any={};
   task: WorkableTask;
 
+  languages=[
+    {
+      type: ScriptLanguage.NCScript,
+      name: "NightlyCode Script",
+      description: "NightlyCode Script Language"
+    },
+    {
+      type: ScriptLanguage.JavaScript,
+      name: "JavaScript",
+      description: "JavaScript"
+    }
+  ];
+  
   editorOptions = {
     theme: 'vs-dark', 
     language: 'csharp',
@@ -122,9 +137,9 @@ export class ScriptDetailsComponent implements OnInit, OnDestroy {
     this.taskrunning=true;
     this.scriptservice.execute({
       code: {
-        scope: this.script.scope,
         name: this.script.name,
-        code: this.script.code
+        code: this.script.code,
+        language: this.script.language
       },
       parameters: this.parameters
     }).subscribe(t=>this.taskLoaded(t));

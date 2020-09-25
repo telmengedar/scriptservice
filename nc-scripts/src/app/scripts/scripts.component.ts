@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ScriptService } from '../services/script.service';
-import { Script } from '../dto/script';
+import { Script } from '../dto/scripts/script';
 import { Router } from '@angular/router';
 
 @Component({

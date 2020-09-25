@@ -24,6 +24,7 @@ namespace ScriptService.Dto {
         /// language of script
         /// </summary>
         [AllowPatch]
+        [DefaultValue(0)]
         public ScriptLanguage Language { get; set; }
     }
 }

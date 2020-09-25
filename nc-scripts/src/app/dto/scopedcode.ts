@@ -1,12 +1,9 @@
+import { ScriptLanguage } from './scripts/scriptlanguage';
+
 /**
  * code to execute directly on script server
  */
 export interface ScopedCode {
-
-    /**
-     * scope under which to run code
-     */
-    scope: string,
 
     /**
      * code to execute
@@ -17,4 +14,9 @@ export interface ScopedCode {
      * name under which to run code
      */
     name: string
+
+    /**
+     * language script code is written in
+     */
+    language: ScriptLanguage
 }

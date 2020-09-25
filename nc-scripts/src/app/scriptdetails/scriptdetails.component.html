@@ -13,6 +13,17 @@
       </mat-form-field>
       </div>
     </div>
+    <div class="row">
+      <div class="col-2 property align-self-center">Language</div>
+      <div class="col-10 value">
+        <ngx-select [(ngModel)]="script.language" [items]="languages" optionValueField="type" optionTextField="name">
+          <ng-template ngx-select-option let-option>
+            <span>{{option.data.name}}</span><br>
+            <small>{{option.data.description}}</small>
+          </ng-template>
+        </ngx-select>  
+      </div>
+    </div>
   </div>  
   <p></p>
   <h5>Test</h5>

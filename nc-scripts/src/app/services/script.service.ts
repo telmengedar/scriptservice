@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {environment} from 'src/environments/environment'
 import { HttpClient, HttpParams } from '@angular/common/http';
-import {Script} from '../dto/script'
+import {Script} from '../dto/scripts/script'
 import {Page} from '../dto/page'
 import { Observable } from 'rxjs';
 import { ListFilter } from '../dto/listfilter';
