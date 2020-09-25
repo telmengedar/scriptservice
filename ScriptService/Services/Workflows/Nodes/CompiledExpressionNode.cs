@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NightlyCode.Scripting;
 using NightlyCode.Scripting.Parser;
+using ScriptService.Dto;
 using ScriptService.Services.Scripts;
 
 namespace ScriptService.Services.Workflows.Nodes {
@@ -15,6 +16,11 @@ namespace ScriptService.Services.Workflows.Nodes {
         readonly IScriptCompiler compiler;
         IScript expression;
 
+        /// <summary>
+        /// creates a new <see cref="CompiledExpressionNode"/>
+        /// </summary>
+        /// <param name="nodeName">name of node</param>
+        /// <param name="compiler">compiler used to compile scripts</param>
         protected CompiledExpressionNode(string nodeName, IScriptCompiler compiler) 
             : base(nodeName) {
             this.compiler = compiler;
@@ -28,7 +34,7 @@ namespace ScriptService.Services.Workflows.Nodes {
 
         /// <inheritdoc />
         public override async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
-            expression ??= await compiler.CompileCodeAsync(GenerateCode());
+            expression ??= await compiler.CompileCodeAsync(GenerateCode(), ScriptLanguage.NCScript);
             object result = await expression.ExecuteAsync(new VariableProvider(variables, state), token);
             if (result is Task task) {
                 await task;

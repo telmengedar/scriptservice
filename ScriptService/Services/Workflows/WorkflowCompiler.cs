@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NightlyCode.Scripting;
+using ScriptService.Dto;
 using ScriptService.Dto.Workflows;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Services.Cache;
@@ -76,7 +77,7 @@ namespace ScriptService.Services.Workflows {
         }
 
         async Task BuildTransition<T>(T source, T target, Transition data, Func<T, IInstanceNode> nodegetter) {
-            IScript condition = string.IsNullOrEmpty(data.Condition) ? null : await compiler.CompileCodeAsync(data.Condition);
+            IScript condition = string.IsNullOrEmpty(data.Condition) ? null : await compiler.CompileCodeAsync(data.Condition, ScriptLanguage.NCScript);
             List<InstanceTransition> transitions;
             switch(data.Type) {
             case TransitionType.Standard:
@@ -106,7 +107,7 @@ namespace ScriptService.Services.Workflows {
                 break;
             case NodeType.Expression:
                 ExecuteExpressionParameters parameters = node.Parameters.Deserialize<ExecuteExpressionParameters>();
-                instance = new ExpressionNode(node.Name, await compiler.CompileCodeAsync(parameters.Code));
+                instance = new ExpressionNode(node.Name, await compiler.CompileCodeAsync(parameters.Code, parameters.Language));
                 break;
             case NodeType.Script:
                 instance = new ScriptNode(node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), compiler);

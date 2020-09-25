@@ -9,5 +9,10 @@
         /// name of script to call
         /// </summary>
         public string Code { get; set; }
+
+        /// <summary>
+        /// language of script code
+        /// </summary>
+        public ScriptLanguage Language { get; set; }
     }
 }

@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NightlyCode.Scripting;
-using NightlyCode.Scripting.Data;
-using NightlyCode.Scripting.Parser;
-using ScriptService.Dto;
-using ScriptService.Dto.Tasks;
-using ScriptService.Errors;
 using ScriptService.Services.Scripts;
 
 namespace ScriptService.Services.Providers {
@@ -18,7 +9,7 @@ namespace ScriptService.Services.Providers {
     /// </summary>
     public class ScriptNameMethod : ScriptMethod {
         readonly string scriptname;
-        IScriptCompiler compiler;
+        readonly IScriptCompiler compiler;
 
         /// <summary>
         /// creates a new <see cref="ScriptIdMethod"/>
@@ -32,7 +23,7 @@ namespace ScriptService.Services.Providers {
 
         /// <inheritdoc />
         protected override async Task<IScript> LoadScript() {
-            return (await compiler.CompileScript(scriptname)).Instance;
+            return (await compiler.CompileScriptAsync(scriptname)).Instance;
         }
     }
 }

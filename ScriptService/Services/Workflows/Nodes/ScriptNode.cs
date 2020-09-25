@@ -43,7 +43,7 @@ namespace ScriptService.Services.Workflows.Nodes {
 
         /// <inheritdoc />
         public override async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
-            CompiledScript script = await compiler.CompileScript(Name);
+            CompiledScript script = await compiler.CompileScriptAsync(Name);
             IDictionary<string, object> arguments = await Arguments.EvaluateArguments(state, token);
             variables = new StateVariableProvider(variables, arguments);
             logger.Info($"Executing script '{script.Name}'", string.Join("\n", arguments.Select(p => $"{p.Key}: {p.Value}")));

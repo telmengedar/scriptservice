@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using NightlyCode.Scripting;
+using ScriptService.Dto;
 using ScriptService.Dto.Scripts;
 
 namespace ScriptService.Services.Scripts {
@@ -18,7 +19,7 @@ namespace ScriptService.Services.Scripts {
         /// <param name="id">id of script</param>
         /// <param name="revision">script revision</param>
         /// <returns>compiled script</returns>
-        Task<CompiledScript> CompileScript(long id, int? revision=null);
+        Task<CompiledScript> CompileScriptAsync(long id, int? revision=null);
 
         /// <summary>
         /// compiles a code to an executable script based on an id and revision
@@ -29,21 +30,23 @@ namespace ScriptService.Services.Scripts {
         /// <param name="name">name of script</param>
         /// <param name="revision">script revision</param>
         /// <returns>compiled script</returns>
-        Task<CompiledScript> CompileScript(string name, int? revision = null);
+        Task<CompiledScript> CompileScriptAsync(string name, int? revision = null);
 
 
         /// <summary>
         /// compiles a code to an executable script based on an id and revision
         /// </summary>
         /// <param name="code">code to compile</param>
+        /// <param name="language">language of script</param>
         /// <returns>compiled script</returns>
-        IScript CompileCode(string code);
+        IScript CompileCode(string code, ScriptLanguage language);
 
         /// <summary>
         /// compiles a code to an executable script based on an id and revision
         /// </summary>
         /// <param name="code">code to compile</param>
+        /// <param name="language">language of script</param>
         /// <returns>compiled script</returns>
-        Task<IScript> CompileCodeAsync(string code);
+        Task<IScript> CompileCodeAsync(string code, ScriptLanguage language);
     }
 }

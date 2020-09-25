@@ -23,6 +23,7 @@ using NightlyCode.Scripting.Providers;
 using Npgsql;
 using ScriptService.Services;
 using ScriptService.Services.Cache;
+using ScriptService.Services.JavaScript;
 using ScriptService.Services.Scripts;
 using ScriptService.Services.Sense;
 using ScriptService.Services.Tasks;
@@ -117,6 +118,10 @@ namespace ScriptService {
             services.AddSingleton<IScriptSenseService, ScriptSenseService>();
             services.AddSingleton<IScheduledTaskService, DatabaseScheduledTaskService>();
             services.AddSingleton<IWorkflowCompiler, WorkflowCompiler>();
+
+            services.AddSingleton<IJavascriptImportService, JavascriptImportService>();
+            services.AddSingleton<IJavascriptParser, JavascriptParser>();
+
             services.AddHostedService<TaskScheduler>();
             services.AddSingleton(s => ConnectDatabase());
             services.AddErrorHandlers();

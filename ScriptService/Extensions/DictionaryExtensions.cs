@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NightlyCode.AspNetCore.Services.Convert;
 using NightlyCode.Scripting;
+using ScriptService.Dto;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Errors;
 using ScriptService.Services.Scripts;
@@ -149,7 +150,7 @@ namespace ScriptService.Extensions {
             Dictionary<string, IScript> result=new Dictionary<string, IScript>();
             foreach ((string key, object value) in arguments) {
                 if (value is string code)
-                    result[key] = compiler.CompileCode(code) ?? new ConstantValueScript(null);
+                    result[key] = compiler.CompileCode(code, ScriptLanguage.NCScript) ?? new ConstantValueScript(null);
                 else result[key] = new ConstantValueScript(value);
             }
 
@@ -169,7 +170,7 @@ namespace ScriptService.Extensions {
             Dictionary<string, object> translated = new Dictionary<string, object>();
             foreach(KeyValuePair<string, object> kvp in variables) {
                 if(kvp.Value is string code) {
-                    translated[kvp.Key] = await (await compiler.CompileCodeAsync(code)).ExecuteAsync();
+                    translated[kvp.Key] = await (await compiler.CompileCodeAsync(code, ScriptLanguage.NCScript)).ExecuteAsync();
                 }
                 else
                     translated[kvp.Key] = kvp.Value;

@@ -6,6 +6,7 @@ using NightlyCode.Scripting.Parser;
 using ScriptService.Dto;
 using ScriptService.Dto.Scripts;
 using ScriptService.Services.Cache;
+using ScriptService.Services.JavaScript;
 using ScriptService.Services.Scripts.Extensions;
 
 namespace ScriptService.Services.Scripts {
@@ -17,6 +18,8 @@ namespace ScriptService.Services.Scripts {
         readonly IScriptParser parser;
         readonly ICacheService cache;
         readonly IArchiveService archive;
+        readonly IJavascriptParser jsparser;
+        readonly IJavascriptImportService importservice;
 
         /// <summary>
         /// creates a new <see cref="ScriptCompiler"/>
@@ -27,11 +30,15 @@ namespace ScriptService.Services.Scripts {
         /// <param name="methodprovider">provides managed method hosts to scripts</param>
         /// <param name="scriptservice">used to load scripts if not found in cache</param>
         /// <param name="archive">archive used to load revisions</param>
-        public ScriptCompiler(ILogger<ScriptCompiler> logger, IScriptParser parser, ICacheService cache, IMethodProviderService methodprovider, IScriptService scriptservice, IArchiveService archive) {
+        /// <param name="jsparser">parser for javascript code</param>
+        /// <param name="importservice">access to javascript imports</param>
+        public ScriptCompiler(ILogger<ScriptCompiler> logger, IScriptParser parser, ICacheService cache, IMethodProviderService methodprovider, IScriptService scriptservice, IArchiveService archive, IJavascriptParser jsparser, IJavascriptImportService importservice) {
             this.parser = parser;
             this.cache = cache;
             this.scriptservice = scriptservice;
             this.archive = archive;
+            this.jsparser = jsparser;
+            this.importservice = importservice;
             this.logger = logger;
             parser.Extensions.AddExtensions(typeof(Math));
             parser.Extensions.AddExtensions<ScriptEnumerations>();
@@ -40,7 +47,7 @@ namespace ScriptService.Services.Scripts {
 
         async Task<CompiledScript> Parse(Script scriptdata) {
             logger.LogInformation($"Parsing script '{scriptdata.Id}.{scriptdata.Revision}'");
-            IScript script = await CompileCodeAsync(scriptdata.Code);
+            IScript script = await CompileCodeAsync(scriptdata.Code, scriptdata.Language);
 
             return new CompiledScript {
                 Id = scriptdata.Id,
@@ -51,7 +58,7 @@ namespace ScriptService.Services.Scripts {
         }
 
         /// <inheritdoc />
-        public async Task<CompiledScript> CompileScript(long id, int? revision=null) {
+        public async Task<CompiledScript> CompileScriptAsync(long id, int? revision=null) {
             CompiledScript script = cache.GetObject<CompiledScript, long>(id, revision??0);
             if (script != null)
                 return script;
@@ -68,7 +75,7 @@ namespace ScriptService.Services.Scripts {
         }
 
         /// <inheritdoc />
-        public async Task<CompiledScript> CompileScript(string name, int? revision = null) {
+        public async Task<CompiledScript> CompileScriptAsync(string name, int? revision = null) {
             CompiledScript script = cache.GetObject<CompiledScript, string>(name, revision??0);
             if(script != null)
                 return script;
@@ -85,17 +92,33 @@ namespace ScriptService.Services.Scripts {
         }
 
         /// <inheritdoc />
-        public IScript CompileCode(string code) {
+        public IScript CompileCode(string code, ScriptLanguage language) {
             if (string.IsNullOrEmpty(code))
                 return null;
-            return parser.Parse(code);
+
+            switch(language) {
+            case ScriptLanguage.NCScript:
+                return parser.Parse(code);
+            case ScriptLanguage.JavaScript:
+                return new Dto.Scripts.JavaScript(jsparser.Parse(code), importservice);
+            default:
+                throw new ArgumentException($"Unsupported script language '{language}'");
+            }
         }
 
         /// <inheritdoc />
-        public Task<IScript> CompileCodeAsync(string code) {
+        public async Task<IScript> CompileCodeAsync(string code, ScriptLanguage language) {
             if (string.IsNullOrEmpty(code))
-                return Task.FromResult<IScript>(null);
-            return parser.ParseAsync(code);
+                return null;
+
+            switch (language) {
+            case ScriptLanguage.NCScript:
+                return await parser.ParseAsync(code);
+            case ScriptLanguage.JavaScript:
+                return new Dto.Scripts.JavaScript(await jsparser.ParseAsync(code), importservice);
+            default:
+                throw new ArgumentException($"Unsupported script language '{language}'");
+            }
         }
     }
 }

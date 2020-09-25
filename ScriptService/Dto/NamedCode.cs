@@ -14,5 +14,10 @@
         /// name of script to run
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// language used for script
+        /// </summary>
+        public ScriptLanguage Language { get; set; }
     }
 }

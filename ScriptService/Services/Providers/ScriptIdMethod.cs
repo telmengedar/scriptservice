@@ -23,7 +23,7 @@ namespace ScriptService.Services.Providers {
 
         /// <inheritdoc />
         protected override async Task<IScript> LoadScript() {
-            return (await compiler.CompileScript(scriptid)).Instance;
+            return (await compiler.CompileScriptAsync(scriptid)).Instance;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NightlyCode.Scripting;
 using NightlyCode.Scripting.Parser;
+using ScriptService.Dto;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Services.Scripts;
 
@@ -33,7 +34,7 @@ namespace ScriptService.Services.Workflows.Nodes {
 
         /// <inheritdoc />
         public override async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
-            logparameter ??= await compiler.CompileCodeAsync(Parameters.Text);
+            logparameter ??= await compiler.CompileCodeAsync(Parameters.Text, ScriptLanguage.NCScript);
             logger.Log(Parameters.Type, await logparameter.ExecuteAsync<string>(new VariableProvider(variables, state), token));
             return null;
         }

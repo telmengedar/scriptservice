@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NightlyCode.Scripting;
 using NightlyCode.Scripting.Parser;
+using ScriptService.Dto;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Errors;
 using ScriptService.Services.Scripts;
@@ -40,7 +41,7 @@ namespace ScriptService.Services.Workflows.Nodes {
         public IEnumerator Current { get; private set; }
 
         async Task CreateEnumerator(IVariableProvider variables, CancellationToken token) {
-            IScript enumerationscript = await compiler.CompileCodeAsync(Parameters.Collection);
+            IScript enumerationscript = await compiler.CompileCodeAsync(Parameters.Collection, ScriptLanguage.NCScript);
             if (!(await enumerationscript.ExecuteAsync(variables, token) is IEnumerable enumerable))
                 throw new WorkflowException("Can not enumerate null");
 
