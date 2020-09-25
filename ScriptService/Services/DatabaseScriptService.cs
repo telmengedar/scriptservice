@@ -33,7 +33,7 @@ namespace ScriptService.Services {
             this.database = database;
             this.archiveservice = archiveservice;
             database.UpdateSchema<Script>();
-            insertscript = database.Insert<Script>().Columns(s => s.Revision, s => s.Name, s => s.Code).ReturnID().Prepare();
+            insertscript = database.Insert<Script>().Columns(s => s.Revision, s => s.Name, s => s.Code, s=>s.Language).ReturnID().Prepare();
             getscript = database.Load<Script>().Where(s => s.Id == DBParameter.Int64).Prepare();
             getscriptbyname = database.Load<Script>().Where(s => s.Name == DBParameter.String).Prepare();
             deletescript = database.Delete<Script>().Where(s => s.Id == DBParameter.Int64).Prepare();
@@ -41,7 +41,7 @@ namespace ScriptService.Services {
 
         /// <inheritdoc />
         public Task<long> CreateScript(ScriptData script) {
-            return insertscript.ExecuteAsync(1, script.Name, script.Code);
+            return insertscript.ExecuteAsync(1, script.Name, script.Code, script.Language);
         }
 
         /// <inheritdoc />
