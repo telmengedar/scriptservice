@@ -35,7 +35,7 @@ namespace ScriptService.Services.Workflows {
 
         /// <inheritdoc />
         public object this[string name] {
-            get => GetVariable(name);
+            get => GetProvider(name).GetVariable(name);
             set => Values[name] = value;
         }
 

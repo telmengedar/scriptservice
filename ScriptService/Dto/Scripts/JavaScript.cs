@@ -47,7 +47,6 @@ namespace ScriptService.Dto.Scripts {
             engine.SetValue("load", importservice.Clone(logger));
             
             foreach (string name in variables.Variables) {
-                
                 engine.SetValue(name, variables[name]);
             }
 

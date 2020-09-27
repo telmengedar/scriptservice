@@ -9,6 +9,7 @@ import { WorkableTask } from '../dto/workabletask';
 import { TaskService } from '../services/task.service';
 import { NavigationItem } from '../dto/navigation/navigationItem';
 import { ScriptLanguage } from '../dto/scripts/scriptlanguage';
+import { ScriptLanguageOptions } from '../dto/scripts/scriptlanguageoptions';
 
 /**
  * editor component for a single script.
@@ -35,18 +36,7 @@ export class ScriptDetailsComponent implements OnInit, OnDestroy {
   parameters: any={};
   task: WorkableTask;
 
-  languages=[
-    {
-      type: ScriptLanguage.NCScript,
-      name: "NightlyCode Script",
-      description: "NightlyCode Script Language"
-    },
-    {
-      type: ScriptLanguage.JavaScript,
-      name: "JavaScript",
-      description: "JavaScript"
-    }
-  ];
+  languages=ScriptLanguageOptions;
 
   editorOptions = {
     theme: 'vs-dark', 

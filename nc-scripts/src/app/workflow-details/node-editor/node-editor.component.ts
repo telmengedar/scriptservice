@@ -9,6 +9,8 @@ import { NodeEditorParameters } from 'src/app/dto/workflows/nodeeditorparameters
 import { MethodInfo } from 'src/app/dto/sense/methodinfo';
 import { NodeType } from 'src/app/dto/workflows/nodetype';
 import { ParameterInfo } from 'src/app/dto/sense/parameterinfo';
+import { ScriptLanguageOptions } from 'src/app/dto/scripts/scriptlanguageoptions';
+import { ScriptLanguage } from 'src/app/dto/scripts/scriptlanguage';
 
 @Component({
   selector: 'app-node-editor',
@@ -82,6 +84,7 @@ export class NodeEditorComponent implements OnInit {
   node: NodeData;
 
   parametertemplates: ParameterInfo[];
+  languages=ScriptLanguageOptions;
 
   /**
    * creates a new instance
@@ -128,6 +131,23 @@ export class NodeEditorComponent implements OnInit {
 
     this.inputkey="";
     this.inputvalue="";
+  }
+
+  /**
+   * called when node type was changed
+   */
+  nodeTypeChanged(): void {
+    switch(NodeType.getNodeTypeValue(this.node.type)) {
+      case NodeType.Call:
+        this.loadHostMethods();
+        break;
+      case NodeType.Expression:
+        if(!this.node.parameters)
+          this.node.parameters={};
+        if(!this.node.parameters.language)
+          this.node.parameters.language=ScriptLanguage.JavaScript;
+        break;
+    }
   }
 
   /**

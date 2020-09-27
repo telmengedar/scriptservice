@@ -14,7 +14,7 @@
   <div class="row" *ngIf="NodeType.getNodeTypeName(node.type)!=='Start'">
     <div class="col-2">Node Type</div>
     <div class="col-10">
-      <ngx-select [(ngModel)]="node.type" [items]="nodetypes" (change)="loadHostMethods()" optionValueField="type" optionTextField="name">
+      <ngx-select [(ngModel)]="node.type" [items]="nodetypes" (change)="nodeTypeChanged()" optionValueField="type" optionTextField="name">
         <ng-template ngx-select-option let-option>
           <span>{{option.data.name}}</span><br>
           <small>{{option.data.description}}</small>
@@ -131,6 +131,17 @@
     <!-- Parameters for 'Expression' Nodes -->
     <div *ngSwitchCase="NodeType.Expression">
       <div class="row">
+        <div class="col-2">Language</div>
+        <div class="col-10">
+          <ngx-select [(ngModel)]="node.parameters.language" [items]="languages" optionValueField="type" optionTextField="name">
+            <ng-template ngx-select-option let-option>
+              <span>{{option.data.name}}</span><br>
+              <small>{{option.data.description}}</small>
+            </ng-template>
+          </ngx-select>  
+        </div>
+      </div>    
+      <div class="row">
         <ngx-monaco-editor class="codeeditor" [options]="editorOptions" [(ngModel)]="node.parameters.code"></ngx-monaco-editor>
       </div>
     </div>
@@ -142,7 +153,7 @@
         <div class="col-10">
           <input [(ngModel)]="node.parameters.value">
         </div>
-      </div>    
+      </div>
     </div>
 
     <!-- Parameters for 'Script' Nodes -->
