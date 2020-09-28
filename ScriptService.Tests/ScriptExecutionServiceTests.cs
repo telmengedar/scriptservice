@@ -49,7 +49,7 @@ namespace ScriptService.Tests {
             ScriptExecutionService service = new ScriptExecutionService(new NullLogger<ScriptExecutionService>(), taskservice.Object, new TestCompiler());
             WorkableTask task = await service.Execute(new NamedCode {
                 Name = "Test",
-                Code = "let x=param.property; return x*x",
+                Code = "let x=param.property; return x*x;",
                 Language = ScriptLanguage.JavaScript
             }, new Dictionary<string, object> {
                 ["param"] = "{\"property\":3}"

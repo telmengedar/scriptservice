@@ -13,6 +13,11 @@
         /// <summary>
         /// javascript
         /// </summary>
-        JavaScript=1
+        JavaScript=1,
+
+        /// <summary>
+        /// typescript
+        /// </summary>
+        TypeScript=2
     }
 }

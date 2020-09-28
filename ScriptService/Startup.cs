@@ -120,7 +120,6 @@ namespace ScriptService {
             services.AddSingleton<IWorkflowCompiler, WorkflowCompiler>();
 
             services.AddSingleton<IJavascriptImportService, JavascriptImportService>();
-            services.AddSingleton<IJavascriptParser, JavascriptParser>();
 
             services.AddHostedService<TaskScheduler>();
             services.AddSingleton(s => ConnectDatabase());

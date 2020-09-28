@@ -10,7 +10,6 @@ using ScriptService.Services.Scripts;
 namespace ScriptService.Tests.Mocks {
     public class TestCompiler : IScriptCompiler {
         readonly IScriptParser parser = new ScriptParser();
-        readonly IJavascriptParser jsparser = new JavascriptParser();
 
         public Task<CompiledScript> CompileScriptAsync(long id, int? revision=null) {
             throw new NotImplementedException();
@@ -28,7 +27,7 @@ namespace ScriptService.Tests.Mocks {
             case ScriptLanguage.NCScript:
                 return parser.Parse(code);
             case ScriptLanguage.JavaScript:
-                return new JavaScript(jsparser.Parse(code), new JavascriptImportService(null));
+                return new JavaScript(code, new JavascriptImportService(null));
             default:
                 throw new ArgumentException($"Unsupported script language '{language}'");
             }
@@ -42,7 +41,7 @@ namespace ScriptService.Tests.Mocks {
             case ScriptLanguage.NCScript:
                 return await parser.ParseAsync(code);
             case ScriptLanguage.JavaScript:
-                return new JavaScript(await jsparser.ParseAsync(code), new JavascriptImportService(null));
+                return new JavaScript(code, new JavascriptImportService(null));
             default:
                 throw new ArgumentException($"Unsupported script language '{language}'");
             }

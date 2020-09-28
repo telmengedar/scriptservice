@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Esprima;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NightlyCode.Scripting;
@@ -26,7 +25,7 @@ namespace ScriptService.Tests {
 
         [Test, Parallelizable]
         public void TypeConversion() {
-            JavaScript script = new JavaScript(new JavaScriptParser("test.TestMethod({Name:'Test'})").ParseScript(), new JavascriptImportService(null));
+            JavaScript script = new JavaScript("test.TestMethod({Name:'Test'})", new JavascriptImportService(null));
             Assert.AreEqual("Test", script.Execute(new Dictionary<string, object> {
                 ["log"] = new WorkableLogger(new NullLogger<JavascriptTests>(), null),
                 ["test"] = this
@@ -35,7 +34,7 @@ namespace ScriptService.Tests {
 
         [Test, Parallelizable]
         public void IntCall() {
-            JavaScript script = new JavaScript(new JavaScriptParser("test.TestNumber(7)").ParseScript(), new JavascriptImportService(null));
+            JavaScript script = new JavaScript("test.TestNumber(7)", new JavascriptImportService(null));
             Assert.AreEqual(7, script.Execute(new Dictionary<string, object> {
                 ["log"] = new WorkableLogger(new NullLogger<JavascriptTests>(), null),
                 ["test"] = this
@@ -57,9 +56,22 @@ namespace ScriptService.Tests {
             importservice.Setup(s => s.Script(It.IsAny<string>(), It.IsAny<int?>())).Returns(new ScriptExecutor(new WorkableLogger(new NullLogger<JavascriptTests>(), null), scriptcompiler.Object, "Test", 1));
             importservice.Setup(s => s.Clone(It.IsAny<WorkableLogger>())).Returns(() => importservice.Object);
 
-            JavaScript jsscript = new JavaScript(new JavascriptParser().Parse("const script=load.Script('Test', null); return script.Execute({data:{Name:'Test'}})"), importservice.Object);
+            JavaScript jsscript = new JavaScript("const script=load.Script('Test', null); return script.Execute({data:{Name:'Test'}});", importservice.Object);
             Assert.AreEqual("Test", jsscript.Execute(new Dictionary<string, object> {
                 ["log"] = null
+            }));
+        }
+
+        [Test, Parallelizable]
+        public void TestTypescript() {
+            Mock<IJavascriptImportService> importservice = new Mock<IJavascriptImportService>();
+            importservice.Setup(s => s.Clone(It.IsAny<WorkableLogger>())).Returns(() => importservice.Object);
+
+            ScriptCompiler compiler =new ScriptCompiler(new NullLogger<ScriptCompiler>(), null, null, null, null, null, importservice.Object);
+
+            IScript script = compiler.CompileCode("function next(value: number): number {return value+1;} const result: number=next(8); return result;", ScriptLanguage.TypeScript);
+            Assert.AreEqual(9, script.Execute(new Dictionary<string, object> {
+                ["log"] = new WorkableLogger(new NullLogger<JavascriptTests>(), null)
             }));
         }
     }

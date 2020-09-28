@@ -1,4 +1,5 @@
-﻿using NightlyCode.Database.Entities.Attributes;
+﻿using System.Runtime.Serialization;
+using NightlyCode.Database.Entities.Attributes;
 
 namespace ScriptService.Dto {
 

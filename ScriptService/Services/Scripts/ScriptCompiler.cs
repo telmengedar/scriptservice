@@ -18,7 +18,6 @@ namespace ScriptService.Services.Scripts {
         readonly IScriptParser parser;
         readonly ICacheService cache;
         readonly IArchiveService archive;
-        readonly IJavascriptParser jsparser;
         readonly IJavascriptImportService importservice;
 
         /// <summary>
@@ -30,20 +29,25 @@ namespace ScriptService.Services.Scripts {
         /// <param name="methodprovider">provides managed method hosts to scripts</param>
         /// <param name="scriptservice">used to load scripts if not found in cache</param>
         /// <param name="archive">archive used to load revisions</param>
-        /// <param name="jsparser">parser for javascript code</param>
         /// <param name="importservice">access to javascript imports</param>
-        public ScriptCompiler(ILogger<ScriptCompiler> logger, IScriptParser parser, ICacheService cache, IMethodProviderService methodprovider, IScriptService scriptservice, IArchiveService archive, IJavascriptParser jsparser, IJavascriptImportService importservice) {
+        public ScriptCompiler(ILogger<ScriptCompiler> logger, IScriptParser parser, ICacheService cache, IMethodProviderService methodprovider, IScriptService scriptservice, IArchiveService archive, IJavascriptImportService importservice) {
             this.parser = parser;
             this.cache = cache;
             this.scriptservice = scriptservice;
             this.archive = archive;
-            this.jsparser = jsparser;
             this.importservice = importservice;
             this.logger = logger;
-            parser.Extensions.AddExtensions(typeof(Math));
-            parser.Extensions.AddExtensions<ScriptEnumerations>();
-            parser.ImportProvider = methodprovider;
+
+            if (parser != null) {
+                parser.Extensions.AddExtensions(typeof(Math));
+                parser.Extensions.AddExtensions<ScriptEnumerations>();
+                parser.ImportProvider = methodprovider;
+            }
+
+            ReactInitializer.Initialize();
         }
+
+
 
         async Task<CompiledScript> Parse(Script scriptdata) {
             logger.LogInformation($"Parsing script '{scriptdata.Id}.{scriptdata.Revision}'");
@@ -100,7 +104,8 @@ namespace ScriptService.Services.Scripts {
             case ScriptLanguage.NCScript:
                 return parser.Parse(code);
             case ScriptLanguage.JavaScript:
-                return new Dto.Scripts.JavaScript(jsparser.Parse(code), importservice);
+            case ScriptLanguage.TypeScript:
+                return new Dto.Scripts.JavaScript(code, importservice, language);
             default:
                 throw new ArgumentException($"Unsupported script language '{language}'");
             }
@@ -115,7 +120,8 @@ namespace ScriptService.Services.Scripts {
             case ScriptLanguage.NCScript:
                 return await parser.ParseAsync(code);
             case ScriptLanguage.JavaScript:
-                return new Dto.Scripts.JavaScript(await jsparser.ParseAsync(code), importservice);
+            case ScriptLanguage.TypeScript:
+                return new Dto.Scripts.JavaScript(code, importservice, language);
             default:
                 throw new ArgumentException($"Unsupported script language '{language}'");
             }
