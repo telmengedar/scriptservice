@@ -24,6 +24,13 @@ namespace ScriptService.Services {
         WorkableTask CreateTask(WorkableType type, long workableid, int workablerevision, string workablename, IDictionary<string, object> variables);
 
         /// <summary>
+        /// stores a task object
+        /// </summary>
+        /// <param name="task">task to store</param>
+        /// <returns>task info</returns>
+        Task StoreTask(WorkableTask task);
+        
+        /// <summary>
         /// get information about a script task
         /// </summary>
         /// <param name="id">id of script task</param>

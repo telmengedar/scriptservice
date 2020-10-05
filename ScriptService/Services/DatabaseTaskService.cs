@@ -57,6 +57,21 @@ namespace ScriptService.Services {
         }
 
         /// <inheritdoc />
+        public Task StoreTask(WorkableTask task) {
+            return insert.ExecuteAsync(task.Id,
+                task.Type,
+                task.WorkableId,
+                task.WorkableRevision,
+                task.WorkableName,
+                task.Parameters.Serialize(),
+                task.Started,
+                task.Finished,
+                task.Status,
+                task.Result.Serialize(),
+                task.Log.Serialize());
+        }
+
+        /// <inheritdoc />
         public async Task<WorkableTask> GetTask(Guid id) {
             if (runningtasks.TryGetValue(id, out WorkableTask task))
                 return task;
@@ -145,17 +160,7 @@ namespace ScriptService.Services {
             if (!runningtasks.TryGetValue(id, out WorkableTask task))
                 throw new NotFoundException(typeof(WorkableTask), id.ToString());
 
-            await insert.ExecuteAsync(task.Id,
-                task.Type,
-                task.WorkableId,
-                task.WorkableRevision,
-                task.WorkableName,
-                task.Parameters.Serialize(),
-                task.Started,
-                task.Finished,
-                task.Status,
-                task.Result.Serialize(),
-                task.Log.Serialize());
+            await StoreTask(task);
             runningtasks.Remove(id, out WorkableTask _);
         }
 

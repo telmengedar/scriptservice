@@ -160,16 +160,29 @@ namespace ScriptService.Extensions {
             return mask;
         }
 
+        /// <summary>
+        /// get number of set bits of a value
+        /// </summary>
+        /// <param name="value">value to analyse</param>
+        /// <returns>number of set bits in the value</returns>
+        /// <exception cref="WorkflowException">in case value is not a supported value type</exception>
         public static int GetNumberOfBits(this object value) {
-            if(value is int || value is uint)
+            switch (value) {
+            case int _:
+            case uint _:
                 return 32;
-            if(value is long || value is ulong)
+            case long _:
+            case ulong _:
                 return 64;
-            if(value is short || value is ushort)
+            case short _:
+            case ushort _:
                 return 16;
-            if(value is byte || value is sbyte)
+            case byte _:
+            case sbyte _:
                 return 8;
-            throw new WorkflowException($"'{value.GetType()}' not supported for bit operation");
+            default:
+                throw new WorkflowException($"'{value.GetType()}' not supported for bit operation");
+            }
         }
 
     }

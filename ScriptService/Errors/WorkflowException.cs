@@ -11,7 +11,7 @@ namespace ScriptService.Errors {
         /// creates a new <see cref="WorkflowException"/>
         /// </summary>
         /// <param name="message">error message</param>
-        public WorkflowException(string? message) : base(message) {
+        public WorkflowException(string message) : base(message) {
         }
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace ScriptService.Errors {
         /// </summary>
         /// <param name="message">error message</param>
         /// <param name="innerException">error which triggered this error</param>
-        public WorkflowException(string? message, Exception? innerException) : base(message, innerException) {
+        public WorkflowException(string message, Exception innerException) : base(message, innerException) {
         }
     }
 }

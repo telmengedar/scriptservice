@@ -22,6 +22,7 @@ namespace ScriptService.Controllers {
         readonly ILogger<WorkflowExecutionController> logger;
         readonly IWorkflowCompiler compiler;
         readonly IWorkflowExecutionService executionservice;
+        readonly ITaskService taskservice;
 
         /// <summary>
         /// creates a new <see cref="WorkflowExecutionController"/>
@@ -29,10 +30,12 @@ namespace ScriptService.Controllers {
         /// <param name="logger">access to logging</param>
         /// <param name="executionservice">access to workflow execution service</param>
         /// <param name="compiler">compiles workflow data for execution</param>
-        public WorkflowExecutionController(ILogger<WorkflowExecutionController> logger, IWorkflowExecutionService executionservice, IWorkflowCompiler compiler) {
+        /// <param name="taskservice">access to task objects</param>
+        public WorkflowExecutionController(ILogger<WorkflowExecutionController> logger, IWorkflowExecutionService executionservice, IWorkflowCompiler compiler, ITaskService taskservice) {
             this.logger = logger;
             this.executionservice = executionservice;
             this.compiler = compiler;
+            this.taskservice = taskservice;
         }
 
         /// <summary>
@@ -58,7 +61,7 @@ namespace ScriptService.Controllers {
                     return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Workflow, parameters.Parameters), parameters.Wait);
             }
             catch (Exception e) {
-                return new WorkableTask {
+                WorkableTask failtask= new WorkableTask {
                     Status = TaskStatus.Failure,
                     Started = DateTime.Now,
                     Finished = DateTime.Now,
@@ -68,6 +71,8 @@ namespace ScriptService.Controllers {
                     Parameters = parameters.Parameters,
                     Type = WorkableType.Workflow,
                 };
+                await taskservice.StoreTask(failtask);
+                return failtask;
             }
 
             throw new ArgumentException("Workflow id or name is required");
