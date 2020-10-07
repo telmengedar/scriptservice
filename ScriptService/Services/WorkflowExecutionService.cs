@@ -153,7 +153,7 @@ namespace ScriptService.Services {
         async Task<IInstanceNode> EvaluateTransitions(IInstanceNode current, WorkableLogger tasklogger, IVariableProvider variableprovider, List<InstanceTransition> transitions, CancellationToken token) {
             foreach (InstanceTransition conditionaltransition in transitions.Where(c=>c.Condition!=null)) {
                 if (await conditionaltransition.Condition.ExecuteAsync<bool>(variableprovider, token)) {
-                    tasklogger.Info($"Transition '{current.NodeName}' -> '{conditionaltransition.Target.NodeName}'");
+                    //tasklogger.Info($"Transition '{current.NodeName}' -> '{conditionaltransition.Target.NodeName}'");
                     return conditionaltransition.Target;
                 }
             }
@@ -162,7 +162,7 @@ namespace ScriptService.Services {
             if (defaulttransitions.Length > 0) {
                 if (defaulttransitions.Length > 1)
                     tasklogger.Warning($"More than one default transition defined for '{current.NodeName}'. Behavior of Workflow is undefined since the order of transitions is not guaranteed to be static.");
-                tasklogger.Info($"Transition '{current.NodeName}' -> '{defaulttransitions.First().Target.NodeName}'");
+                //tasklogger.Info($"Transition '{current.NodeName}' -> '{defaulttransitions.First().Target.NodeName}'");
                 return defaulttransitions.First().Target;
             }
 
