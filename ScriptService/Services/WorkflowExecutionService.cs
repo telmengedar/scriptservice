@@ -182,7 +182,7 @@ namespace ScriptService.Services {
                         return lastresult;
                 }
                 catch (Exception e) {
-                    IInstanceNode next = await EvaluateTransitions(current, tasklogger, new VariableProvider(new VariableProvider(new Variable("error", e)), state), current.ErrorTransitions, token);
+                    IInstanceNode next = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(new VariableProvider(variables, new Variable("error", e)), state), current.ErrorTransitions, token);
                     if (next == null)
                         throw;
 
@@ -193,12 +193,12 @@ namespace ScriptService.Services {
 
                 try {
                     if (lastresult is LoopCommand) {
-                        current = await EvaluateTransitions(current, tasklogger, new VariableProvider(state), current.LoopTransitions, token) ?? current;
+                        current = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(variables, state), current.LoopTransitions, token) ?? current;
                     }
-                    else current = await EvaluateTransitions(current, tasklogger, new VariableProvider(state), current.Transitions, token);
+                    else current = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(variables, state), current.Transitions, token);
                 }
                 catch (Exception e) {
-                    IInstanceNode next = await EvaluateTransitions(current, tasklogger, new VariableProvider(new VariableProvider(new Variable("error", e)), state), current.ErrorTransitions, token);
+                    IInstanceNode next = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(new VariableProvider(variables, new Variable("error", e)), state), current.ErrorTransitions, token);
                     if(next == null)
                         throw;
 

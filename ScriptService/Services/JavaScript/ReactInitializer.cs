@@ -25,6 +25,9 @@ namespace ScriptService.Services.JavaScript {
             container.Register<IFileSystem, SimpleFileSystem>();
         }
 
+        /// <summary>
+        /// static initializer method
+        /// </summary>
         public static void Initialize() {
             // the static ctor actually does everything
         }

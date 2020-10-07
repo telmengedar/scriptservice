@@ -26,6 +26,7 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// </summary>
         public BinaryOpParameters Parameters { get; }
 
+        /// <inheritdoc />
         protected override string GenerateCode() {
             return $"{Parameters.Lhs}{Parameters.Operation.ToOperatorString()}{Parameters.Rhs}";
         }

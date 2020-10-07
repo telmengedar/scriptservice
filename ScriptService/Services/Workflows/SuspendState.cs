@@ -42,6 +42,7 @@ namespace ScriptService.Services.Workflows {
         /// </summary>
         public SuspendState Subflow { get; }
 
+        /// <inheritdoc />
         public override string ToString() {
             if (Subflow != null)
                 return $"{Node.NodeName}/{Subflow}";
