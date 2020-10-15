@@ -9,6 +9,7 @@ using NUnit.Framework;
 using ScriptService.Dto;
 using ScriptService.Dto.Tasks;
 using ScriptService.Dto.Workflows;
+using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Services;
 using ScriptService.Services.Cache;
 using ScriptService.Services.JavaScript;
@@ -125,6 +126,84 @@ namespace ScriptService.Tests {
             await task.Task;
             Assert.AreEqual(TaskStatus.Success, task.Status);
             Assert.AreEqual(7, task.Result);
+        }
+
+        [Test, Parallelizable]
+        public async Task ExecuteLoop() {
+            Mock<IJavascriptImportService> importservice=new Mock<IJavascriptImportService>();
+            importservice.Setup(s => s.Clone(It.IsAny<WorkableLogger>())).Returns(() => importservice.Object);
+
+            IEntityManager database = TestSetup.CreateMemoryDatabase();
+            CacheService cache = new CacheService(new NullLogger<CacheService>());
+            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object, importservice.Object);
+            WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new DatabaseTaskService(database), null);
+            WorkflowCompiler workflowcompiler = new WorkflowCompiler(new NullLogger<WorkflowCompiler>(), cache, null, compiler, executionservice);
+
+            WorkableTask task = await executionservice.Execute(await workflowcompiler.BuildWorkflow(new WorkflowStructure {
+                Name = "JS Test",
+                Nodes = new[] {
+                    new NodeData {
+                        Type = NodeType.Start
+                    },
+                    new NodeData {
+                        Type = NodeType.Value,
+                        Parameters = new Dictionary<string, object> {
+                            ["Value"] = "0"
+                        },
+                        Variable = "result"
+                    },
+                    new NodeData {
+                        Type = NodeType.Iterator,
+                        Parameters = new Dictionary<string, object> {
+                            ["Collection"] = "[1,2,3,4,5]",
+                            ["Item"] = "number"
+                        },
+                    },
+                    new NodeData {
+                        Type = NodeType.BinaryOperation,
+                        Parameters = new Dictionary<string, object> {
+                            ["Lhs"] = "$result",
+                            ["Rhs"]="$number",
+                            ["Op"]=BinaryOperation.Add
+                        },
+                        Variable = "result"
+                    },
+                    new NodeData {
+                        Type = NodeType.Value,
+                        Parameters = new Dictionary<string, object> {
+                            ["Value"] = "$result"
+                        }
+                    }
+                },
+                Transitions = new[] {
+                    new IndexTransition {
+                        OriginIndex = 0,
+                        TargetIndex = 1
+                    },
+                    new IndexTransition {
+                        OriginIndex = 1,
+                        TargetIndex = 2,
+                    },
+                    new IndexTransition {
+                        OriginIndex = 2,
+                        TargetIndex = 3,
+                        Type = TransitionType.Loop,
+                        Log = "$\"Adding number {$number}\""
+                    },
+                    new IndexTransition {
+                        OriginIndex = 3,
+                        TargetIndex = 2
+                    },
+                    new IndexTransition {
+                        OriginIndex = 2,
+                        TargetIndex = 4
+                    },
+                }
+            }));
+
+            await task.Task;
+            Assert.AreEqual(TaskStatus.Success, task.Status);
+            Assert.AreEqual(15, task.Result);
         }
 
         [Test, Parallelizable]

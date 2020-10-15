@@ -60,9 +60,9 @@ namespace ScriptService.Services {
             loadworkflowbyname = database.Load<Workflow>().Where(w => w.Name == DBParameter.String).Prepare();
 
             loadnodes = database.Load<WorkflowNode>(n => n.Id, n => n.Name, n => n.Type, n => n.Parameters, n=>n.Variable).Where(n => n.WorkflowId == DBParameter.Int64).Prepare();
-            loadtransitions = database.Load<WorkflowTransition>(t => t.OriginId, t => t.TargetId, t => t.Condition, t=>t.Type).Where(t => t.WorkflowId == DBParameter.Int64).Prepare();
+            loadtransitions = database.Load<WorkflowTransition>(t => t.OriginId, t => t.TargetId, t => t.Condition, t=>t.Type, t=>t.Log).Where(t => t.WorkflowId == DBParameter.Int64).Prepare();
             insertnode = database.Insert<WorkflowNode>().Columns(n => n.Id, n => n.WorkflowId, n => n.Name, n => n.Type, n => n.Parameters, n=>n.Group, n=>n.Variable).Prepare();
-            inserttransition = database.Insert<WorkflowTransition>().Columns(t => t.WorkflowId, t => t.OriginId, t => t.TargetId, t => t.Condition, t=>t.Type).Prepare();
+            inserttransition = database.Insert<WorkflowTransition>().Columns(t => t.WorkflowId, t => t.OriginId, t => t.TargetId, t => t.Condition, t=>t.Type, t=>t.Log).Prepare();
         }
 
         Task<Workflow> LoadWorkflowByName(string name) {
@@ -77,8 +77,8 @@ namespace ScriptService.Services {
             return insertnode.ExecuteAsync(transaction, nodeid, workflowid, name, type, parameters.Serialize(), group, result);
         }
 
-        Task CreateTransition(Transaction transaction, long workflowid, Guid origin, Guid target, string condition, TransitionType type) {
-            return inserttransition.ExecuteAsync(transaction, workflowid, origin, target, condition, type);
+        Task CreateTransition(Transaction transaction, long workflowid, Guid origin, Guid target, string condition, TransitionType type, string log) {
+            return inserttransition.ExecuteAsync(transaction, workflowid, origin, target, condition, type, log);
         }
 
         Task DeleteTransitions(Transaction transaction, long workflowid) {
@@ -101,7 +101,8 @@ namespace ScriptService.Services {
                 OriginId = r.GetValue<Guid>(0),
                 TargetId = r.GetValue<Guid>(1),
                 Condition = r.GetValue<string>(2),
-                Type= r.GetValue<TransitionType>(3)
+                Type= r.GetValue<TransitionType>(3),
+                Log=r.GetValue<string>(4)
             }, workflow.Id);
             return workflow;
         }
@@ -161,7 +162,7 @@ namespace ScriptService.Services {
 
                 if(transitions != null) {
                     foreach(IndexTransition transition in transitions)
-                        await CreateTransition(transaction, workflowid, nodeids[transition.OriginIndex], nodeids[transition.TargetIndex], transition.Condition, transition.Type);
+                        await CreateTransition(transaction, workflowid, nodeids[transition.OriginIndex], nodeids[transition.TargetIndex], transition.Condition, transition.Type, transition.Log);
                 }
             }
         }
@@ -268,7 +269,7 @@ namespace ScriptService.Services {
                 case PatchOp.Replace:
                     await deletetransitions.ExecuteAsync(transaction, workflowid);
                     foreach (TransitionData transition in GetItems<TransitionData>(patch.Value)) {
-                        await CreateTransition(transaction, workflowid, transition.OriginId, transition.TargetId, transition.Condition, transition.Type);
+                        await CreateTransition(transaction, workflowid, transition.OriginId, transition.TargetId, transition.Condition, transition.Type, transition.Log);
                     }
                     break;
                 default:
