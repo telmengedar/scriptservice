@@ -10,7 +10,7 @@ import { TaskFilter } from '../dto/scripttaskfilter';
   providedIn: 'root'
 })
 export class TaskService {
-  private tasksurl=`${environment.apiUrl}/v1/tasks`;
+  private tasksurl=`${environment.environment.API_URL}/v1/tasks`;
 
   constructor(private http: HttpClient) { }
 

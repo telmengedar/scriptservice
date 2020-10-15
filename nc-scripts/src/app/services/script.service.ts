@@ -13,7 +13,7 @@ import { ExecuteScriptParameters } from '../dto/executescriptparameters';
   providedIn: 'root'
 })
 export class ScriptService {
-  private scriptsurl=`${environment.apiUrl}/v1/scripts`;
+  private scriptsurl=`${environment.environment.API_URL}/v1/scripts`;
 
   constructor(private http: HttpClient) { }
 

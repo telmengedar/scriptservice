@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SenseService {
-  private senseurl=`${environment.apiUrl}/v1/sense`;
+  private senseurl=`${environment.environment.API_URL}/v1/sense`;
 
   constructor(private http: HttpClient) { }
 

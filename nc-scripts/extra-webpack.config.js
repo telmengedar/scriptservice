@@ -5,7 +5,8 @@ module.exports = {
         'ENV_VARS': {
             AUTH_URL: JSON.stringify(process.env.AUTH_URL),
             CLIENT_ID: JSON.stringify(process.env.CLIENT_ID),
-            CLIENT_SECRET: JSON.stringify(process.env.CLIENT_SECRET)
+            CLIENT_SECRET: JSON.stringify(process.env.CLIENT_SECRET),
+            API_URL: JSON.stringify(process.env.API_URL)
         }
     })]
 }

@@ -19,7 +19,7 @@ import { ContinueWorkflowParameters } from '../dto/workflows/continueworkflowpar
   providedIn: 'root'
 })
 export class WorkflowService {
-  private workflowsurl=`${environment.apiUrl}/v1/workflows`;
+  private workflowsurl=`${environment.environment.API_URL}/v1/workflows`;
   
   /**
    * creates a new {@link WorkflowService}

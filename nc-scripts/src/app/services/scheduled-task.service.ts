@@ -19,6 +19,6 @@ export class ScheduledTaskService extends RestService<ScheduledTask, ScheduledTa
    * @param http http client used to send http requests
    */
   constructor(http: HttpClient) {
-    super(`${environment.apiUrl}/v1/scheduler`, http) 
+    super(`${environment.environment.API_URL}/v1/scheduler`, http) 
   }
 }
