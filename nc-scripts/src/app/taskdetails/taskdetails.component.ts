@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 export class TaskDetailsComponent implements OnInit, OnDestroy {
   taskid: string;
   task: WorkableTask;
+  styledlog: string[];
   isdestroyed:boolean=false;
 
   constructor(private scripttaskservice: TaskService, route: ActivatedRoute, private location: Location) { 
@@ -36,6 +37,15 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
       return;
 
     this.task=task;
+    this.styledlog=[];
+    if(this.task.log) {
+      this.task.log.forEach(l=>{
+        l.split("\n").forEach(s=>{
+          this.styledlog.push(s);
+        })
+      })
+    }
+
     if(task.status==="Running")
     {
       console.log("setting timeout");
