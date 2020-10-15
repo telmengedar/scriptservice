@@ -17,5 +17,10 @@ namespace ScriptService.Services.Workflows {
         /// target node to which to change
         /// </summary>
         public IInstanceNode Target { get; set; }
+
+        /// <summary>
+        /// text to log when using transition
+        /// </summary>
+        public IScript Log { get; set; }
     }
 }

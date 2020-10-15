@@ -1,4 +1,5 @@
 ﻿namespace ScriptService.Dto.Workflows {
+    
     /// <summary>
     /// argument used to create a transition
     /// </summary>

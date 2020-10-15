@@ -16,15 +16,18 @@ namespace ScriptService.Controllers {
     public class WorkflowController : ControllerBase {
         readonly ILogger<WorkflowController> logger;
         readonly IWorkflowService workflowservice;
-
+        IWorkflowExportService exportservice;
+        
         /// <summary>
         /// creates a new <see cref="WorkflowController"/>
         /// </summary>
         /// <param name="logger">access to logging</param>
         /// <param name="workflowservice">access to workflow data</param>
-        public WorkflowController(ILogger<WorkflowController> logger, IWorkflowService workflowservice) {
+        /// <param name="exportservice">exports workflow data to structures</param>
+        public WorkflowController(ILogger<WorkflowController> logger, IWorkflowService workflowservice, IWorkflowExportService exportservice) {
             this.logger = logger;
             this.workflowservice = workflowservice;
+            this.exportservice = exportservice;
         }
 
         /// <summary>
@@ -58,6 +61,16 @@ namespace ScriptService.Controllers {
         [HttpGet("{workflowid}")]
         public Task<WorkflowDetails> GetWorkflow(long workflowid) {
             return workflowservice.GetWorkflow(workflowid);
+        }
+
+        /// <summary>
+        /// get a workflow from backend
+        /// </summary>
+        /// <param name="workflowid">workflowid of workflow to get</param>
+        /// <returns>full workflow information</returns>
+        [HttpGet("{workflowid}/export")]
+        public Task<WorkflowStructure> ExportWorkflow(long workflowid) {
+            return exportservice.ExportWorkflow(workflowid);
         }
 
         /// <summary>

@@ -44,10 +44,7 @@ namespace ScriptService {
             Configuration = configuration;
         }
 
-        /// <summary>
-        /// access to configuration
-        /// </summary>
-        public IConfiguration Configuration { get; }
+        IConfiguration Configuration { get; }
 
         IEntityManager ConnectDatabase() {
             switch (Configuration["Database:Type"]) {
@@ -111,6 +108,7 @@ namespace ScriptService {
             services.AddSingleton<IScriptService, DatabaseScriptService>();
             services.AddSingleton<IScriptExecutionService, ScriptExecutionService>();
             services.AddSingleton<IWorkflowService, DatabaseWorkflowService>();
+            services.AddSingleton<IWorkflowExportService, WorkflowExportService>();
             services.AddSingleton<IWorkflowExecutionService, WorkflowExecutionService>();
             services.AddSingleton<IArchiveService, DatabaseArchiveService>();
             services.AddSingleton<ITaskService, DatabaseTaskService>();

@@ -1,4 +1,5 @@
 ﻿namespace ScriptService.Dto.Workflows {
+    
     /// <summary>
     /// base data for a transition
     /// </summary>
@@ -13,5 +14,10 @@
         /// type of transition
         /// </summary>
         public TransitionType Type { get; set; }
+
+        /// <summary>
+        /// text to log when using this transition
+        /// </summary>
+        public string Log { get; set; }
     }
 }

@@ -95,7 +95,8 @@ namespace ScriptService.Services.Workflows {
 
             transitions.Add(new InstanceTransition {
                 Target = nodegetter(target),
-                Condition = condition
+                Condition = condition,
+                Log = string.IsNullOrEmpty(data.Log) ? null : await compiler.CompileCodeAsync(data.Log, ScriptLanguage.NCScript)
             });
         }
 

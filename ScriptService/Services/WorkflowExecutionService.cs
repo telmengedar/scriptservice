@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NightlyCode.Database.Fields;
 using NightlyCode.Scripting.Data;
 using NightlyCode.Scripting.Parser;
 using NightlyCode.Scripting.Providers;
 using ScriptService.Dto;
 using ScriptService.Dto.Tasks;
+using ScriptService.Dto.Workflows;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Extensions;
 using ScriptService.Services.Workflows;
@@ -74,7 +76,13 @@ namespace ScriptService.Services {
                         state.State[entry.Key] = entry.Value.DetermineValue(state.State);
             }
 
-            return await Execute(state.Variables, tasklogger, token, state.State, await EvaluateTransitions(state.Node, tasklogger, state.State, state.Node.Transitions, token), lastresult);
+            InstanceTransition transition = await EvaluateTransitions(state.Node, tasklogger, state.State, state.Node.Transitions, token);
+            if (transition == null) {
+                tasklogger.Warning("Suspend node has no transition defined for current state. Workflow ends by default.");
+                return lastresult;
+            }
+
+            return await Execute(state.Variables, tasklogger, token, state.State, transition.Target, lastresult);
         }
 
         void HandleTaskResult(Task<object> t, WorkableTask task, WorkableLogger tasklogger) {
@@ -146,27 +154,38 @@ namespace ScriptService.Services {
             return Execute(variables, tasklogger, token, new Dictionary<string, object>(), workflow.StartNode);
         }
 
-        Task<IInstanceNode> EvaluateTransitions(IInstanceNode current, WorkableLogger tasklogger, IDictionary<string, object> state, List<InstanceTransition> transitions, CancellationToken token) {
+        Task<InstanceTransition> EvaluateTransitions(IInstanceNode current, WorkableLogger tasklogger, IDictionary<string, object> state, List<InstanceTransition> transitions, CancellationToken token) {
             return EvaluateTransitions(current, tasklogger, new VariableProvider(state), transitions, token);
         }
 
-        async Task<IInstanceNode> EvaluateTransitions(IInstanceNode current, WorkableLogger tasklogger, IVariableProvider variableprovider, List<InstanceTransition> transitions, CancellationToken token) {
+        async Task<InstanceTransition> EvaluateTransitions(IInstanceNode current, WorkableLogger tasklogger, IVariableProvider variableprovider, List<InstanceTransition> transitions, CancellationToken token) {
+            InstanceTransition transition = null;
             foreach (InstanceTransition conditionaltransition in transitions.Where(c=>c.Condition!=null)) {
                 if (await conditionaltransition.Condition.ExecuteAsync<bool>(variableprovider, token)) {
-                    //tasklogger.Info($"Transition '{current.NodeName}' -> '{conditionaltransition.Target.NodeName}'");
-                    return conditionaltransition.Target;
+                    transition= conditionaltransition;
+                    break;
                 }
             }
 
-            InstanceTransition[] defaulttransitions = transitions.Where(t => t.Condition == null).ToArray();
-            if (defaulttransitions.Length > 0) {
-                if (defaulttransitions.Length > 1)
-                    tasklogger.Warning($"More than one default transition defined for '{current.NodeName}'. Behavior of Workflow is undefined since the order of transitions is not guaranteed to be static.");
-                //tasklogger.Info($"Transition '{current.NodeName}' -> '{defaulttransitions.First().Target.NodeName}'");
-                return defaulttransitions.First().Target;
+            if (transition == null) {
+                InstanceTransition[] defaulttransitions = transitions.Where(t => t.Condition == null).ToArray();
+                if (defaulttransitions.Length > 0) {
+                    if (defaulttransitions.Length > 1)
+                        tasklogger.Warning($"More than one default transition defined for '{current.NodeName}'. Behavior of Workflow is undefined since the order of transitions is not guaranteed to be static.");
+                    transition = defaulttransitions.First();
+                }
             }
 
-            return null;
+            if (transition?.Log != null) {
+                try {
+                    tasklogger.Info(await transition.Log.ExecuteAsync<string>(variableprovider, token));
+                }
+                catch (Exception e) {
+                    tasklogger.Error($"Error executing transition log of '{current.NodeName}'->'{transition.Target?.NodeName}'", e);
+                    throw;
+                }
+            }
+            return transition;
         }
 
         async Task<object> Execute(IVariableProvider variables, WorkableLogger tasklogger, CancellationToken token, IDictionary<string, object> state, IInstanceNode current, object lastresult=null) {
@@ -184,28 +203,32 @@ namespace ScriptService.Services {
                 catch (Exception e) {
                     tasklogger.Warning($"Error while executing node '{current.NodeName}'", e.Message);
                     
-                    IInstanceNode next = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(new VariableProvider(variables, new Variable("error", e)), state), current.ErrorTransitions, token);
+                    InstanceTransition next = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(new VariableProvider(variables, new Variable("error", e)), state), current.ErrorTransitions, token);
                     if (next == null)
                         throw;
                     
-                    current = next;
+                    current = next.Target;
                     continue;
                 }
 
                 try {
                     if (lastresult is LoopCommand) {
-                        current = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(variables, state), current.LoopTransitions, token) ?? current;
+                        InstanceTransition transition = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(variables, state), current.LoopTransitions, token);
+                        current =  transition?.Target ?? current;
                     }
-                    else current = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(variables, state), current.Transitions, token);
+                    else {
+                        InstanceTransition transition = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(variables, state), current.Transitions, token);
+                        current = transition?.Target;
+                    }
                 }
                 catch (Exception e) {
-                    tasklogger.Warning($"Error while evaluating transitions of node '{current.NodeName}'", e.Message);
+                    tasklogger.Warning($"Error while evaluating transitions of node '{current?.NodeName}'", e.Message);
                     
-                    IInstanceNode next = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(new VariableProvider(variables, new Variable("error", e)), state), current.ErrorTransitions, token);
+                    InstanceTransition next = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(new VariableProvider(variables, new Variable("error", e)), state), current.ErrorTransitions, token);
                     if(next == null)
                         throw;
                     
-                    current = next;
+                    current = next.Target;
                 }
             }
 
