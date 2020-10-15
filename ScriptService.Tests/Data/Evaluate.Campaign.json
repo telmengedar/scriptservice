@@ -1,0 +1,111 @@
+﻿{
+  "nodes": [
+    {
+      "id": "748a3ce6-5314-46c8-8f87-d9007095d1f5",
+      "name": "Start",
+      "type": "Start",
+      "parameters": {
+        "imports": [
+          {
+            "type": "Host",
+            "variable": "aspects",
+            "name": "mamgo.api.campaignitemaspects"
+          }
+        ]
+      }
+    },
+    {
+      "id": "c52dbe30-ba0a-4220-afbe-1afba115659a",
+      "name": "Get.Jobs",
+      "type": "Iterator",
+      "parameters": {
+        "host": "jobs",
+        "method": "List",
+        "arguments": [
+          ""
+        ],
+        "collection": "$campaign.items",
+        "item": "job"
+      },
+      "variable": ""
+    },
+    {
+      "id": "1ba95d1b-8e65-4306-aefe-456110131f6f",
+      "name": "Job.Calculate.Cpc",
+      "type": "Workflow",
+      "parameters": {
+        "arguments": {
+          "job": "$job"
+        },
+        "name": "Evaluate.Job.CpcV2"
+      },
+      "variable": "cpc"
+    },
+    {
+      "id": "b83f1d05-37c9-4b9c-b615-d30cc52c2de4",
+      "name": "Job.Save.Cpc",
+      "type": "Call",
+      "parameters": {
+        "code": "parameter($job, \"Job\")\r\nparameter($cpc, decimal)\r\n\r\n$job.cpc = $cpc",
+        "host": "aspects",
+        "method": "CreateOrUpdate",
+        "arguments": [
+          "{\"ItemId\": $job.id, \"Name\": \"cpc\", \"Value\": $cpc}"
+        ]
+      },
+      "variable": ""
+    },
+    {
+      "id": "4a64f409-8800-4965-b1b9-3b87e89cc432",
+      "name": "Update.Log",
+      "type": "Log",
+      "parameters": {
+        "type": "Info",
+        "text": "$\"Calculating CPC for Job {$job.id}: '{$job.title}'\""
+      },
+      "variable": ""
+    },
+    {
+      "id": "0b4d9f46-e3be-467c-87e8-131e43eafb36",
+      "name": "End",
+      "type": "Log",
+      "parameters": {
+        "type": "Info",
+        "text": "\"Campaign evaluated successfully\""
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "originIndex": 0,
+      "targetIndex": 1,
+      "type": "Standard"
+    },
+    {
+      "originIndex": 2,
+      "targetIndex": 3,
+      "type": "Standard"
+    },
+    {
+      "originIndex": 3,
+      "targetIndex": 1,
+      "type": "Standard"
+    },
+    {
+      "originIndex": 1,
+      "targetIndex": 4,
+      "type": "Loop"
+    },
+    {
+      "originIndex": 4,
+      "targetIndex": 2,
+      "type": "Standard"
+    },
+    {
+      "originIndex": 1,
+      "targetIndex": 5,
+      "type": "Standard"
+    }
+  ],
+  "name": "Evaluate.Campaign"
+}

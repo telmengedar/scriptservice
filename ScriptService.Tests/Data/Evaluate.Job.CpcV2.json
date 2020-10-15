@@ -1,0 +1,175 @@
+﻿{
+  "nodes": [
+    {
+      "id": "93c15fd0-4655-474b-a47a-43bfde8f7294",
+      "name": "Buzz Page Performance",
+      "type": "Call",
+      "parameters": {
+        "host": "performance",
+        "method": "DeterminePagePerformance",
+        "arguments": [
+          "$job.title"
+        ]
+      },
+      "variable": "pageperformance"
+    },
+    {
+      "id": "6e565519-3eb2-4127-8258-026ff5d72ab5",
+      "name": "Best Cpc Performance",
+      "type": "Expression",
+      "parameters": {
+        "code": "return(0.32)",
+        "language": 0
+      },
+      "variable": "cpc"
+    },
+    {
+      "id": "190f9c85-c178-46f3-ba2d-78af2fe95932",
+      "name": "Fuzziness",
+      "type": "BinaryOperation",
+      "parameters": {
+        "code": "",
+        "lhs": "$cpc",
+        "operation": "Add",
+        "rhs": "$random.int(-1,2)*0.01"
+      },
+      "variable": "cpc"
+    },
+    {
+      "id": "a1f6e7f3-a226-469e-a5b1-cc4fe87a1207",
+      "name": "Clamp Cpc",
+      "type": "Value",
+      "parameters": {
+        "value": "$cpc.clamp(0.24,0.40)"
+      }
+    },
+    {
+      "id": "075de315-a83f-4712-aaee-a9425be96fc6",
+      "name": "Campaign Page Performance",
+      "type": "Call",
+      "parameters": {
+        "host": "performance",
+        "method": "PagePerformance",
+        "arguments": [
+          "{\"CampaignId\":[$job.campaignid], \"ItemGroup\": [\"Campaign\", \"Cpc\"], \"From\": $time.now-$time.days(90)}"
+        ]
+      },
+      "variable": "pageperformance"
+    },
+    {
+      "id": "82ece2ff-3a3f-4701-a344-2cc72814b915",
+      "name": "Start",
+      "type": "Start",
+      "parameters": {
+        "imports": [
+          {
+            "type": "Host",
+            "variable": "performance",
+            "name": "mamgo.api.performance"
+          },
+          {
+            "type": "Host",
+            "variable": "random",
+            "name": "random"
+          },
+          {
+            "type": "Host",
+            "variable": "time",
+            "name": "time"
+          },
+          {
+            "type": "Host",
+            "variable": "values",
+            "name": "values"
+          }
+        ]
+      }
+    },
+    {
+      "id": "6fccb7ba-fbfb-4a41-af73-709db11d465e",
+      "name": "Page Performance",
+      "type": "Call",
+      "parameters": {
+        "host": "performance",
+        "method": "PagePerformance",
+        "arguments": [
+          "{\"ItemId\":[$job.id], \"ItemGroup\": [\"Item\", \"Cpc\"], \"From\": $time.now-$time.days(90)}"
+        ]
+      },
+      "variable": "pageperformance"
+    },
+    {
+      "id": "af561a93-2834-4bdd-a91b-65e6071654b1",
+      "name": "Default CPC",
+      "type": "Value",
+      "parameters": {
+        "value": "0.32"
+      },
+      "variable": "cpc"
+    }
+  ],
+  "transitions": [
+    {
+      "originIndex": 6,
+      "targetIndex": 4,
+      "condition": "$pageperformance==null||$pageperformance.length<3",
+      "type": "Standard"
+    },
+    {
+      "originIndex": 4,
+      "targetIndex": 0,
+      "condition": "$pageperformance==null||$pageperformance.length<3",
+      "type": "Standard"
+    },
+    {
+      "originIndex": 5,
+      "targetIndex": 6,
+      "type": "Standard"
+    },
+    {
+      "originIndex": 1,
+      "targetIndex": 2,
+      "type": "Standard"
+    },
+    {
+      "originIndex": 2,
+      "targetIndex": 3,
+      "type": "Standard"
+    },
+    {
+      "originIndex": 7,
+      "targetIndex": 2,
+      "type": "Standard"
+    },
+    {
+      "originIndex": 1,
+      "targetIndex": 7,
+      "condition": "values.isnan($cpc)",
+      "type": "Standard"
+    },
+    {
+      "originIndex": 0,
+      "targetIndex": 1,
+      "type": "Standard"
+    },
+    {
+      "originIndex": 0,
+      "targetIndex": 7,
+      "condition": "$pageperformance==null||$pageperformance.length<3",
+      "type": "Standard"
+    },
+    {
+      "originIndex": 4,
+      "targetIndex": 1,
+      "type": "Standard"
+    },
+    {
+      "originIndex": 6,
+      "targetIndex": 1,
+      "type": "Standard"
+    }
+  ],
+  "id": 6,
+  "revision": 17,
+  "name": "Evaluate.Job.CpcV2"
+}

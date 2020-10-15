@@ -17,4 +17,13 @@
     <ProjectReference Include="..\ScriptService\ScriptService.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Data\Evaluate.Job.CpcV2.json" />
+    <EmbeddedResource Include="Data\Evaluate.Job.CpcV2.json" />
+    <None Remove="Data\EvaluateCampaign.json" />
+    <EmbeddedResource Include="Data\Evaluate.Campaign.json" />
+    <None Remove="Data\Campaign.json" />
+    <EmbeddedResource Include="Data\Campaign.json" />
+  </ItemGroup>
+
 </Project>

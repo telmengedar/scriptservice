@@ -115,6 +115,8 @@ namespace ScriptService.Services {
                         throw new IndexOutOfRangeException("Transition origin index out of range");
                     if (transition.OriginIndex < 0 || transition.TargetIndex < 0 || transition.OriginIndex >= nodecount || transition.TargetIndex >= nodecount)
                         throw new IndexOutOfRangeException("Transition target index out of range");
+                    if(transition.OriginIndex==transition.TargetIndex)
+                        throw new InvalidOperationException("Transition target must not be the same node as origin");
                 }
             }
 

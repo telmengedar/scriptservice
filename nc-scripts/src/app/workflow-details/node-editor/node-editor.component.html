@@ -198,7 +198,7 @@
       <div class="row header">
         <div class="col-12">Parameters</div>
       </div>  
-      <div class="row" *ngFor="let parameter of node.parameters.parameters|keyvalue">
+      <div class="row" *ngFor="let parameter of node.parameters.arguments|keyvalue">
         <div class="col-2">{{parameter.key}}</div>
         <div class="col-9">{{parameter.value}}</div>
         <div class="col-1">

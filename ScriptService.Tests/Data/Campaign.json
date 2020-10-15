@@ -1,0 +1,993 @@
+﻿{
+  "brokers": [
+    {
+      "campaignId": 8,
+      "id": 1,
+      "moniker": "neuvoo",
+      "name": "Neuvoo"
+    }
+  ],
+  "items": [
+    {
+      "campaignId": 12,
+      "title": "Account Manager (m/w/d)",
+      "date": "2020-09-16T00:00:00",
+      "reference": "15044794",
+      "url": "https://jobs.academicwork.de/stellenanzeige/account-manager-mwd/15044794",
+      "description": "<p>Unser Partner InoNet Computer Gmbh bietet dir die Möglichkeit bei ihm als <b>Account Manager (m/w/d) im Vertrieb</b> in Taufkirchen (bei München)  zu starten. </p>\n\n<p>Bei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deine Karrierepartnerin Julia Hiller bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li><b>Perspektive:</b> Ein unbefristeter Arbeitsvertrag, sowie ein attraktives Gehalt </li>\n<li><b>Arbeitsatmosphäre:</b> Sehr offene, angenehme Unternehmenskultur und ein Team aus motivierten Kollegen</li>\n<li><b>Weiterentwicklung:</b> Entfaltung- sowie Entwicklungsmöglichkeiten in einem stark wachsenden Unternehmen  </li>\n<li><b>Arbeitsumfeld:</b> Ein spannendes und abwechslungsreiches Arbeitsumfeld sowie renommierte Kundenunternehmen</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Erfolgreich abgeschlossenes technisches oder kaufmännisches Studium oder eine vergleichbare Ausbildung </li>\n<li>Kenntnisse im Vertrieb sowie eine IT-Affinität</li>\n<li>Sehr gute Deutsch- und Englischkenntnisse</li>\n<li>Führerschein der Klasse B</li>\n<li>Selbstständige und strukturierte Arbeitsweise sowie hervorragende Kommunikationsfähigkeiten, gepaart mit Kreativität, Lernfähigkeit und Offenheit</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Vertrieb/Verkauf",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "80333"
+      },
+      "postTime": "21.02:25:02.2973613",
+      "id": 1111,
+      "itemId": 45467,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-09-16T08:43:04.5964840"
+    },
+    {
+      "campaignId": 12,
+      "title": "Sales Manager (m/w/d) Hamburg",
+      "date": "2020-10-06T13:46:55.6530000",
+      "reference": "15045617",
+      "url": "https://jobs.academicwork.de/stellenanzeige/sales-manager-mwd-hamburg/15045617",
+      "description": "<p>Als <b> (Junior) Sales Manager (m/w/d) </b>im Außendienst vertreibst du für unseren Partner innovative Produkte aus dem Bereich Dermatologie eigenständig und baust deine Vertriebsregion in Hamburg und Umgebung strategisch weiter aus. Die fachliche Kompetenz hierfür wird dir im Rahmen einer umfangreichen Einarbeitungsphase vermittelt.</p>\n\n<p>Wir stellen dich bei uns an und du agierst bei unserem Partner vor Ort. Dieser wird dich bei erfolgreicher Zusammenarbeit übernehmen.\nWir führen den Bewerbungsprozess komplett für unseren Partner durch, wende dich bei Fragen gerne an deinen Karrierepartner Tomas Mamat bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li>Ein sehr gutes Fixgehalt mit entsprechenden Boni </li>\n<li>Einen Firmenwagen zur Privatnutzung, Smartphone und Tablet</li>\n<li>Umfangreiche Produktschulungen, Trainings und Weiterbildungen </li>\n<li>Regelmäßige persönliche Coachings </li>\n<li>Betriebliche Altersvorsorge</li>\n<li>Großartige Entwicklungsmöglichkeiten für deinen persönlichen Erfolg</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Erfolgreich abgeschlossenes Studium </li>\n<li>Erste Erfahrung im Vertrieb und im Umgang mit Kunden oder idealerweise in der Betreuung von Apotheken (OTC)</li>\n<li>Verhandlungssichere Deutsch- und Englischkenntnisse</li>\n<li>Leidenschaft für den Vertrieb und ein ausgeprägtes Gespür für den Bedarf deiner Kunden</li>\n<li>Hohes Maß an Mobilität, sowie eine verantwortungsbewusste und selbstständige Arbeitsweise</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Vertrieb/Verkauf",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Hamburg",
+        "city": "Hamburg",
+        "postalCode": "22085"
+      },
+      "postTime": "21:14:41.5699237",
+      "id": 1116,
+      "itemId": 45472,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-10-06T13:53:25.3239220"
+    },
+    {
+      "campaignId": 12,
+      "title": "Sales Manager (m/w/d) Freiburg",
+      "date": "2020-09-02T11:17:59.0370000",
+      "reference": "15044475",
+      "url": "https://jobs.academicwork.de/stellenanzeige/sales-manager-mwd-freiburg/15044475",
+      "description": "<p>Als <b> (Junior) Sales Manager (m/w/d) </b>im Außendienst vertreibst du für unseren Partner innovative Produkte aus dem Bereich Dermatologie eigenständig und baust deine Vertriebsregion in München und Umgebung strategisch weiter aus. Die fachliche Kompetenz hierfür wird dir im Rahmen einer umfangreichen Einarbeitungsphase vermittelt.</p>\n\n<p>Wir stellen dich bei uns an und du agierst bei unserem Partner vor Ort. Dieser wird dich bei erfolgreicher Zusammenarbeit übernehmen.\nWir führen den Bewerbungsprozess komplett für unseren Partner durch, wende dich bei Fragen gerne an deinen Karrierepartner Tomas Mamat bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li>Ein sehr gutes Fixgehalt mit entsprechenden Boni </li>\n<li>Einen Firmenwagen zur Privatnutzung, Smartphone und Tablet</li>\n<li>Umfangreiche Produktschulungen, Trainings und Weiterbildungen </li>\n<li>Regelmäßige persönliche Coachings </li>\n<li>Betriebliche Altersvorsorge</li>\n<li>Großartige Entwicklungsmöglichkeiten für deinen persönlichen Erfolg</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Erfolgreich abgeschlossenes Studium </li>\n<li>Erste Erfahrung im Vertrieb und im Umgang mit Kunden oder idealerweise in der Betreuung von Apotheken (OTC)</li>\n<li>Verhandlungssichere Deutsch- und Englischkenntnisse</li>\n<li>Leidenschaft für den Vertrieb und ein ausgeprägtes Gespür für den Bedarf deiner Kunden</li>\n<li>Hohes Maß an Mobilität, sowie eine verantwortungsbewusste und selbstständige Arbeitsweise</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Vertrieb/Verkauf",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Baden-Württemberg",
+        "city": "Freiburg im Breisgau",
+        "postalCode": "79108"
+      },
+      "postTime": "34.22:45:34.2296009",
+      "id": 1096,
+      "itemId": 45452,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-09-02T12:22:32.6642450"
+    },
+    {
+      "campaignId": 8,
+      "title": "Assistenz (m/w/d) Projektleitung Immobilien",
+      "date": "2020-08-03T16:25:05",
+      "reference": "15042967LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/assistenz-mwd-projektleitung-immobilien/215643.html",
+      "description": "Du hast immer alles im Blick und möchtest dein Organisationstalent unter Beweis stellen- Als Assistenz (m/w/d) der Projektleitung kannst du deine Erfahrungen in der Immobilienbranche vertiefen und entscheidend zu erfolgreichen Projekten beitragen.<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nAufgrund des weiteren Wachstums, bietet dir unser Partner die Möglichkeit als Assistenz (m/w/d) der Projektleitung im Bereich Immobilien in Berlin zu starten.<br />\n<br />\nBei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Pujan Dashti bei Academic Work.<br />\n<br />\n Das bieten wir dir  <br />\n<br />\n- Benefits wie betriebliche Altersvorsorge, Snacks, Obst und Getränke sowie jeden Mittwoch gemeinsames und bezahltes Mittagessen<br />\n- Ein Team aus erfahrenen Kollegen mit Spaß und Arbeit auf Augenhöhe sowie moderne Räumlichkeiten direkt am Kurfürstendamm<br />\n<br />\nAUFGABEN:<br />\n<br />\nAls Assistenz (m/w/d) sorgst du für den einwandfreien Ablauf aller Projekte im Umfeld Immobilien und Bau.<br />\n<br />\n- Unterstützung bei der gesamten Projektorganisation als Projektassistenz<br />\n- Schnittstelle zwischen Projektleitung, externen Dienstleistern und Ansprechpartnern<br />\n- Betreuung der Rechnungsprüfung sowie Unterstützung bei der Erstellung von Kalkulationen und Wirtschaftlichkeitsanalysen<br />\n- Ablage und Verwaltung aller Dokumente<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Erfolgreich abgeschlossene Ausbildung, Studium oder Zusatzqualifikation im Bereich Immobilien, Bau oder vergleichbar<br />\n- Praktische Berufserfahrung im Assistenz- oder Projektbereich, gerne mit Bezug zu Immobilien<br />\n- Ausgeprägtes kaufmännisches und technisches Verständnis<br />\n- Sicherer Umgang mit MS Office und sehr gute Deutsch- sowie Englischkenntnisse<br />\n<br />\nKarrierepartner bei Academic Work: Pujan Dashti, +49 4 055 436 65 05 oder 0162 10 32 141<br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nUnser Partner <br />\n<br />\n... verfügt über die Erfahrung in der Entwicklung von Immobilien und bietet im Bereich Development und Asset Management ein ganzheitliche Leistungsspektrum (Entwicklung, Realisierung, Strukturierung sowie dem Management von Immobilien) an.<br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Office/Administration/HR",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Berlin",
+        "city": "Berlin",
+        "postalCode": "10115"
+      },
+      "postTime": "42.01:07:43.3602951",
+      "id": 1094,
+      "itemId": 45450,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-26T10:00:23.5335510"
+    },
+    {
+      "campaignId": 8,
+      "title": "Sales Manager (m/w/d) Freiburg",
+      "date": "2020-09-02T16:25:29",
+      "reference": "15044475LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/sales-manager-mwd-freiburg/220113.html",
+      "description": "Hast du Lust auf ein cooles, digitales, aufstrebendes Unternehmen mit reichlich Benefits- Dein Herz schlägt für den Vertrieb, dabei möchtest du aber Verantwortung über deinen eigenen Kundenstamm übernehmen, deine Routen in und um München selbst koordinieren und planen- Dann bewirb dich hier als (Junior) Sales Manager (m/w/d) in Freiburg und Umgebung für unseren Partner im Außendienst.<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nAls  (Junior) Sales Manager (m/w/d) im Außendienst vertreibst du für unseren Partner innovative Produkte aus dem Bereich Dermatologie eigenständig und baust deine Vertriebsregion in München und Umgebung strategisch weiter aus. Die fachliche Kompetenz hierfür wird dir im Rahmen einer umfangreichen Einarbeitungsphase vermittelt.<br />\n<br />\nWir stellen dich bei uns an und du agierst bei unserem Partner vor Ort. Dieser wird dich bei erfolgreicher Zusammenarbeit übernehmen.<br />\nWir führen den Bewerbungsprozess komplett für unseren Partner durch, wende dich bei Fragen gerne an deinen Karrierepartner Tomas Mamat bei Academic Work.<br />\n<br />\n Das bieten wir dir  <br />\n<br />\n- Ein sehr gutes Fixgehalt mit entsprechenden Boni <br />\n- Einen Firmenwagen zur Privatnutzung, Smartphone und Tablet<br />\n- Umfangreiche Produktschulungen, Trainings und Weiterbildungen <br />\n- Regelmäßige persönliche Coachings <br />\n- Betriebliche Altersvorsorge<br />\n- Großartige Entwicklungsmöglichkeiten für deinen persönlichen Erfolg<br />\n<br />\nAUFGABEN:<br />\n<br />\n- Kundenberatung im Außendienst (Postleitzahlen 76,77,79)<br />\n- Analyse des aktuellen Bedarfs deiner Kunden anhand der bestehenden Therapie- und Patientensituation deiner Ansprechpartner <br />\n- Eigenständiges Führen von Verhandlungen nach einer umfangreichen Einarbeitung <br />\n- Betreuung deines eigenen Einzugsgebiets und Weiterentwicklung deiner eigenen Kunden- und Vertriebsstruktur.<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Erfolgreich abgeschlossenes Studium <br />\n- Erste Erfahrung im Vertrieb und im Umgang mit Kunden oder idealerweise in der Betreuung von Apotheken (OTC)<br />\n- Verhandlungssichere Deutsch- und Englischkenntnisse<br />\n- Leidenschaft für den Vertrieb und ein ausgeprägtes Gespür für den Bedarf deiner Kunden<br />\n- Hohes Maß an Mobilität, sowie eine verantwortungsbewusste und selbstständige Arbeitsweise<br />\n<br />\nKarrierepartner bei Academic Work: Tomás Mamat, 089 693 341 006 oder 0173 6596 057<br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nUnser Partner <br />\n<br />\nUnser Partner zeichnet sich durch die abwechslungsreiche Kombination aus bisherigem Unternehmenserfolg und Start-Up-Feeling am deutschen Markt aus. Das Unternehmen umfasst ein internationales Produktportfolio von über 200 Produkten (Arzneimittel, Medizinprodukte und Derma-Kosmetik). Mit über 900 Mitarbeitern in 16 Ländern entwickelt sich der Marktführer jetzt gezielt auch in Deutschland. Steige jetzt ein!<br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Sales",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Baden-Württemberg",
+        "city": "Freiburg im Breisgau",
+        "postalCode": "79098"
+      },
+      "postTime": "34.20:10:15.7537183",
+      "id": 1099,
+      "itemId": 45455,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-09-02T14:57:51.1401300"
+    },
+    {
+      "campaignId": 12,
+      "title": "Area Sales Manager (m/w/d)",
+      "date": "2020-08-19T11:41:18.1600000",
+      "reference": "15044114",
+      "url": "https://jobs.academicwork.de/stellenanzeige/area-sales-manager-mwd/15044114",
+      "description": "<p>Aufgrund der guten Auftragslage bietet dir unser Partner die Möglichkeit bei ihm als <b> Area Sales Manager (m/w/d) </b> im Vertriebsgebiet Süd zu starten. </p>\n\n<p>Bei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Habib Fussi bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li><b>Freiheiten!</b> Gestalte deinen Arbeitsalltag vollkommen alleine und erreiche so deine Ziele.</li>\n<li><b>Attraktive Vergütung</b> Dein attraktives Vergütungssystem plus Geschäftswagen sind zusätzliche Motivation.</li>\n<li><b>Netzwerken</b> Du bist in einem weltweit operierenden und renommierten Konzern tätig.</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Erfahrungen im Vertrieb/Außendienst</li>\n<li>Erste Branchenerfahrung im Bereich Automobil oder im technischen Vertrieb</li>\n<li>Affinität zu Motorrädern wünschenswert</li>\n<li>Sehr gute Deutsch- und Englischkenntnisse</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Vertrieb/Verkauf",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Thüringen",
+        "city": "Jena",
+        "postalCode": "07743"
+      },
+      "postTime": "48.22:53:31.2625665",
+      "id": 1088,
+      "itemId": 45444,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-19T12:14:35.6312820"
+    },
+    {
+      "campaignId": 12,
+      "title": "Area Sales Manager (m/w/d)",
+      "date": "2020-08-19T11:35:04.6600000",
+      "reference": "15044110",
+      "url": "https://jobs.academicwork.de/stellenanzeige/area-sales-manager-mwd/15044110",
+      "description": "<p>Aufgrund der guten Auftragslage bietet dir unser Partner die Möglichkeit bei ihm als <b> Area Sales Manager (m/w/d) </b> im Vertriebsgebiet Süd zu starten. </p>\n\n<p>Bei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Habib Fussi bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li><b>Freiheiten!</b> Gestalte deinen Arbeitsalltag vollkommen alleine und erreiche so deine Ziele.</li>\n<li><b>Attraktive Vergütung</b> Dein attraktives Vergütungssystem plus Geschäftswagen sind zusätzliche Motivation.</li>\n<li><b>Netzwerken</b> Du bist in einem weltweit operierenden und renommierten Konzern tätig.</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Erfahrungen im Vertrieb/Außendienst</li>\n<li>Erste Branchenerfahrung im Bereich Automobil oder im technischen Vertrieb</li>\n<li>Affinität zu Motorrädern wünschenswert</li>\n<li>Sehr gute Deutsch- und Englischkenntnisse</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Vertrieb/Verkauf",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "80333"
+      },
+      "postTime": "48.22:53:31.3123997",
+      "id": 1086,
+      "itemId": 45442,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-19T12:14:35.5814490"
+    },
+    {
+      "campaignId": 12,
+      "title": "Vendor Manager (m/w/d)",
+      "date": "2020-08-21T14:39:55.7330000",
+      "reference": "15044195",
+      "url": "https://jobs.academicwork.de/stellenanzeige/vendor-manager-mwd/15044195",
+      "description": "<p>Seit mehreren Jahren arbeiten wir erfolgreich mit Amazon zusammen. Für den Standort München suchen wir ab sofort mehrere <b>Vendort Manager (m/w/d)</b>.</p>\n\n<p>Bei dieser Stelle handelt es sich um eine Direktvermittlung, das bedeutet du wirst direkt bei Amazon angestellt. Der gesamte Bewerbungsprozess wird von Academic Work durchgeführt, wende dich daher bei Fragen zum Prozess bitte an deine Ansprechpartnerin Julia Hiller bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li><b> Innovation:</b> Kollegiales, dynamisches und internationales Arbeitsumfeld</li>\n<li><b> Entwicklung:</b> Große Gestaltungsspielräume, spannende Projekte und zahlreiche Weiterbildungen ab Tag 1</li>\n<li><b> Flexibilität:</b> Home Office, flexible Arbeitszeiten und ein attraktives Vergütungspaket</li>\n<li><b> Karriere:</b> Ein unbefristeter Arbeitsvertrag bei einem der erfolgreichsten Unternehmen weltweit und zahlreiche Entwicklungsmöglichkeiten</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Abgeschlossenes Hochschulstudium der Betriebswirtschaftslehre, Wirtschaftswissenschaften, Kommunikationswissenschaften oder Vergleichbares</li>\n<li>Mehrjährige Erfahrungen im Vertrieb oder Einkauf </li>\n<li>Sehr hohe Kundenorientierung und Kommunikationsstärke</li>\n<li>Verhandlungssichere Deutsch (C1) - und Englischkenntnisse (B2), sowie fundierte Kenntnisse in MS Office</li>\n<li>Durchsetzungsfähigkeit, zielorientierte Arbeitsweise sowie analytische Fähigkeiten</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Vertrieb/Verkauf",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "80333"
+      },
+      "postTime": "46.20:00:19.4177528",
+      "id": 1092,
+      "itemId": 45448,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-21T15:07:47.4760960"
+    },
+    {
+      "campaignId": 12,
+      "title": "Area Sales Manager (m/w/d)",
+      "date": "2020-08-19T11:39:13.8400000",
+      "reference": "15044111",
+      "url": "https://jobs.academicwork.de/stellenanzeige/area-sales-manager-mwd/15044111",
+      "description": "<p>Aufgrund der guten Auftragslage bietet dir unser Partner die Möglichkeit bei ihm als <b> Area Sales Manager (m/w/d) </b> im Vertriebsgebiet Süd zu starten. </p>\n\n<p>Bei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Habib Fussi bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li><b>Freiheiten!</b> Gestalte deinen Arbeitsalltag vollkommen alleine und erreiche so deine Ziele.</li>\n<li><b>Attraktive Vergütung</b> Dein attraktives Vergütungssystem plus Geschäftswagen sind zusätzliche Motivation.</li>\n<li><b>Netzwerken</b> Du bist in einem weltweit operierenden und renommierten Konzern tätig.</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Erfahrungen im Vertrieb/Außendienst</li>\n<li>Erste Branchenerfahrung im Bereich Automobil oder im technischen Vertrieb</li>\n<li>Affinität zu Motorrädern wünschenswert</li>\n<li>Sehr gute Deutsch- und Englischkenntnisse</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Vertrieb/Verkauf",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "Nürnberg",
+        "postalCode": "90443"
+      },
+      "postTime": "48.22:53:31.2702249",
+      "id": 1087,
+      "itemId": 45443,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-19T12:14:35.6236240"
+    },
+    {
+      "campaignId": 12,
+      "title": "Empfangsmitarbeiter (m/w/d)",
+      "date": "2020-08-03T00:00:00",
+      "reference": "15042967",
+      "url": "https://jobs.academicwork.de/stellenanzeige/empfangsmitarbeiter-mwd/15042967",
+      "description": "<p>Aufgrund des weiteren Wachstums, bietet dir unser Partner die Möglichkeit als <b>Empfangsmitarbeiter (m/w/d)</b> in Berlin zu starten.</p>\n\n<p>Bei dieser Stelle handelt es sich um eine <b>Direktvermittlung</b>. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Pujan Dashti bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li>Benefits wie betriebliche Altersvorsorge, Snacks, Obst und Getränke sowie jeden Mittwoch gemeinsames und bezahltes Mittagessen</li>\n<li>Ein Team aus erfahrenen Kollegen mit Spaß und Arbeit auf Augenhöhe sowie moderne Räumlichkeiten direkt am Kurfürstendamm</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Erfolgreich abgeschlossene kaufmännische Ausbildung </li>\n<li>Berufserfahrung im Bereich Empfang oder Sekretariat</li>\n<li>Sicherer Umgang mit MS Office </li>\n<li>Sehr gute Deutschkenntnisse</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Administration/ Sekretariat/HR",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Berlin",
+        "city": "Berlin",
+        "postalCode": "10117"
+      },
+      "postTime": "42.02:03:24.7536961",
+      "id": 1093,
+      "itemId": 45449,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-26T09:04:42.1401530"
+    },
+    {
+      "campaignId": 8,
+      "title": "Area Sales Manager (m/w/d)",
+      "date": "2020-08-19T16:25:35",
+      "reference": "15044111LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/area-sales-manager-mwd/218431.html",
+      "description": "Die Straße und das Auto bedeuten Freiheit! Benutze diese Freiheit als Area Sales Manager (m/w/d) und hilf unserem Partner im Außendienst verschiedene Händler von Jena bis München zu betreuen, diesen zu helfen und die besten Lösungen zu finden!<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nAufgrund der guten Auftragslage bietet dir unser Partner die Möglichkeit bei ihm als  Area Sales Manager (m/w/d)  im Vertriebsgebiet Süd zu starten. <br />\n<br />\nBei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Habib Fussi bei Academic Work.<br />\n<br />\n Das bieten wir dir  <br />\n<br />\n- Freiheiten! Gestalte deinen Arbeitsalltag vollkommen alleine und erreiche so deine Ziele.<br />\n- Attraktive Vergütung Dein attraktives Vergütungssystem plus Geschäftswagen sind zusätzliche Motivation.<br />\n- Netzwerken Du bist in einem weltweit operierenden und renommierten Konzern tätig.<br />\n<br />\nAUFGABEN:<br />\n<br />\n- Du kümmerst dich um Händler im Südosten Deutschlands (Jena bis München)<br />\n- Du planst eigenständig deine Touren und wohnst nicht jede Nacht im Hotel<br />\n- Du betreust die Händler und hilfst bei Problemen, beispielsweise bei der Optimierung des Portfolios<br />\n- Du arbeitest vom Home Office aus, wenn du nicht unterwegs bist<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Erfahrungen im Vertrieb/Außendienst<br />\n- Erste Branchenerfahrung im Bereich Automobil oder im technischen Vertrieb<br />\n- Affinität zu Motorrädern wünschenswert<br />\n- Sehr gute Deutsch- und Englischkenntnisse<br />\n<br />\nKarrierepartner bei Academic Work: Habib Fussi, 089 693 341 045 oder habib.fussi@academicwork.de.<br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Sales",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "Nürnberg",
+        "postalCode": "90518"
+      },
+      "postTime": "48.20:41:38.0511202",
+      "id": 1090,
+      "itemId": 45446,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-19T14:26:28.8427290"
+    },
+    {
+      "campaignId": 8,
+      "title": "Area Sales Manager (m/w/d)",
+      "date": "2020-08-19T16:25:47",
+      "reference": "15044114LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/area-sales-manager-mwd/218432.html",
+      "description": "Die Straße und das Auto bedeuten Freiheit! Benutze diese Freiheit als Area Sales Manager (m/w/d) und hilf unserem Partner im Außendienst verschiedene Händler von Jena bis München zu betreuen, diesen zu helfen und die besten Lösungen zu finden!<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nAufgrund der guten Auftragslage bietet dir unser Partner die Möglichkeit bei ihm als  Area Sales Manager (m/w/d)  im Vertriebsgebiet Süd zu starten. <br />\n<br />\nBei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Habib Fussi bei Academic Work.<br />\n<br />\n Das bieten wir dir  <br />\n<br />\n- Freiheiten! Gestalte deinen Arbeitsalltag vollkommen alleine und erreiche so deine Ziele.<br />\n- Attraktive Vergütung Dein attraktives Vergütungssystem plus Geschäftswagen sind zusätzliche Motivation.<br />\n- Netzwerken Du bist in einem weltweit operierenden und renommierten Konzern tätig.<br />\n<br />\nAUFGABEN:<br />\n<br />\n- Du kümmerst dich um Händler im Südosten Deutschlands (Jena bis München)<br />\n- Du planst eigenständig deine Touren und wohnst nicht jede Nacht im Hotel<br />\n- Du betreust die Händler und hilfst bei Problemen, beispielsweise bei der Optimierung des Portfolios<br />\n- Du arbeitest vom Home Office aus, wenn du nicht unterwegs bist<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Erfahrungen im Vertrieb/Außendienst<br />\n- Erste Branchenerfahrung im Bereich Automobil oder im technischen Vertrieb<br />\n- Affinität zu Motorrädern wünschenswert<br />\n- Sehr gute Deutsch- und Englischkenntnisse<br />\n<br />\nKarrierepartner bei Academic Work: Habib Fussi, 089 693 341 045 oder habib.fussi@academicwork.de.<br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Sales",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Thüringen",
+        "city": "Jena",
+        "postalCode": "07743"
+      },
+      "postTime": "48.20:41:38.0485463",
+      "id": 1091,
+      "itemId": 45447,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-19T14:26:28.8453030"
+    },
+    {
+      "campaignId": 8,
+      "title": "Area Sales Manager (m/w/d)",
+      "date": "2020-08-19T16:25:23",
+      "reference": "15044110LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/area-sales-manager-mwd/218430.html",
+      "description": "Die Straße und das Auto bedeuten Freiheit! Benutze diese Freiheit als Area Sales Manager (m/w/d) und hilf unserem Partner im Außendienst verschiedene Händler von Jena bis München zu betreuen, diesen zu helfen und die besten Lösungen zu finden!<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nAufgrund der guten Auftragslage bietet dir unser Partner die Möglichkeit bei ihm als  Area Sales Manager (m/w/d)  im Vertriebsgebiet Süd zu starten. <br />\n<br />\nBei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Habib Fussi bei Academic Work.<br />\n<br />\n Das bieten wir dir  <br />\n<br />\n- Freiheiten! Gestalte deinen Arbeitsalltag vollkommen alleine und erreiche so deine Ziele.<br />\n- Attraktive Vergütung Dein attraktives Vergütungssystem plus Geschäftswagen sind zusätzliche Motivation.<br />\n- Netzwerken Du bist in einem weltweit operierenden und renommierten Konzern tätig.<br />\n<br />\nAUFGABEN:<br />\n<br />\n- Du kümmerst dich um Händler im Südosten Deutschlands (Jena bis München)<br />\n- Du planst eigenständig deine Touren und wohnst nicht jede Nacht im Hotel<br />\n- Du betreust die Händler und hilfst bei Problemen, beispielsweise bei der Optimierung des Portfolios<br />\n- Du arbeitest vom Home Office aus, wenn du nicht unterwegs bist<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Erfahrungen im Vertrieb/Außendienst<br />\n- Erste Branchenerfahrung im Bereich Automobil oder im technischen Vertrieb<br />\n- Affinität zu Motorrädern wünschenswert<br />\n- Sehr gute Deutsch- und Englischkenntnisse<br />\n<br />\nKarrierepartner bei Academic Work: Habib Fussi, 089 693 341 045 oder habib.fussi@academicwork.de.<br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Sales",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "85622"
+      },
+      "postTime": "48.20:41:38.0565405",
+      "id": 1089,
+      "itemId": 45445,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-19T14:26:28.8373090"
+    },
+    {
+      "campaignId": 8,
+      "title": "Account Manager (m/w/d)",
+      "date": "2020-09-16T13:25:07",
+      "reference": "15044794LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/account-manager-mwd/222616.html",
+      "description": "Du spürst das Sales-Gen in dir und hast Interesse an technischen Themen- Ergreife die Chance als Account Manager (m/w/d) bei InoNet durchzustarten, ein Arbeitgeber, bei dem hauptsächlich deine Persönlichkeit zählt und der dir sowohl Freiraum als auch Entwicklungsmöglichkeiten bietet.<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nUnser Partner InoNet Computer Gmbh bietet dir die Möglichkeit bei ihm als Account Manager (m/w/d) im Vertrieb in Taufkirchen (bei München) zu starten. <br />\n<br />\nBei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deine Karrierepartnerin Julia Hiller bei Academic Work.<br />\n<br />\n Das bieten wir dir  <br />\n<br />\n- Perspektive: Ein unbefristeter Arbeitsvertrag, sowie ein attraktives Gehalt <br />\n- Arbeitsatmosphäre: Sehr offene, angenehme Unternehmenskultur und ein Team aus motivierten Kollegen<br />\n- Weiterentwicklung: Entfaltung- sowie Entwicklungsmöglichkeiten in einem stark wachsenden Unternehmen <br />\n- Arbeitsumfeld: Ein spannendes und abwechslungsreiches Arbeitsumfeld sowie renommierte Kundenunternehmen<br />\n<br />\nAUFGABEN:<br />\n<br />\nJe nach Berufserfahrung wirst du bei der InoNet Computer GmbH von der administrativen Betreuung der Kunden, über Neukundenakquise bis zu Key Account Management zusätzlich mit folgenden Aufgaben beauftragt: <br />\n<br />\n- Die Akquise von Neukunden, die aktive Betreuung und Weiterentwicklung bestehender Kundenbeziehungen, mit dem Ziel, die Marktposition von InoNet national und international auszubauen<br />\n- Selbständige Analyse des Kundenklientels und Akquise der vereinbarten Zielkunden<br />\n- Durchführung des Angebotsprozesses inkl. der Verhandlung und Abschluss von Aufträgen und Verträgen<br />\n- Entwicklung zum Key-Account-Manager für die Betreuung nationaler und internationaler Bestandskunden<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Erfolgreich abgeschlossenes technisches oder kaufmännisches Studium oder eine vergleichbare Ausbildung <br />\n- Kenntnisse im Vertrieb sowie eine IT-Affinität<br />\n- Sehr gute Deutsch- und Englischkenntnisse<br />\n- Führerschein der Klasse B<br />\n- Selbstständige und strukturierte Arbeitsweise sowie hervorragende Kommunikationsfähigkeiten, gepaart mit Kreativität, Lernfähigkeit und Offenheit<br />\n<br />\nKarrierepartner bei Academic Work: Julia Hiller, 089 693 341 047 <br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nUnser Partner <br />\n<br />\nDie InoNet Computer GmbH ist Entwickler und Hersteller von kundenspezifischen Computersystemen mit Sitz in Taufkirchen bei München (www.inonet.com). InoNet ist spezialisiert auf leistungsfähige Industriecomputer. Im Kundenauftrag modifiziert InoNet Standardprodukte oder entwickelt nach Kundenspezifikation. Mit circa 75 Mitarbeitern liegt der Unternehmensfokus seit über 19 Jahren auf der Erlangung hoher Kundenzufriedenheit durch Produkte höchster Qualität und an die Kundenbedürfnisse angepasste Abläufe. <br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Sales",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "85622"
+      },
+      "postTime": "20.22:44:16.2226446",
+      "id": 1112,
+      "itemId": 45468,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-09-16T12:23:50.6712050"
+    },
+    {
+      "campaignId": 8,
+      "title": "Vendor Manager (m/w/d)",
+      "date": "2020-08-24T08:25:31",
+      "reference": "15044195LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/vendor-manager-mwd/218815.html",
+      "description": "Du bist PRIME, wenn es um Kundenmanagement geht- Bewirb dich noch heute für eine Stelle bei Amazon und mache als Vendor Manager (m/w/d) in einem innovativen und internationalen Unternehmen Karrieresprünge statt Karriereschritte!<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nSeit mehreren Jahren arbeiten wir erfolgreich mit Amazon zusammen. Für den Standort München suchen wir ab sofort mehrere Vendort Manager (m/w/d).<br />\n<br />\nBei dieser Stelle handelt es sich um eine Direktvermittlung, das bedeutet du wirst direkt bei Amazon angestellt. Der gesamte Bewerbungsprozess wird von Academic Work durchgeführt, wende dich daher bei Fragen zum Prozess bitte an deine Ansprechpartnerin Julia Hiller bei Academic Work.<br />\n<br />\n Das bieten wir dir  <br />\n<br />\n-  Innovation: Kollegiales, dynamisches und internationales Arbeitsumfeld<br />\n-  Entwicklung: Große Gestaltungsspielräume, spannende Projekte und zahlreiche Weiterbildungen ab Tag 1<br />\n-  Flexibilität: Home Office, flexible Arbeitszeiten und ein attraktives Vergütungspaket<br />\n-  Karriere: Ein unbefristeter Arbeitsvertrag bei einem der erfolgreichsten Unternehmen weltweit und zahlreiche Entwicklungsmöglichkeiten<br />\n<br />\nAUFGABEN:<br />\n<br />\nAls Vendor Manager (m/w/d) begeisterst und gewinnst du neue Lieferanten für Amazon und machst die Produkte der Kunden in ganz Europa verfügbar.<br />\n<br />\n- Identifikation und Priorisierung von Marken und Produkten<br />\n- Zentraler Ansprechpartner und enge Zusammenarbeit mit Lieferanten aus verschiedenen Industrien und Ländern <br />\n- Gewinnung von neuen Lieferanten <br />\n- Beratung der Lieferanten: helfe das Produkt-Know-How des Lieferanten mit dem eCommerce Know-How von Amazon zu kombinieren und somit eine bestmögliche Synergie zu erzielen<br />\n- Monitoring und Analyse der Lieferanten-Performance sowie Verantwortung für Prozessverbesserungen<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Abgeschlossenes Hochschulstudium der Betriebswirtschaftslehre, Wirtschaftswissenschaften, Kommunikationswissenschaften oder Vergleichbares<br />\n- Mehrjährige Erfahrungen im Vertrieb oder Einkauf <br />\n- Sehr hohe Kundenorientierung und Kommunikationsstärke<br />\n- Verhandlungssichere Deutsch (C1) - und Englischkenntnisse (B2), sowie fundierte Kenntnisse in MS Office<br />\n- Durchsetzungsfähigkeit, zielorientierte Arbeitsweise sowie analytische Fähigkeiten<br />\n<br />\nKarrierepartner bei Academic Work: Julia Hiller, 089 / 693341047<br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nUnser Premium Partner <br />\n<br />\nAmazon ist der führende Anbieter im Bereich E-Commerce und gehört damit zur namhaften Gruppe der Fortune-500-Unternehmen. Mit einem breitgefächerten Angebot in verschiedensten Produktbereichen und fortschrittlichen Ideen ist es eines der innovativsten Unternehmen seiner Branche.<br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Sales",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "85622"
+      },
+      "postTime": "34.20:10:15.7571587",
+      "id": 1098,
+      "itemId": 45454,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-09-02T14:57:51.1366910"
+    },
+    {
+      "campaignId": 8,
+      "title": "Sales Manager (m/w/d) Hamburg",
+      "date": "2020-10-06T16:25:46",
+      "reference": "15045617LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/sales-manager-mwd-hamburg/225460.html",
+      "description": "Hast du Lust auf ein cooles, digitales, aufstrebendes Unternehmen mit reichlich Benefits- Dein Herz schlägt für den Vertrieb, dabei möchtest du aber Verantwortung über deinen eigenen Kundenstamm übernehmen, deine Routen in und um Hamburg selbst koordinieren und planen- Dann bewirb dich hier als (Junior) Sales Manager (m/w/d) in Hamburg und Umgebung für unseren Partner im Außendienst.<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nAls  (Junior) Sales Manager (m/w/d) im Außendienst vertreibst du für unseren Partner innovative Produkte aus dem Bereich Dermatologie eigenständig und baust deine Vertriebsregion in Hamburg und Umgebung strategisch weiter aus. Die fachliche Kompetenz hierfür wird dir im Rahmen einer umfangreichen Einarbeitungsphase vermittelt.<br />\n<br />\nWir stellen dich bei uns an und du agierst bei unserem Partner vor Ort. Dieser wird dich bei erfolgreicher Zusammenarbeit übernehmen.<br />\nWir führen den Bewerbungsprozess komplett für unseren Partner durch, wende dich bei Fragen gerne an deinen Karrierepartner Tomas Mamat bei Academic Work.<br />\n<br />\n Das bieten wir dir  <br />\n<br />\n- Ein sehr gutes Fixgehalt mit entsprechenden Boni <br />\n- Einen Firmenwagen zur Privatnutzung, Smartphone und Tablet<br />\n- Umfangreiche Produktschulungen, Trainings und Weiterbildungen <br />\n- Regelmäßige persönliche Coachings <br />\n- Betriebliche Altersvorsorge<br />\n- Großartige Entwicklungsmöglichkeiten für deinen persönlichen Erfolg<br />\n<br />\nAUFGABEN:<br />\n<br />\n- Kundenberatung im Außendienst (Postleitzahlen 19,22,23,24,25)<br />\n- Analyse des aktuellen Bedarfs deiner Kunden anhand der bestehenden Therapie- und Patientensituation deiner Ansprechpartner <br />\n- Eigenständiges Führen von Verhandlungen nach einer umfangreichen Einarbeitung <br />\n- Betreuung deines eigenen Einzugsgebiets und Weiterentwicklung deiner eigenen Kunden- und Vertriebsstruktur.<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Erfolgreich abgeschlossenes Studium <br />\n- Erste Erfahrung im Vertrieb und im Umgang mit Kunden oder idealerweise in der Betreuung von Apotheken (OTC)<br />\n- Verhandlungssichere Deutsch- und Englischkenntnisse<br />\n- Leidenschaft für den Vertrieb und ein ausgeprägtes Gespür für den Bedarf deiner Kunden<br />\n- Hohes Maß an Mobilität, sowie eine verantwortungsbewusste und selbstständige Arbeitsweise<br />\n<br />\nKarrierepartner bei Academic Work: Tomás Mamat, 089 693 341 006 oder 0173 6596 057<br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nUnser Partner <br />\n<br />\nUnser Partner zeichnet sich durch die abwechslungsreiche Kombination aus bisherigem Unternehmenserfolg und Start-Up-Feeling am deutschen Markt aus. Das Unternehmen umfasst ein internationales Produktportfolio von über 200 Produkten (Arzneimittel, Medizinprodukte und Derma-Kosmetik). Mit über 900 Mitarbeitern in 16 Ländern entwickelt sich der Marktführer jetzt gezielt auch in Deutschland. Steige jetzt ein!<br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Sales",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Hamburg",
+        "city": "Hamburg",
+        "postalCode": "20095"
+      },
+      "postTime": "19:59:21.8605969",
+      "id": 1117,
+      "itemId": 45473,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-10-06T15:08:45.0332530"
+    },
+    {
+      "campaignId": 12,
+      "title": "Projektmanager (m/w/d)",
+      "date": "2020-06-18T00:00:00",
+      "reference": "15043038",
+      "url": "https://jobs.academicwork.de/stellenanzeige/projektmanager-mwd/15043038",
+      "description": "<p>Aufgrund starker Expansion suchen wir <b> ab sofort </b> einen motivierten <b> Projektmanager (m/w/d) IT</b> für unser Partnerunternehmen, der das Team am Standort München unterstützt. Bei dieser Stelle handelt es sich um eine Direktvermittlung, das bedeutet, du bist direkt unbefristet bei unserem Partner angestellt. Der gesamte Bewerbungsprozess wird von Academic Work durchgeführt, wende dich deswegen bei Fragen zum Prozess bitte ausschließlich an deine Ansprechpartnerin Alessa Füger.</p>\n\n<h2>Das bieten wir dir</h2>\n\n<ul>\n<li>Große Gestaltungsfreiräume für deine Lösungen und dein Engagement</li>\n<li>Weiterentwicklungsmöglichkeit deiner Fähigkeiten</li>\n<li>Modernes Büro mit guter Anbindung (S-Bahn-Stammstrecke) und Firmenparkplätze</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Erfolgreich abgeschlossenes Studium der Betriebswirtschaft, Wirtschaftsinformatik, alternativ Ausbildung mit wirtschaftlichem/ technischen Bezug mit Berufserfahrung</li>\n<li>Mindestens 3 - 5 Jahre Erfahrungen im IT-Projektmanagement und Vertrieb von IT-Produkten</li>\n<li>Verhandlungssichere Deutsch- und gute Englischkenntnisse (C2/C1)</li>\n<li>Kompetenzen: überzeugendes Auftreten, Eigeninitiative, Organisationsgeschick</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Vertrieb/Verkauf",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "80333"
+      },
+      "postTime": "58.13:23:43.8520940",
+      "id": 1068,
+      "itemId": 45424,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-09T21:44:23.0417560"
+    },
+    {
+      "campaignId": 12,
+      "title": "Business Development Manager (m/w/d) IT",
+      "date": "2020-06-12T00:00:00",
+      "reference": "15042845",
+      "url": "https://jobs.academicwork.de/stellenanzeige/business-development-manager-mwd-it/15042845",
+      "description": "<p>Der Ursprung von Maturity sind Daten zur IT-Nutzung in europäischen Top-Organisationen aller Branchen. Der Antrieb sind individuelle Fragestellungen zur Effizienz, Effektivität und Flexibilität der IT. Wir suchen einen Business Development Manager (m/w/d) IT für den Standort München, der die Weiterentwicklung von IT-Benchmarking, IT-Sourcing, IT-Controlling und IT-Service-Management bei unseren Kunden vorantreibt.</p>\n\n<p>Bei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Alina Dahm bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li><b>Verantwortung:</b> Hohe Eigenverantwortung, die Chance selbstständig zu arbeiten und hohes Vertrauensverhältnis </li>\n<li><b>Work-Life Balance:</b> Flexible Arbeitszeiten, Option auf Homeoffice und freie Gestaltung des Arbeitsalltags</li>\n<li><b>Zusammenhalt:</b> Eine kollegiale Unternehmenskultur geprägt von Hilfsbereitschaft</li>\n<li><b>Persönliche Weiterentwicklung:</b> On the job Einarbeitung, die Möglichkeit, an Zertifizierungs- und Weiterbildungsprogrammen teilzunehmen um Profi auf deinem Gebiet zu werden</li>\n<li><b>Gehalt:</b> Ein attraktives Vergütungsmodell, welches sich aus einem Fixgehalt sowie Provision zusammensetzt</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Erfolgreich abgeschlossenes Ingenieurs- oder betriebswirtschaftliches Studium, idealerweise mit Schwerpunkt IT oder vergleichbare Ausbildung z.B. Fachinformatiker</li>\n<li>Mehrjährige Berufserfahrung im Bereich Business Development / Vertrieb</li>\n<li>Gute Kenntnisse der Organisation von IT, der Aufbau- und Ablauforganisation sowie gängiger Technologien, Architektur- und Systemlandschaften</li>\n<li>Verhandlungssichere Deutsch- und Englischkenntnisse</li>\n<li>Reisebereitschaft, Flexibilität sowie hohe Zielorientierung </li>\n<li>Kompetenzen: Eigenmotivation, selbstständige Arbeitsweise und hohe Serviceorientierung</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Vertrieb/Verkauf",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "80333"
+      },
+      "postTime": "58.13:23:43.8624511",
+      "id": 1066,
+      "itemId": 45422,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-09T21:44:23.0313990"
+    },
+    {
+      "campaignId": 12,
+      "title": "Datenmanager (m/w/d)",
+      "date": "2020-05-07T00:00:00",
+      "reference": "15042027",
+      "url": "https://jobs.academicwork.de/stellenanzeige/datenmanager-mwd/15042027",
+      "description": "<p>Aufgrund der guten Auftragslage bietet dir unser Partner ISS FWW die Möglichkeit bei ihm als <b>Datenmanager (m/w/d) </b> in München zu starten. </p>\n\n<p>Bei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Habib Fussi bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li><b>Arbeitsklima:</b> Familiäres Miteinander und ein super nettes Team.</li>\n<li><b>Abwechslung:</b> Ein breites Kundenportfolio und unterschiedliche Aufträge sorgen dafür, dass keine Langeweile aufkommt.</li>\n<li><b>Krisensicher:</b> Ein Unternehmen, welches dir ein sicheres Standbein bietet.</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Erfolgreich abgeschlossenes Studium oder Berufsausbildung</li>\n<li>Computeraffinität und Zahlenaffinität, sehr guter Umgang mit Excel wünschenswert</li>\n<li>Verhandlungssichere Deutschkenntnisse (C1) und gute Englischkenntnisse (B2)</li>\n<li>Kommunikationsfähigkeit sowie Interesse an Finanzprodukten</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Administration/ Sekretariat/HR",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "80333"
+      },
+      "postTime": "58.13:23:43.8890873",
+      "id": 1061,
+      "itemId": 45417,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-09T21:44:23.0047630"
+    },
+    {
+      "campaignId": 12,
+      "title": "HR Manager (m/w/d) Personalentwicklung und -coaching",
+      "date": "2020-07-23T00:00:00",
+      "reference": "15043734",
+      "url": "https://jobs.academicwork.de/stellenanzeige/hr-manager-mwd-personalentwicklung-und-coaching/15043734",
+      "description": "<p>Unser Partner CHECK24, bietet dir die Möglichkeit bei ihm als <b>(Senior) HR Manager (m/w/d) mit Schwerpunkt Personalentwicklung und -coaching</b> in München zu starten. </p>\n\n<p>Bei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deine Karrierepartnerin Manuela Haimerl bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li><b>Weiterentwicklung:</b> Individuelle Entwicklungs- und Weiterbildungsmöglichkeiten dank einem breiten Trainingskatalog </li>\n<li><b>Sicherheit:</b> Stabilität eines etablierten Online-Unternehmens und eine unbefristete Position in Festanstellung</li>\n<li><b>Abwechslung:</b> Unterschiedliche Projekte und aktive Mitgestaltung durch die Einbringung eigener Ideen sorgen dafür, dass keine Langeweile aufkommt</li>\n<li><b>Location:</b> Zentraler Standort mit ausgezeichneter Verkehrsanbindung</li>\n<li><b>Unternehmenskultur:</b> Ein agiles Team mit einer hohen Kollaborationskultur und regelmäßigen Events</li>\n<li><b>Extras:</b> Gutscheine für zahlreiche CHECK24 Produkte, Obst und Getränke und eine bezuschusste betriebliche Altersversorgung</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Erfolgreich abgeschlossenes Studium mit Schwerpunkt Personal und abgeschlossene Coaching-Ausbildung</li>\n<li>Mindestens 5-jährige Berufserfahrung im Bereich Personalentwicklung, Training und Coaching und deren Umsetzung sowie Zusammenarbeit mit Führungskräften</li>\n<li>Schnelle Auffassungsgabe gepaart mit Umsetzungsstärke und einer ausgeprägten Hands-on-Mentalität</li>\n<li>Verhandlungssichere Deutschkenntnisse (C2) </li>\n<li>Reisebereitschaft ca. 8- 10 Tage pro Monat</li>\n<li>Kompetenzen: Kooperationsvermögen, Ausdauer, Kommunikationsfähigkeit, strukturierte Arbeitsweise</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Administration/ Sekretariat/HR",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "80333"
+      },
+      "postTime": "58.13:23:43.8173114",
+      "id": 1076,
+      "itemId": 45432,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-09T21:44:23.0765390"
+    },
+    {
+      "campaignId": 12,
+      "title": "Account Manager (m/w/d)",
+      "date": "2020-06-10T00:00:00",
+      "reference": "15039512",
+      "url": "https://jobs.academicwork.de/stellenanzeige/account-manager-mwd/15039512",
+      "description": "<p>Seit mehreren Jahren arbeiten wir erfolgreich mit Amazon zusammen. Für den Standort München suchen wir ab sofort mehrere <b>(Junior) Account Manager (m/w/d)</b>.</p>\n\n<p>Bei dieser Stelle handelt es sich um eine Direktvermittlung, das bedeutet du wirst direkt bei Amazon angestellt. Der gesamte Bewerbungsprozess wird von Academic Work durchgeführt, wende dich daher bei Fragen zum Prozess bitte an deine Ansprechpartnerin Julia Hiller bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li><b> Innovation:</b> Kollegiales, dynamisches und internationales Arbeitsumfeld</li>\n<li><b> Entwicklung:</b> Große Gestaltungsspielräume, spannende Projekte und zahlreiche Weiterbildungen ab Tag 1</li>\n<li><b> Flexibilität:</b> Home Office, flexible Arbeitszeiten und ein attraktives Vergütungspaket</li>\n<li><b> Karriere:</b> Ein unbefristeter Arbeitsvertrag bei einem der erfolgreichsten Unternehmen weltweit und zahlreiche Entwicklungsmöglichkeiten</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Abgeschlossenes Hochschulstudium der Betriebswirtschaftslehre, Wirtschaftswissenschaften, Kommunikationswissenschaften oder Vergleichbares</li>\n<li>Erste Vertriebs- und Saleserfahrung durch Praktika und Werkstudententätigkeiten</li>\n<li>Verhandlungssichere Deutsch (C1) - und Englischkenntnisse (B2), sowie fundierte Kenntnisse in MS Office</li>\n<li>Strukturierte Arbeitsweise gutes Zeitmanagement und kommunikationsstarkes Auftreten</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Vertrieb/Verkauf",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "80333"
+      },
+      "postTime": "58.13:23:43.8971836",
+      "id": 1058,
+      "itemId": 45414,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-09T21:44:22.9966670"
+    },
+    {
+      "campaignId": 12,
+      "title": "Sales Manager (m/w/d)",
+      "date": "2020-05-18T00:00:00",
+      "reference": "15042327",
+      "url": "https://jobs.academicwork.de/stellenanzeige/sales-manager-mwd/15042327",
+      "description": "<p>Aufgrund der guten Auftragslage bietet dir unser Partner die Specific Group GmbH die Möglichkeit bei ihm als <b>Sales Manager (m/w/d) im Softwarebereich </b> in München zu starten um den Sales Bereich größer aufzubauen.  </p>\n\n<p>Bei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Alina Dahm bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li><b>Einarbeitung:</b> Intensive Einarbeitung von einem erfahrenen Sales Manager</li>\n<li><b>Entwicklung &amp; Karriere:</b> Es besteht die Vision dich als Führungskraft weiterzuentwickeln um langfristig das Sales Team zu führen und eine leitende Funktion einzunehmen</li>\n<li><b>Gehalt:</b> Ein attraktives Vergütungsmodell, welches sich aus Fixgehalt und Provision zusammensetzt</li>\n<li><b>Verantwortung:</b> Hohe Eigenverantwortung, die Chance selbstständig zu arbeiten und hohes Vertrauensverhältnis</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Erfolgreich abgeschlossenes Studium</li>\n<li>Fundierte Berufserfahrung im Vertrieb sowie IT-Kenntnisse</li>\n<li>Erfahrung im Aufbau langfristiger Beziehungen sowie Begeisterungsfähigkeit</li>\n<li>Verhandlungssichere Deutsch- und Englischkenntnisse</li>\n<li>Kompetenzen: Kontaktfreudigkeit, Kommunikationsstärke und hohe Serviceorientierung</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Vertrieb/Verkauf",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "80333"
+      },
+      "postTime": "58.13:23:43.8771087",
+      "id": 1063,
+      "itemId": 45419,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-09T21:44:23.0167420"
+    },
+    {
+      "campaignId": 12,
+      "title": "Sales Manager (m/w/d) IT-Consulting",
+      "date": "2020-07-21T00:00:00",
+      "reference": "15043701",
+      "url": "https://jobs.academicwork.de/stellenanzeige/sales-manager-mwd-itconsulting/15043701",
+      "description": "<p>Der Ursprung von Maturity sind Daten zur IT-Nutzung in europäischen Top-Organisationen aller Branchen. Der Antrieb sind individuelle Fragestellungen zur Effizienz, Effektivität und Flexibilität der IT. Wir suchen einen Sales Manager (m/w/d) für den Standort München, der die Weiterentwicklung von IT-Benchmarking, IT-Sourcing, IT-Controlling und IT-Service-Management bei unseren Kunden vorantreibt.</p>\n\n<p>Bei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Alina Dahm bei Academic Work.</p>\n\n<h2> Das bieten wir dir </h2>  \n\n<ul>\n<li><b>Verantwortung:</b> Hohe Eigenverantwortung, die Chance selbstständig zu arbeiten und hohes Vertrauensverhältnis </li>\n<li><b>Work-Life Balance:</b> Flexible Arbeitszeiten, Option auf Homeoffice und freie Gestaltung des Arbeitsalltags</li>\n<li><b>Zusammenhalt:</b> Eine kollegiale Unternehmenskultur geprägt von Hilfsbereitschaft</li>\n<li><b>Persönliche Weiterentwicklung:</b> On the job Einarbeitung, die Möglichkeit, an Zertifizierungs- und Weiterbildungsprogrammen teilzunehmen um Profi auf deinem Gebiet zu werden</li>\n<li><b>Gehalt:</b> Ein attraktives Vergütungsmodell, welches sich aus einem Fixgehalt sowie Provision zusammensetzt</li>\n</ul>\n",
+      "requirements": "<ul>\n<li>Erfolgreich abgeschlossenes Ingenieurs- oder betriebswirtschaftliches Studium, idealerweise mit Schwerpunkt IT oder vergleichbare Ausbildung z.B. Fachinformatiker</li>\n<li>Mehrjährige Berufserfahrung im Bereich Business Development / Vertrieb</li>\n<li>Gute Kenntnisse der Organisation von IT, der Aufbau- und Ablauforganisation sowie gängiger Technologien, Architektur- und Systemlandschaften</li>\n<li>Verhandlungssichere Deutsch- und Englischkenntnisse</li>\n<li>Reisebereitschaft, Flexibilität sowie hohe Zielorientierung </li>\n<li>Kompetenzen: Eigenmotivation, selbstständige Arbeitsweise und hohe Serviceorientierung</li>\n</ul>\n",
+      "jobType": "Fulltime",
+      "categories": "Vertrieb/Verkauf",
+      "feedId": "67689803-4752-4361-b9c0-5bb5d2553d41",
+      "publisher": {
+        "name": "Academic Work"
+      },
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "80333"
+      },
+      "postTime": "58.13:23:43.8204512",
+      "id": 1075,
+      "itemId": 45431,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-09T21:44:23.0734020"
+    },
+    {
+      "campaignId": 8,
+      "title": "Account Manager (m/w/d)",
+      "date": "2020-06-10T13:25:23",
+      "reference": "15039512LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/account-manager-mwd/208175.html",
+      "description": "Du bist PRIME, wenn es um Sales und Kundenmanagement geht- Bewirb dich noch heute für eine Stelle bei Amazon und mache als Account Manager (m/w/d) in einem innovativen und internationalen Unternehmen Karrieresprünge statt Karriereschritte!<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nSeit mehreren Jahren arbeiten wir erfolgreich mit Amazon zusammen. Für den Standort München suchen wir ab sofort mehrere (Junior) Account Manager (m/w/d).<br />\n<br />\nBei dieser Stelle handelt es sich um eine Direktvermittlung, das bedeutet du wirst direkt bei Amazon angestellt. Der gesamte Bewerbungsprozess wird von Academic Work durchgeführt, wende dich daher bei Fragen zum Prozess bitte an deine Ansprechpartnerin Julia Hiller bei Academic Work.<br />\n<br />\n Das bieten wir dir  <br />\n<br />\n-  Innovation: Kollegiales, dynamisches und internationales Arbeitsumfeld<br />\n-  Entwicklung: Große Gestaltungsspielräume, spannende Projekte und zahlreiche Weiterbildungen ab Tag 1<br />\n-  Flexibilität: Home Office, flexible Arbeitszeiten und ein attraktives Vergütungspaket<br />\n-  Karriere: Ein unbefristeter Arbeitsvertrag bei einem der erfolgreichsten Unternehmen weltweit und zahlreiche Entwicklungsmöglichkeiten<br />\n<br />\nAUFGABEN:<br />\n<br />\nAls (Junior) Account Manager (m/w/d) bist du Teil des Business Development Teams und trägst unmittelbar zum Wachstums von Amazon bei:<br />\n<br />\n- Akquise potenzieller neuer Lieferanten<br />\n- Betreuung und Ansprechpartner der Bestandskunden<br />\n- Entwicklung von Business Plänen und strategischen Handlungsempfehlungen<br />\n- Schnittstelle zu Abteilungen wie Marketing, Vendormanagement und Finance<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Abgeschlossenes Hochschulstudium der Betriebswirtschaftslehre, Wirtschaftswissenschaften, Kommunikationswissenschaften oder Vergleichbares<br />\n- Erste Vertriebs- und Saleserfahrung durch Praktika und Werkstudententätigkeiten<br />\n- Verhandlungssichere Deutsch (C1) - und Englischkenntnisse (B2), sowie fundierte Kenntnisse in MS Office<br />\n- Strukturierte Arbeitsweise gutes Zeitmanagement und kommunikationsstarkes Auftreten<br />\n<br />\nKarrierepartner bei Academic Work: Julia Hiller, 089 / 693341047<br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nUnser Premium Partner <br />\n<br />\nAmazon ist der führende Anbieter im Bereich E-Commerce und gehört damit zur namhaften Gruppe der Fortune-500-Unternehmen. Mit einem breitgefächerten Angebot in verschiedensten Produktbereichen und fortschrittlichen Ideen ist es eines der innovativsten Unternehmen seiner Branche.<br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Sales",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "85622"
+      },
+      "postTime": "58.13:49:54.1738744",
+      "cpc": 0.32,
+      "id": 625,
+      "itemId": 44981,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-09T21:18:12.7199790"
+    },
+    {
+      "campaignId": 8,
+      "title": "Sales Manager (m/w/d)",
+      "date": "2020-05-18T13:26:06",
+      "reference": "15042327LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/sales-manager-mwd/204947.html",
+      "description": "Du möchtest dein Interesse und Wissen im IT-Bereich sowie deine Leidenschaft für den Vertrieb kombinieren- Bei unserem Kunden hast du die Chance dies zu verbinden, Großkunden aufzubauen sowie langfristig auch Führungsverantwortung zu übernehmen.<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nAufgrund der guten Auftragslage bietet dir unser Partner die Specific Group GmbH die Möglichkeit bei ihm als Sales Manager (m/w/d) im Softwarebereich  in München zu starten um den Sales Bereich größer aufzubauen. <br />\n<br />\nBei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Alina Dahm bei Academic Work.<br />\n<br />\n Das bieten wir dir  <br />\n<br />\n- Einarbeitung: Intensive Einarbeitung von einem erfahrenen Sales Manager<br />\n- Entwicklung & Karriere: Es besteht die Vision dich als Führungskraft weiterzuentwickeln um langfristig das Sales Team zu führen und eine leitende Funktion einzunehmen<br />\n- Gehalt: Ein attraktives Vergütungsmodell, welches sich aus Fixgehalt und Provision zusammensetzt<br />\n- Verantwortung: Hohe Eigenverantwortung, die Chance selbstständig zu arbeiten und hohes Vertrauensverhältnis<br />\n<br />\nAUFGABEN:<br />\n<br />\nAls Sales Manager (m/w/d) übernimmst du Verantwortung neue Kunden zu akquirieren und langfristige Beziehungen mit Großkunden zu pflegen. Deine Aufgaben sind: <br />\n<br />\n- Akquise und Ausbau neuer Kunden in der Finanzindustrie (Banken und Versicherungen) aber auch in produzierender Industrie <br />\n- Vertrieb von Individualsoftware und Softwareintegrationsdienstleitungen <br />\n- Langfristige Betreuung der Kunden sowie Zusammenarbeit mit den Entwicklern <br />\n- Arbeiten mit Sales Tools wie Hubspot und LinkedIn Sales Navigator<br />\n- Perspektivisch: Leitung des Sales Teams und Führungsverantwortung<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Erfolgreich abgeschlossenes Studium<br />\n- Fundierte Berufserfahrung im Vertrieb sowie IT-Kenntnisse<br />\n- Erfahrung im Aufbau langfristiger Beziehungen sowie Begeisterungsfähigkeit<br />\n- Verhandlungssichere Deutsch- und Englischkenntnisse<br />\n- Kompetenzen: Kontaktfreudigkeit, Kommunikationsstärke und hohe Serviceorientierung<br />\n<br />\nKarrierepartner bei Academic Work: Alina Dahm, 089 693 341 146 oder 0162 403 23 92<br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nUnser Partner <br />\n<br />\nDie Specific Group GmbH ist ein internationales Unternehmen, welches IT-Lösungen zur Effizienzsteigerung von Unternehmensprozessen anbietet. Die Hauptgeschäftsfelder der Specific Group GmbH liegen in der Softwareentwicklung von Individualsoftware, im Strategisches Skillmanagement, im Projektgeschäft und in der Erstellung von Produkten und Services und sie bewegen sich schwerpunktmäßig im Finanzdienstleitungssektor. <br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Sales",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "85622"
+      },
+      "postTime": "58.13:49:54.1668095",
+      "id": 627,
+      "itemId": 44983,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-09T21:18:12.7270440"
+    },
+    {
+      "campaignId": 8,
+      "title": "Datenmanager (m/w/d)",
+      "date": "2020-07-14T16:25:24",
+      "reference": "15042027LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/datenmanager-mwd/213434.html",
+      "description": "Bei dir dreht sich schon immer alles um Zahlen- Der Umgang mit größeren Datenmengen bereitet dir Freude- Du bringst außerdem Interesse an Finanzprodukten mit- Worauf wartest du dann noch- Bewirb dich jetzt!<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nAufgrund der guten Auftragslage bietet dir unser Partner ISS FWW die Möglichkeit bei ihm als Datenmanager (m/w/d)  in München zu starten. <br />\n<br />\nBei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Habib Fussi bei Academic Work.<br />\n<br />\n Das bieten wir dir  <br />\n<br />\n- Arbeitsklima: Familiäres Miteinander und ein super nettes Team.<br />\n- Abwechslung: Ein breites Kundenportfolio und unterschiedliche Aufträge sorgen dafür, dass keine Langeweile aufkommt.<br />\n- Krisensicher: Ein Unternehmen, welches dir ein sicheres Standbein bietet.<br />\n<br />\nAUFGABEN:<br />\n<br />\n- Koordination und Überwachung der Pflege von Fondsdaten und Dokumenten<br />\n- Abstimmung und Aktualisierung von Datenlieferungen sowie Verarbeitung von Datensätzen<br />\n- Schriftliche und telefonische Kommunikation mit Kunden<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Erfolgreich abgeschlossenes Studium oder Berufsausbildung<br />\n- Computeraffinität und Zahlenaffinität, sehr guter Umgang mit Excel wünschenswert<br />\n- Verhandlungssichere Deutschkenntnisse (C1) und gute Englischkenntnisse (B2)<br />\n- Kommunikationsfähigkeit sowie Interesse an Finanzprodukten<br />\n<br />\nKarrierepartner bei Academic Work: Habib Fussi, +49 89 693 341 045<br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nUnser Partner <br />\n<br />\nISS FWW Datenbank für Investmentfonds. Einmalig in Deutschland.<br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Office/Administration/HR",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "85622"
+      },
+      "postTime": "58.13:49:54.1907127",
+      "id": 621,
+      "itemId": 44977,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-09T21:18:12.7031410"
+    },
+    {
+      "campaignId": 8,
+      "title": "Business Development Manager (m/w/d) IT",
+      "date": "2020-06-12T13:25:11",
+      "reference": "15042845LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/business-development-manager-mwd-it/208464.html",
+      "description": "Es reizt dich dein Interesse an der IT sowie deine Leidenschaft für den Vertrieb zu kombinieren- Bei unserem Kunden Maturity hast du die Chance dies zu verbinden, Verantwortung zu übernehmen und Großkunden aufzubauen.<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nDer Ursprung von Maturity sind Daten zur IT-Nutzung in europäischen Top-Organisationen aller Branchen. Der Antrieb sind individuelle Fragestellungen zur Effizienz, Effektivität und Flexibilität der IT. Wir suchen einen Business Development Manager (m/w/d) IT für den Standort München, der die Weiterentwicklung von IT-Benchmarking, IT-Sourcing, IT-Controlling und IT-Service-Management bei unseren Kunden vorantreibt.<br />\n<br />\nBei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Alina Dahm bei Academic Work.<br />\n<br />\n Das bieten wir dir  <br />\n<br />\n- Verantwortung: Hohe Eigenverantwortung, die Chance selbstständig zu arbeiten und hohes Vertrauensverhältnis <br />\n- Work-Life Balance: Flexible Arbeitszeiten, Option auf Homeoffice und freie Gestaltung des Arbeitsalltags<br />\n- Zusammenhalt: Eine kollegiale Unternehmenskultur geprägt von Hilfsbereitschaft<br />\n- Persönliche Weiterentwicklung: On the job Einarbeitung, die Möglichkeit, an Zertifizierungs- und Weiterbildungsprogrammen teilzunehmen um Profi auf deinem Gebiet zu werden<br />\n- Gehalt: Ein attraktives Vergütungsmodell, welches sich aus einem Fixgehalt sowie Provision zusammensetzt<br />\n<br />\nAUFGABEN:<br />\n<br />\nDein Ziel als Business Development Manager (m/w/d) ist die Weiterentwicklung des Bereichs Großkunden einschließlich einer intensiven Marktbearbeitung. <br />\n<br />\n- Akquisition und Beratung von potentiellen Großkunden (branchenunabhängig und deutschlandweit) <br />\n- Persönliche Betreuung von Bestandskunden an den jeweiligen Standorten<br />\n- Führung von Akquisitionsgesprächen, Angebots- und Auftragserstellung sowie Vertragsabschluss<br />\n- Steuerung und Überwachung der akquirierten Projekte sowie Verantwortung für die erfolgreiche Durchführung des Projektes<br />\n- Enge Zusammenarbeit mit Kunden und Projektleitern<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Erfolgreich abgeschlossenes Ingenieurs- oder betriebswirtschaftliches Studium, idealerweise mit Schwerpunkt IT oder vergleichbare Ausbildung z.B. Fachinformatiker<br />\n- Mehrjährige Berufserfahrung im Bereich Business Development / Vertrieb<br />\n- Gute Kenntnisse der Organisation von IT, der Aufbau- und Ablauforganisation sowie gängiger Technologien, Architektur- und Systemlandschaften<br />\n- Verhandlungssichere Deutsch- und Englischkenntnisse<br />\n- Reisebereitschaft, Flexibilität sowie hohe Zielorientierung <br />\n- Kompetenzen: Eigenmotivation, selbstständige Arbeitsweise und hohe Serviceorientierung<br />\n<br />\nKarrierepartner bei Academic Work: Alina Dahm, 089 693 341 146 oder 0162 403 23 92<br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nUnser Partner <br />\n<br />\nMaturity wurde 2001 von langjährigen Experten für IT-Benchmarking und IT-Sourcing gegründet. Seitdem sind über 4.000 Projekte hinzugekommen. Sie reichen von der Arbeitsebene hinauf ins C-Level, von der Finanzwirtschaft in die Industrie, von Anwenderunternehmen zu IT-Service-Providern. Mit den Standorten in München, Frankfurt, Amsterdam, London, Mailand, Zürich und Wien sind die Teams aus Informatikern, Betriebswirten und Wirtschaftsingenieuren europaweit tätig.<br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Sales",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "85622"
+      },
+      "postTime": "58.13:49:54.1539118",
+      "id": 630,
+      "itemId": 44986,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-09T21:18:12.7399420"
+    },
+    {
+      "campaignId": 8,
+      "title": "Projektmanager (m/w/d)",
+      "date": "2020-06-18T13:25:33",
+      "reference": "15043038LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/projektmanager-mwd/209110.html",
+      "description": "Mit einem Feingespür für Entwicklungspotentiale lässt du deine Kunden König sein- Technische Projekte wecken dein Interesse und Kundenzufriedenheit hat bei dir höchste Priorität- Dann bist du hier richtig!<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nAufgrund starker Expansion suchen wir  ab sofort  einen motivierten  Projektmanager (m/w/d) IT für unser Partnerunternehmen, der das Team am Standort München unterstützt. Bei dieser Stelle handelt es sich um eine Direktvermittlung, das bedeutet, du bist direkt unbefristet bei unserem Partner angestellt. Der gesamte Bewerbungsprozess wird von Academic Work durchgeführt, wende dich deswegen bei Fragen zum Prozess bitte ausschließlich an deine Ansprechpartnerin Alessa Füger.<br />\n<br />\nDas bieten wir dir<br />\n<br />\n- Große Gestaltungsfreiräume für deine Lösungen und dein Engagement<br />\n- Weiterentwicklungsmöglichkeit deiner Fähigkeiten<br />\n- Modernes Büro mit guter Anbindung (S-Bahn-Stammstrecke) und Firmenparkplätze<br />\n<br />\nAUFGABEN:<br />\n<br />\nAls Projektmanager (m/w/d) bist du ein Profi in der Vertiefung und Pflege von Bestandskunden. Du übernimmst die Leitung und Koordination verschiedener IT-Projekte. <br />\nDeine Aufgaben dabei sind:<br />\n<br />\n- Ganzheitliche Kundenbetreuung und Vertreten der Kundenbedürfnisse<br />\n- Identifikation von Umsatzpotenzialen, Betreuung bis zur Präsentation und Abschluss<br />\n- Individuelle Projektkonzeption und -verantwortung auf Kundenwunschbasis<br />\n- Externes und internes Projekt Reporting<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Erfolgreich abgeschlossenes Studium der Betriebswirtschaft, Wirtschaftsinformatik, alternativ Ausbildung mit wirtschaftlichem/ technischen Bezug mit Berufserfahrung<br />\n- Mindestens 3 - 5 Jahre Erfahrungen im IT-Projektmanagement und Vertrieb von IT-Produkten<br />\n- Verhandlungssichere Deutsch- und gute Englischkenntnisse (C2/C1)<br />\n- Kompetenzen: überzeugendes Auftreten, Eigeninitiative, Organisationsgeschick<br />\n<br />\nKarrierepartner bei Academic Work: Alessa Füger, 089 693341114<br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nUnser Partner <br />\n<br />\nAls Innovations- und Transformationspartner mit mehr als zwei Jahrzehnten Markterfahrung entwickelt unser Partner beständig modulare Softwarelösungen und exzellente Beratungsleistungen, welche die Automobilbranche revolutionieren.<br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Sales",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "85622"
+      },
+      "postTime": "58.13:49:54.1291259",
+      "id": 637,
+      "itemId": 44993,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-09T21:18:12.7647280"
+    },
+    {
+      "campaignId": 8,
+      "title": "Sales Manager (m/w/d) IT-Consulting",
+      "date": "2020-07-22T08:26:13",
+      "reference": "15043701LS",
+      "url": "https://academicwork.hvnj.de/stellenangebot/sales-manager-mwd-it-consulting/214244.html",
+      "description": "Es reizt dich dein Interesse an der IT sowie deine Leidenschaft für den Vertrieb zu kombinieren- Bei unserem Kunden Maturity hast du die Chance dies zu verbinden, Verantwortung zu übernehmen und Großkunden aufzubauen.<br />\n<br />\nBESCHREIBUNG:<br />\n<br />\nDer Ursprung von Maturity sind Daten zur IT-Nutzung in europäischen Top-Organisationen aller Branchen. Der Antrieb sind individuelle Fragestellungen zur Effizienz, Effektivität und Flexibilität der IT. Wir suchen einen Sales Manager (m/w/d) für den Standort München, der die Weiterentwicklung von IT-Benchmarking, IT-Sourcing, IT-Controlling und IT-Service-Management bei unseren Kunden vorantreibt.<br />\n<br />\nBei dieser Stelle handelt es sich um eine Direktvermittlung. Wir führen den Bewerbungsprozess durch, wende dich bei Fragen gerne an deinen Karrierepartner Alina Dahm bei Academic Work.<br />\n<br />\n Das bieten wir dir  <br />\n<br />\n- Verantwortung: Hohe Eigenverantwortung, die Chance selbstständig zu arbeiten und hohes Vertrauensverhältnis <br />\n- Work-Life Balance: Flexible Arbeitszeiten, Option auf Homeoffice und freie Gestaltung des Arbeitsalltags<br />\n- Zusammenhalt: Eine kollegiale Unternehmenskultur geprägt von Hilfsbereitschaft<br />\n- Persönliche Weiterentwicklung: On the job Einarbeitung, die Möglichkeit, an Zertifizierungs- und Weiterbildungsprogrammen teilzunehmen um Profi auf deinem Gebiet zu werden<br />\n- Gehalt: Ein attraktives Vergütungsmodell, welches sich aus einem Fixgehalt sowie Provision zusammensetzt<br />\n<br />\nAUFGABEN:<br />\n<br />\nDein Ziel als Sales Manager (m/w/d) ist die Weiterentwicklung des Bereichs Großkunden einschließlich einer intensiven Marktbearbeitung. <br />\n<br />\n- Akquisition und Beratung von potentiellen Großkunden (branchenunabhängig und deutschlandweit) <br />\n- Persönliche Betreuung von Bestandskunden an den jeweiligen Standorten<br />\n- Führung von Akquisitionsgesprächen, Angebots- und Auftragserstellung sowie Vertragsabschluss<br />\n- Steuerung und Überwachung der akquirierten Projekte sowie Verantwortung für die erfolgreiche Durchführung des Projektes<br />\n- Enge Zusammenarbeit mit Kunden und Projektleitern<br />\n<br />\nANFORDERUNGEN:<br />\n<br />\n- Erfolgreich abgeschlossenes Ingenieurs- oder betriebswirtschaftliches Studium, idealerweise mit Schwerpunkt IT oder vergleichbare Ausbildung z.B. Fachinformatiker<br />\n- Mehrjährige Berufserfahrung im Bereich Business Development / Vertrieb<br />\n- Gute Kenntnisse der Organisation von IT, der Aufbau- und Ablauforganisation sowie gängiger Technologien, Architektur- und Systemlandschaften<br />\n- Verhandlungssichere Deutsch- und Englischkenntnisse<br />\n- Reisebereitschaft, Flexibilität sowie hohe Zielorientierung <br />\n- Kompetenzen: Eigenmotivation, selbstständige Arbeitsweise und hohe Serviceorientierung<br />\n<br />\nKarrierepartner bei Academic Work: Alina Dahm, 089 693 341 146 oder 0162 403 23 92<br />\n<br />\nBewerbung: Mit Lebenslauf, Gehaltsvorstellungen und Eintrittstermin innerhalb 2 Minuten über den Bewerben Button.<br />\n<br />\nUnser Partner <br />\n<br />\nMaturity wurde 2001 von langjährigen Experten für IT-Benchmarking und IT-Sourcing gegründet. Seitdem sind über 4.000 Projekte hinzugekommen. Sie reichen von der Arbeitsebene hinauf ins C-Level, von der Finanzwirtschaft in die Industrie, von Anwenderunternehmen zu IT-Service-Providern. Mit den Standorten in München, Frankfurt, Amsterdam, London, Mailand, Zürich und Wien sind die Teams aus Informatikern, Betriebswirten und Wirtschaftsingenieuren europaweit tätig.<br />\n<br />\nAcademic Work - we make people grow!<br />\n<br />\n",
+      "jobType": "Fulltime",
+      "categories": "Sales",
+      "feedId": "879377c1-aaed-48f3-b5dc-87e3ec0cfe8b",
+      "publisher": {},
+      "company": {
+        "name": "Academic Work GmbH",
+        "url": "https://www.academicwork.de",
+        "eMail": "info@academicwork.de"
+      },
+      "location": {
+        "country": "DE",
+        "state": "Bayern",
+        "city": "München",
+        "postalCode": "85622"
+      },
+      "postTime": "58.13:49:54.1442161",
+      "id": 632,
+      "itemId": 44988,
+      "brokerId": 1,
+      "usedBudget": 0,
+      "paidClicks": 0,
+      "naturalClicks": 0,
+      "status": "Posted",
+      "start": "2020-08-09T21:18:12.7496380"
+    }
+  ],
+  "id": 8,
+  "name": "Academic Work",
+  "budget": 0,
+  "cpa": 0,
+  "clickCosts": 0,
+  "start": "2020-07-29T23:25:30.8170290",
+  "status": "Created"
+}
