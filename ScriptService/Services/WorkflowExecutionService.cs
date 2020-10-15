@@ -182,11 +182,12 @@ namespace ScriptService.Services {
                         return lastresult;
                 }
                 catch (Exception e) {
+                    tasklogger.Warning($"Error while executing node '{current.NodeName}'", e.Message);
+                    
                     IInstanceNode next = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(new VariableProvider(variables, new Variable("error", e)), state), current.ErrorTransitions, token);
                     if (next == null)
                         throw;
-
-                    tasklogger.Warning($"Error while executing node '{current.NodeName}'", e.Message);
+                    
                     current = next;
                     continue;
                 }
@@ -198,11 +199,12 @@ namespace ScriptService.Services {
                     else current = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(variables, state), current.Transitions, token);
                 }
                 catch (Exception e) {
+                    tasklogger.Warning($"Error while evaluating transitions of node '{current.NodeName}'", e.Message);
+                    
                     IInstanceNode next = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(new VariableProvider(variables, new Variable("error", e)), state), current.ErrorTransitions, token);
                     if(next == null)
                         throw;
-
-                    tasklogger.Warning($"Error while evaluating transitions of node '{current.NodeName}'", e.Message);
+                    
                     current = next;
                 }
             }
