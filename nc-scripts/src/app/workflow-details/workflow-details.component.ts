@@ -297,7 +297,8 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
         originIndex: this.getNodeIndex(t.source),
         targetIndex: this.getNodeIndex(t.target),
         condition: t.data.transition.condition,
-        type: t.data.transition.type
+        type: t.data.transition.type,
+        log: t.data.transition.log
       });
     });
     return result;

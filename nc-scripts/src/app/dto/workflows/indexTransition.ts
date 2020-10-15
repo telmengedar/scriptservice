@@ -23,5 +23,10 @@ export interface IndexTransition {
     /**
      * determines whether transition is used for error handling
      */
-    type: TransitionType
+    type: TransitionType,
+
+    /**
+     * data to log when using this transition
+     */
+    log?: string
 }
