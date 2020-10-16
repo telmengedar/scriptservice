@@ -38,8 +38,8 @@ namespace ScriptService.Services.JavaScript {
         public object Execute(IDictionary<string, object> arguments) {
             return Task.Run(async () => {
                 WorkflowDetails workflow = await workflowservice.GetWorkflow(name, revision);
-                WorkflowInstance instance = await compiler.BuildWorkflow(workflow, arguments);
-                return await executor.Execute(instance, logger, CancellationToken.None);
+                WorkflowInstance instance = await compiler.BuildWorkflow(workflow);
+                return await executor.Execute(instance, logger, arguments, CancellationToken.None);
             }).GetAwaiter().GetResult();
         }
     }

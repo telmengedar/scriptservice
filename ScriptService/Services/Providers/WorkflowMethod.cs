@@ -52,8 +52,8 @@ namespace ScriptService.Services.Providers {
 
             return Task.Run(async () => {
                 WorkflowDetails workflow = await LoadWorkflow();
-                WorkflowInstance instance = await compiler.BuildWorkflow(workflow, parameters);
-                return await executor.Execute(instance, logger, CancellationToken.None);
+                WorkflowInstance instance = await compiler.BuildWorkflow(workflow);
+                return await executor.Execute(instance, logger, parameters, CancellationToken.None);
             }).GetAwaiter().GetResult();
         }
     }

@@ -78,7 +78,7 @@ namespace ScriptService.Services.Tasks {
             foreach (ScheduledTask task in tasks) {
                 switch (task.WorkableType) {
                 case WorkableType.Workflow:
-                    await workflowexecutor.Execute(await workflowcompiler.BuildWorkflow(task.WorkableName));
+                    await workflowexecutor.Execute(await workflowcompiler.BuildWorkflow(task.WorkableName), new Dictionary<string, object>());
                     break;
                 case WorkableType.Script:
                     await scriptexecutor.Execute(task.WorkableName, task.WorkableRevision);

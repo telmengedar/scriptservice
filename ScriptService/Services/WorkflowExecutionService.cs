@@ -4,13 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NightlyCode.Database.Fields;
 using NightlyCode.Scripting.Data;
 using NightlyCode.Scripting.Parser;
 using NightlyCode.Scripting.Providers;
 using ScriptService.Dto;
 using ScriptService.Dto.Tasks;
-using ScriptService.Dto.Workflows;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Extensions;
 using ScriptService.Services.Workflows;
@@ -129,11 +127,11 @@ namespace ScriptService.Services {
         }
 
         /// <inheritdoc />
-        public async Task<WorkableTask> Execute(WorkflowInstance workflow, TimeSpan? wait = null) {
-            WorkableTask task = taskservice.CreateTask(WorkableType.Workflow, workflow.Id, workflow.Revision, workflow.Name, workflow.StartNode.Arguments);
+        public async Task<WorkableTask> Execute(WorkflowInstance workflow, IDictionary<string, object> arguments, TimeSpan? wait = null) {
+            WorkableTask task = taskservice.CreateTask(WorkableType.Workflow, workflow.Id, workflow.Revision, workflow.Name, arguments);
             WorkableLogger tasklogger = new WorkableLogger(logger, task);
             try {
-                task.Task = Task.Run(() => Execute(workflow, tasklogger, task.Token.Token)).ContinueWith(t => HandleTaskResult(t, task, tasklogger));
+                task.Task = Task.Run(() => Execute(workflow, tasklogger, arguments, task.Token.Token)).ContinueWith(t => HandleTaskResult(t, task, tasklogger));
             }
             catch (Exception e) {
                 tasklogger.Error("Failed to execute workflow", e);
@@ -149,9 +147,9 @@ namespace ScriptService.Services {
         }
 
         /// <inheritdoc />
-        public Task<object> Execute(WorkflowInstance workflow, WorkableLogger tasklogger, CancellationToken token) {
+        public Task<object> Execute(WorkflowInstance workflow, WorkableLogger tasklogger, IDictionary<string, object> arguments, CancellationToken token) {
             IVariableProvider variables = new StateVariableProvider(ProcessImports(tasklogger, workflow.StartNode.Parameters?.Imports));
-            return Execute(variables, tasklogger, token, new Dictionary<string, object>(), workflow.StartNode);
+            return Execute(variables, tasklogger, token, arguments, workflow.StartNode);
         }
 
         Task<InstanceTransition> EvaluateTransitions(IInstanceNode current, WorkableLogger tasklogger, IDictionary<string, object> state, List<InstanceTransition> transitions, CancellationToken token) {

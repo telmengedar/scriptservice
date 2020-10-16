@@ -38,16 +38,15 @@ namespace ScriptService.Services.Workflows {
             this.workflowexecutor = workflowexecutor;
         }
 
-        async Task<WorkflowInstance> GetWorkflowInstance(string name, IDictionary<string, object> variables = null) {
+        async Task<WorkflowInstance> GetWorkflowInstance(string name) {
             WorkflowDetails workflow = await workflowservice.GetWorkflow(name);
-            WorkflowInstance instance = await BuildWorkflow(workflow, variables);
+            WorkflowInstance instance = await BuildWorkflow(workflow);
             return instance;
         }
 
         /// <inheritdoc />
-        public async Task<WorkflowInstance> BuildWorkflow(WorkflowStructure workflow, IDictionary<string, object> variables=null) {
+        public async Task<WorkflowInstance> BuildWorkflow(WorkflowStructure workflow) {
             logger.LogInformation($"Building workflow '{workflow.Name}'");
-            variables = await variables.TranslateVariables(compiler);
             int startcount = workflow.Nodes.Count(n => n.Type == NodeType.Start);
             if(startcount == 0)
                 throw new ArgumentException("Workflow has no start node");
@@ -61,7 +60,6 @@ namespace ScriptService.Services.Workflows {
                 IInstanceNode nodeinstance = await BuildNode(node);
                 nodes.Add(nodeinstance);
                 if(nodeinstance is StartNode startinstance) {
-                    startinstance.Arguments = variables;
                     startnode = startinstance;
                 }
             }
@@ -147,7 +145,7 @@ namespace ScriptService.Services.Workflows {
         }
 
         /// <inheritdoc />
-        public async Task<WorkflowInstance> BuildWorkflow(WorkflowDetails workflow, IDictionary<string, object> variables) {
+        public async Task<WorkflowInstance> BuildWorkflow(WorkflowDetails workflow) {
             WorkflowInstance instance = cacheservice.GetObject<WorkflowInstance, long>(workflow.Id, workflow.Revision);
             if(instance != null)
                 return instance;
@@ -167,7 +165,6 @@ namespace ScriptService.Services.Workflows {
                 nodes[node.Id] = nodeinstance;
 
                 if(nodeinstance is StartNode startinstance) {
-                    startinstance.Arguments = variables;
                     startnode = startinstance;
                 }
             }
@@ -187,15 +184,13 @@ namespace ScriptService.Services.Workflows {
         }
 
         /// <inheritdoc />
-        public async Task<WorkflowInstance> BuildWorkflow(long workflowid, int? revision = null, IDictionary<string, object> variables = null) {
-            variables = await variables.TranslateVariables(compiler);
-            return await BuildWorkflow(await workflowservice.GetWorkflow(workflowid, revision), variables);
+        public async Task<WorkflowInstance> BuildWorkflow(long workflowid, int? revision = null) {
+            return await BuildWorkflow(await workflowservice.GetWorkflow(workflowid, revision));
         }
 
         /// <inheritdoc />
-        public async Task<WorkflowInstance> BuildWorkflow(string workflowname, int? revision = null, IDictionary<string, object> variables = null) {
-            variables = await variables.TranslateVariables(compiler);
-            return await BuildWorkflow(await workflowservice.GetWorkflow(workflowname, revision), variables);
+        public async Task<WorkflowInstance> BuildWorkflow(string workflowname, int? revision = null) {
+            return await BuildWorkflow(await workflowservice.GetWorkflow(workflowname, revision));
         }
     }
 }

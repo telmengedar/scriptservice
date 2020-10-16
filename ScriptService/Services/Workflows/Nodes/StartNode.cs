@@ -27,17 +27,8 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// </summary>
         public StartParameters Parameters { get; }
 
-        /// <summary>
-        /// arguments for start node to transfer
-        /// </summary>
-        public IDictionary<string, object> Arguments { get; set; }
-
         /// <inheritdoc />
         public override Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
-            if (Arguments != null) {
-                foreach (KeyValuePair<string, object> argument in Arguments)
-                    state[argument.Key] = argument.Value.DetermineValue(state);
-            }
             return Task.FromResult((object)null);
         }
     }

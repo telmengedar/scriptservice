@@ -83,7 +83,7 @@ namespace ScriptService.Tests {
                         TargetIndex = 2
                     }
                 }
-            }));
+            }), new Dictionary<string, object>());
 
             await task.Task;
 

@@ -51,14 +51,14 @@ namespace ScriptService.Controllers {
                 if (parameters.Id.HasValue) {
                     if (!string.IsNullOrEmpty(parameters.Name))
                         throw new ArgumentException("Either id or name has to be set, not both");
-                    return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Id.Value, parameters.Revision, parameters.Parameters), parameters.Wait);
+                    return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Id.Value, parameters.Revision), parameters.Parameters, parameters.Wait);
                 }
 
                 if (!string.IsNullOrEmpty(parameters.Name))
-                    return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Name, parameters.Revision, parameters.Parameters), parameters.Wait);
+                    return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Name, parameters.Revision), parameters.Parameters, parameters.Wait);
 
                 if (parameters.Workflow != null)
-                    return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Workflow, parameters.Parameters), parameters.Wait);
+                    return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Workflow), parameters.Parameters, parameters.Wait);
             }
             catch (Exception e) {
                 WorkableTask failtask= new WorkableTask {

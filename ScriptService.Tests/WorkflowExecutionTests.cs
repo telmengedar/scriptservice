@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Esprima.Ast;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NightlyCode.Database.Entities;
@@ -15,9 +14,6 @@ using ScriptService.Services.Cache;
 using ScriptService.Services.JavaScript;
 using ScriptService.Services.Scripts;
 using ScriptService.Services.Workflows;
-using ScriptService.Tests.Mocks;
-using Utf8Json;
-using Utf8Json.Resolvers;
 using TaskStatus = ScriptService.Dto.TaskStatus;
 
 namespace ScriptService.Tests {
@@ -73,7 +69,7 @@ namespace ScriptService.Tests {
                         TargetIndex = 3,
                     }
                 }
-            }));
+            }), new Dictionary<string, object>());
 
             await task.Task;
 
@@ -118,10 +114,10 @@ namespace ScriptService.Tests {
                         TargetIndex = 1
                     },
                 }
-            }, new Dictionary<string, object> {
+            }), new Dictionary<string, object> {
                 ["a"] = 3,
                 ["b"] = 4
-            }));
+            });
 
             await task.Task;
             Assert.AreEqual(TaskStatus.Success, task.Status);
@@ -199,7 +195,7 @@ namespace ScriptService.Tests {
                         TargetIndex = 4
                     },
                 }
-            }));
+            }), new Dictionary<string, object>());
 
             await task.Task;
             Assert.AreEqual(TaskStatus.Success, task.Status);
@@ -264,7 +260,7 @@ namespace ScriptService.Tests {
                         TargetIndex = 1
                     },
                 }
-            }));
+            }), new Dictionary<string, object>());
 
             await task.Task;
             Assert.AreEqual(TaskStatus.Success, task.Status);
@@ -319,7 +315,7 @@ namespace ScriptService.Tests {
                         TargetIndex = 3,
                     }
                 }
-            }));
+            }), new Dictionary<string, object>());
 
             await task.Task;
 
@@ -333,6 +329,121 @@ namespace ScriptService.Tests {
 
             Assert.AreEqual(TaskStatus.Success, task.Status);
             Assert.AreEqual(10, task.Result);
+        }
+
+        [Test, Parallelizable]
+        public async Task ExecuteSubWorkflowWithParametersInLoop() {
+            Mock<IJavascriptImportService> importservice=new Mock<IJavascriptImportService>();
+            importservice.Setup(s => s.Clone(It.IsAny<WorkableLogger>())).Returns(() => importservice.Object);
+            Mock<IArchiveService> archiveservice=new Mock<IArchiveService>();
+            
+            IEntityManager database = TestSetup.CreateMemoryDatabase();
+            CacheService cache = new CacheService(new NullLogger<CacheService>());
+            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, archiveservice.Object, importservice.Object);
+            WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new DatabaseTaskService(database), null);
+            IWorkflowService workflowservice = new DatabaseWorkflowService(database, archiveservice.Object);
+            WorkflowCompiler workflowcompiler = new WorkflowCompiler(new NullLogger<WorkflowCompiler>(), cache, workflowservice, compiler, executionservice);
+
+            await workflowservice.CreateWorkflow(new WorkflowStructure {
+                Name = "Submarine",
+                Nodes=new [] {
+                    new NodeData {
+                        Type = NodeType.Start
+                    },
+                    new NodeData {
+                        Type = NodeType.Value,
+                        Parameters = new Dictionary<string, object> {
+                            ["Value"]="$value"
+                        }
+                    }
+                },
+                Transitions = new[] {
+                    new IndexTransition {
+                        OriginIndex = 0,
+                        TargetIndex = 1
+                    },
+                }
+            });
+
+            WorkableTask task = await executionservice.Execute(await workflowcompiler.BuildWorkflow(new WorkflowStructure {
+                Name = "Subcall Test",
+                Nodes = new[] {
+                    new NodeData {
+                        Type = NodeType.Start
+                    },
+                    new NodeData {
+                        Type = NodeType.Value,
+                        Parameters = new Dictionary<string, object> {
+                            ["Value"]="0",
+                        },
+                        Variable = "result" 
+                    },
+                    new NodeData {
+                        Type = NodeType.Iterator,
+                        Parameters = new Dictionary<string, object> {
+                            ["Item"]="value",
+                            ["Collection"]="[1,2,3,4,5]"
+                        }
+                    },
+                    new NodeData {
+                        Type = NodeType.Workflow,
+                        Parameters = new Dictionary<string, object> {
+                            ["Name"] = "Submarine",
+                            ["Arguments"] = new Dictionary<string, object> {
+                                ["value"] = "$value"
+                            }
+                        },
+                        Variable = "subresult"
+                    },
+                    new NodeData {
+                        Type=NodeType.BinaryOperation,
+                        Parameters = new Dictionary<string, object> {
+                            ["Lhs"]="$result",
+                            ["Operation"]=BinaryOperation.Add,
+                            ["Rhs"]="$subresult"
+                        },
+                        Variable = "result"
+                    },
+                    new NodeData {
+                        Type = NodeType.Value,
+                        Parameters = new Dictionary<string, object> {
+                            ["Value"]="$result",
+                        }
+                    },
+
+                },
+                Transitions = new[] {
+                    new IndexTransition {
+                        OriginIndex = 0,
+                        TargetIndex = 1
+                    },
+                    new IndexTransition {
+                        OriginIndex = 1,
+                        TargetIndex = 2
+                    },
+                    new IndexTransition {
+                        OriginIndex = 2,
+                        TargetIndex = 3,
+                        Type = TransitionType.Loop
+                    },
+                    new IndexTransition {
+                        OriginIndex = 2,
+                        TargetIndex = 5
+                    },
+                    new IndexTransition {
+                        OriginIndex = 3,
+                        TargetIndex = 4
+                    },
+                    new IndexTransition {
+                        OriginIndex = 4,
+                        TargetIndex = 2
+                    },
+                }
+            }), new Dictionary<string, object>());
+
+            await task.Task;
+            Assert.AreEqual(TaskStatus.Success, task.Status);
+            Assert.AreEqual(15, task.Result);
         }
 
     }

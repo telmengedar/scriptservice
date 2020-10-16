@@ -15,8 +15,8 @@ namespace ScriptService.Services.Workflows.Nodes {
     /// </summary>
     public class WorkflowInstanceNode : InstanceNode {
         readonly CallWorkableParameters parameters;
-        readonly Func<string, IDictionary<string, object>, Task<WorkflowInstance>> instanceprovider;
-        readonly Func<WorkflowInstance, WorkableLogger, CancellationToken, Task<object>> executor;
+        readonly Func<string, Task<WorkflowInstance>> instanceprovider;
+        readonly Func<WorkflowInstance, WorkableLogger, IDictionary<string, object>, CancellationToken, Task<object>> executor;
 
         /// <summary>
         /// creates a new <see cref="WorkflowInstanceNode"/>
@@ -26,7 +26,7 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// <param name="instanceprovider">used to get workflow instance from name</param>
         /// <param name="executor">executes workflows</param>
         /// <param name="scriptcompiler">compiler used to build workflow arguments</param>
-        public WorkflowInstanceNode(string name, CallWorkableParameters parameters, Func<string, IDictionary<string, object>, Task<WorkflowInstance>> instanceprovider, Func<WorkflowInstance, WorkableLogger, CancellationToken, Task<object>> executor, IScriptCompiler scriptcompiler)
+        public WorkflowInstanceNode(string name, CallWorkableParameters parameters, Func<string, Task<WorkflowInstance>> instanceprovider, Func<WorkflowInstance, WorkableLogger, IDictionary<string, object>, CancellationToken, Task<object>> executor, IScriptCompiler scriptcompiler)
         : base(name) {
             this.parameters = parameters;
             this.instanceprovider = instanceprovider;
@@ -41,8 +41,8 @@ namespace ScriptService.Services.Workflows.Nodes {
 
         /// <inheritdoc />
         public override async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
-            WorkflowInstance instance = await instanceprovider(parameters.Name, await Arguments.EvaluateArguments(state, token));
-            object result=await executor(instance, logger, token);
+            WorkflowInstance instance = await instanceprovider(parameters.Name);
+            object result=await executor(instance, logger, await Arguments.EvaluateArguments(state, token), token);
             if (result is SuspendState suspend)
                 result = new SuspendState(this, variables, state, suspend);
 
