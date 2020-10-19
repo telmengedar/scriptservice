@@ -89,6 +89,5 @@ namespace ScriptService.Controllers {
             logger.LogInformation($"Continuing workflow task '{taskid}' with parameters '{string.Join(";", parameters.Parameters?.Select(p => $"{p.Key}={p.Value}") ?? new string[0])}'");
             return executionservice.Continue(taskid, parameters.Parameters, parameters.Wait);
         }
-
     }
 }

@@ -23,6 +23,7 @@ import { TransitionType } from '../dto/workflows/transitionType';
 import { NodeType } from '../dto/workflows/nodetype';
 import { Parameter } from '../dto/scripts/parameter';
 import { NavigationItem } from '../dto/navigation/navigationItem';
+import { Parameters } from '../helpers/parameters';
 
 @Component({
   selector: 'app-workflow-details',
@@ -257,7 +258,7 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
           nodes: this.buildNodes(),
           transitions: this.buildTransitions()
         },
-        parameters: this.parameters
+        parameters: Parameters.translate(this.parameters)
       });
     }
 
