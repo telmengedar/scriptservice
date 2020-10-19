@@ -126,6 +126,7 @@ namespace ScriptService.Services {
                     tasks &= t => t.Finished <= filter.To;
 
                 WorkableTask[] results = await database.Load<TaskDb>(t => t.Id, t => t.WorkableId, t => t.WorkableRevision, t => t.WorkableName, t => t.Parameters, t => t.Started, t => t.Finished, t => t.Status, t => t.Result)
+                    .ApplyFilter(filter)
                     .Where(tasks?.Content).ExecuteTypeAsync(
                         t => new WorkableTask {
                             Id = t.GetValue<Guid>(0),

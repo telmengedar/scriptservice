@@ -62,6 +62,7 @@ namespace ScriptService.Controllers {
             }
             catch (Exception e) {
                 WorkableTask failtask= new WorkableTask {
+                    Id = Guid.NewGuid(),
                     Status = TaskStatus.Failure,
                     Started = DateTime.Now,
                     Finished = DateTime.Now,
