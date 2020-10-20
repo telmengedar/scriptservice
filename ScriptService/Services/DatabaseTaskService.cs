@@ -102,17 +102,12 @@ namespace ScriptService.Services {
                 filter.Count = 500;
 
             List<WorkableTask> match=new List<WorkableTask>();
-
-            filter.Status ??= new[] {
-                TaskStatus.Running,
-                TaskStatus.Suspended
-            };
-
+            
             if (filter.Status == null || filter.Status.Contains(TaskStatus.Running) || filter.Status.Contains(TaskStatus.Suspended))
                 match.AddRange(runningtasks.Values.Where(t=>filter.Status.Contains(t.Status)).Take((int) filter.Count.Value).Select(t => new WorkableTask(t)));
 
             long left = filter.Count.Value - match.Count;
-            if (left > 0 && filter.Status.Any(s => s != TaskStatus.Running && s != TaskStatus.Suspended)) {
+            if (left > 0 && ((filter.Status?.Length??0)==0 || filter.Status.Any(s => s != TaskStatus.Running && s != TaskStatus.Suspended))) {
                 PredicateExpression<TaskDb> tasks = null;
                 if (filter.Status?.Length > 0)
                     tasks &= t => t.Status.In(filter.Status);
@@ -142,7 +137,7 @@ namespace ScriptService.Services {
                     );
 
                 return Page<WorkableTask>.Create(
-                    match.Concat(results).OrderBy(r=>r.Started).ToArray(),
+                    match.Concat(results).OrderByDescending(r=>r.Started).ToArray(),
                     runningtasks.Count + await database.Load<TaskDb>(t => DBFunction.Count()).Where(tasks?.Content).ExecuteScalarAsync<long>(),
                     filter.Continue
                 );
