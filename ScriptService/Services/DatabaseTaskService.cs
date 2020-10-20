@@ -135,7 +135,7 @@ namespace ScriptService.Services {
                             WorkableName = t.GetValue<string>(3),
                             Started = t.GetValue<DateTime>(4),
                             Finished = t.GetValue<DateTime>(5),
-                            Runtime = t.GetValue<DateTime>(7) - t.GetValue<DateTime>(6),
+                            Runtime = t.GetValue<DateTime>(5) - t.GetValue<DateTime>(4),
                             Status = t.GetValue<TaskStatus>(6),
                             Result = t.GetValue<string>(7).Deserialize<object>()
                         }
