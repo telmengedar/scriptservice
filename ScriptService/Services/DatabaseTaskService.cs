@@ -125,7 +125,7 @@ namespace ScriptService.Services {
                 if (filter.To.HasValue)
                     tasks &= t => t.Finished <= filter.To;
 
-                WorkableTask[] results = await database.Load<TaskDb>(t => t.Id, t => t.WorkableId, t => t.WorkableRevision, t => t.WorkableName, t => t.Parameters, t => t.Started, t => t.Finished, t => t.Status, t => t.Result)
+                WorkableTask[] results = await database.Load<TaskDb>(t => t.Id, t => t.WorkableId, t => t.WorkableRevision, t => t.WorkableName, t => t.Started, t => t.Finished, t => t.Status, t => t.Result)
                     .ApplyFilter(filter)
                     .Where(tasks?.Content).ExecuteTypeAsync(
                         t => new WorkableTask {
@@ -133,17 +133,16 @@ namespace ScriptService.Services {
                             WorkableId = t.GetValue<long>(1),
                             WorkableRevision = t.GetValue<int>(2),
                             WorkableName = t.GetValue<string>(3),
-                            Parameters = t.GetValue<string>(4).Deserialize<Dictionary<string, object>>(),
-                            Started = t.GetValue<DateTime>(5),
-                            Finished = t.GetValue<DateTime>(6),
-                            Runtime = t.GetValue<DateTime>(6) - t.GetValue<DateTime>(5),
-                            Status = t.GetValue<TaskStatus>(7),
-                            Result = t.GetValue<string>(8).Deserialize<object>()
+                            Started = t.GetValue<DateTime>(4),
+                            Finished = t.GetValue<DateTime>(5),
+                            Runtime = t.GetValue<DateTime>(7) - t.GetValue<DateTime>(6),
+                            Status = t.GetValue<TaskStatus>(6),
+                            Result = t.GetValue<string>(7).Deserialize<object>()
                         }
                     );
 
                 return Page<WorkableTask>.Create(
-                    match.Concat(results).ToArray(),
+                    match.Concat(results).OrderBy(r=>r.Started).ToArray(),
                     runningtasks.Count + await database.Load<TaskDb>(t => DBFunction.Count()).Where(tasks?.Content).ExecuteScalarAsync<long>(),
                     filter.Continue
                 );
