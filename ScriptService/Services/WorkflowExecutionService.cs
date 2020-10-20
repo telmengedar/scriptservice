@@ -149,6 +149,7 @@ namespace ScriptService.Services {
         /// <inheritdoc />
         public Task<object> Execute(WorkflowInstance workflow, WorkableLogger tasklogger, IDictionary<string, object> arguments, CancellationToken token) {
             IVariableProvider variables = new StateVariableProvider(ProcessImports(tasklogger, workflow.StartNode.Parameters?.Imports));
+            arguments = arguments.Clone();
             return Execute(variables, tasklogger, token, arguments, workflow.StartNode);
         }
 

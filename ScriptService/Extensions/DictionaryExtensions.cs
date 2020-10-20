@@ -198,5 +198,21 @@ namespace ScriptService.Extensions {
             return result;
         }
 
+        /// <summary>
+        /// clones dictionary by copying entries
+        /// </summary>
+        /// <remarks>
+        /// mainly used to not write state variables to task log
+        /// </remarks>
+        /// <param name="dictionary">dictionary to clone</param>
+        /// <returns>cloned dictionary</returns>
+        public static IDictionary<string, object> Clone(this IDictionary<string, object> dictionary) {
+            Dictionary<string, object> result = new Dictionary<string, object>();
+            foreach((string key, object value) in dictionary) {
+                result[key] = value;
+            }
+
+            return result;
+        }
     }
 }

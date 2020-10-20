@@ -39,7 +39,8 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.scripttaskservice.listTasks({
       status: Array.from(this.filterStatus),
       from: this.filterFrom,
-      to: this.filterTo
+      to: this.filterTo,
+      count: 25
     }).subscribe(t=>this.pageReceived(t, timer));
   }
 
