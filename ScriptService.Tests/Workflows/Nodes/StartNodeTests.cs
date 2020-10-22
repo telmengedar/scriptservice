@@ -11,6 +11,7 @@ using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Errors;
 using ScriptService.Services.Scripts;
 using ScriptService.Services.Workflows.Nodes;
+using ScriptService.Tests.Data;
 
 namespace ScriptService.Tests.Workflows.Nodes {
     
@@ -164,6 +165,39 @@ namespace ScriptService.Tests.Workflows.Nodes {
 
             Assert.That(variables.ContainsKey("input"));
             Assert.AreEqual(12, variables["input"]);
+        }
+        
+        [Test, Parallelizable]
+        public async Task ForcedParameterCustomTypeDeepDeserialization() {
+            IScriptParser parser=new ScriptParser();
+            parser.Types.AddType<RecursiveType>();
+            
+            Mock<IScriptCompiler> compiler=new Mock<IScriptCompiler>();
+            compiler.Setup(s => s.CompileCode(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => parser.Parse(code));
+            compiler.Setup(s => s.CompileCodeAsync(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => parser.ParseAsync(code));
+            
+            StartNode node=new StartNode("Start", new StartParameters {
+                Parameters = new[] {
+                    new ParameterDeclaration {
+                        Name = "input",
+                        Type = "recursivetype",
+                    }
+                }
+            }, compiler.Object);
+
+            Dictionary<string, object> variables = new Dictionary<string, object> {
+                ["input"] = new Dictionary<string, object> {
+                    ["Type"] = new Dictionary<string, object> {
+                        ["Name"] = "Peter"
+                    }
+                }
+            };
+            await node.Execute(null, null, variables, CancellationToken.None);
+
+            RecursiveType input = variables["input"] as RecursiveType;
+            Assert.NotNull(input);
+            Assert.NotNull(input.Type);
+            Assert.AreEqual("Peter", input.Type.Name);
         }
     }
 }

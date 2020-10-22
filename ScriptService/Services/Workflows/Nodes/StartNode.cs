@@ -81,8 +81,6 @@ namespace ScriptService.Services.Workflows.Nodes {
                                 else {
                                     if (parametervalue is IDictionary dic)
                                         parametervalue = dic.ToType(type);
-                                    else if (parametervalue is IDictionary<string, object> gendic)
-                                        parametervalue = gendic.ToType(type);
                                     else parametervalue = Converter.Convert(parametervalue, type);
                                 }
                             }
