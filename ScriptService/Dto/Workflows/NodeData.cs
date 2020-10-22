@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ScriptService.Dto.Workflows.Nodes;
 
 namespace ScriptService.Dto.Workflows {
 
@@ -31,5 +32,10 @@ namespace ScriptService.Dto.Workflows {
         /// variable to which to assign node result
         /// </summary>
         public string Variable { get; set; }
+        
+        /// <summary>
+        /// operation to apply to result variable
+        /// </summary>
+        public VariableOperation VariableOperation { get; set; }
     }
 }

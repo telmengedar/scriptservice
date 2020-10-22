@@ -139,8 +139,8 @@ namespace ScriptService.Services.Workflows {
                 break;
             }
 
-            if(!string.IsNullOrEmpty(node.Variable))
-                instance = new AssignStateNode(instance, node.Variable);
+            if (!string.IsNullOrEmpty(node.Variable))
+                instance = new AssignStateNode(instance, node.Variable, node.VariableOperation, compiler);
             return instance;
         }
 

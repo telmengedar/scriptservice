@@ -1,5 +1,7 @@
 ﻿using System;
 using NightlyCode.Database.Entities.Attributes;
+using NightlyCode.Scripting.Operations.Values;
+using ScriptService.Dto.Workflows.Nodes;
 
 namespace ScriptService.Dto.Workflows {
 
@@ -44,5 +46,11 @@ namespace ScriptService.Dto.Workflows {
         /// variable to store result in
         /// </summary>
         public string Variable { get; set; }
+
+        /// <summary>
+        /// operation to apply to result variable
+        /// </summary>
+        [DefaultValue(0)]
+        public VariableOperation VariableOperation { get; set; }
     }
 }

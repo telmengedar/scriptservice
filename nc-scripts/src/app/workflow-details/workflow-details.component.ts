@@ -50,7 +50,8 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
   changed: boolean=false;
 
   nodes: Node[]=[];
-  transitions: Edge[]=[]
+  transitions: Edge[]=[];
+  clusters: ClusterNode[];
 
   updateGraph$: Subject<boolean>=new Subject();
 
@@ -104,6 +105,7 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
     data.transitions.forEach(t=>{
       this.createTransition(t);
     });
+    this.generateClusters();
 
     if(this.workflow.name)
       this.navigationPath[this.navigationPath.length-1].display=this.workflow.name;
@@ -165,6 +167,30 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  private generateClusters(): void {
+    let clusters:ClusterNode[]=[];
+
+    this.nodes.forEach(n=>{
+      if(!n.data.node.group)
+        return;
+      
+      var cluster:ClusterNode=clusters.find(c=>c.id===n.data.node.group);
+      if(!cluster)
+      {
+        cluster={
+          id: n.data.node.group,
+          label: n.data.node.group,
+          childNodeIds: []
+        };
+        clusters.push(cluster);
+      }
+      cluster.childNodeIds.push(n.data.node.id);
+    });
+
+    console.log(clusters.length);
+    this.clusters=clusters;
+  }
+
   private determineImports(): ImportDeclaration[] {
     let startnode=this.nodes.find(n=>NodeType.getNodeTypeValue(n.data.type)===NodeType.Start);
     if(!startnode)
@@ -172,6 +198,7 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
     
     return startnode.data.parameters.imports;
   }
+
   /**
    * opens a dialog used to edit a node
    * @param event mouse event which triggered this method
@@ -199,6 +226,7 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
       });
       nodedialog.afterClosed().subscribe(n=>{
         this.changed=true;
+        this.generateClusters();
       });
     }
   }
