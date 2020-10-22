@@ -184,12 +184,31 @@ export class NodeEditorComponent implements OnInit {
 
   /**
    * deletes an import declaration
-   * @param name name of import variable to remove
+   * @param index index of import declaration to delete
    */
-  deleteImport(name: string): void {
-    let index: number=this.node.parameters.imports.findIndex(i=>i.variable===name);
-    if(index>=0)
-      this.node.parameters.imports.splice(index, 1);
+  deleteImport(index: number): void {
+    this.node.parameters.imports.splice(index, 1);
+  }
+
+  /**
+   * deletes an start parameter declaration
+   * @param index index of parameter declaration to delete
+   */
+  deleteParameterDeclaration(index: number): void {
+    this.node.parameters.parameters.splice(index, 1);
+  }
+
+    /**
+   * adds a new import declaration
+   */
+  addParameterDeclaration(): void {
+    if(!this.node.parameters.parameters)
+      this.node.parameters.parameters=[];
+    
+    this.node.parameters.parameters.push({
+      name: "",
+      type: ""
+    });
   }
 
   /**

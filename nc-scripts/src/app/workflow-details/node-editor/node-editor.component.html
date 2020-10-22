@@ -30,11 +30,11 @@
       <div class="row header">
         <div class="col-12">Imports</div>
       </div>  
-      <div class="row" *ngFor="let import of node.parameters.imports">
+      <div class="row" *ngFor="let import of node.parameters.imports;index as i">
         <div class="col-2">{{import.variable}}</div>
         <div class="col-9">{{import.name}}</div>
         <div class="col-1">
-          <button mat-icon-button (click)="deleteImport(import.variable)"><mat-icon>delete</mat-icon></button>
+          <button mat-icon-button (click)="deleteImport(i)"><mat-icon>delete</mat-icon></button>
         </div>
       </div>
       <div class="row">
@@ -48,6 +48,23 @@
         </div>
         <div class="col-1">
           <button mat-icon-button (click)="addImport(inputkey, inputvalue)"><mat-icon>add_circle</mat-icon></button>
+        </div>
+      </div>
+      <div class="row header">
+        <div class="col-12">Parameters</div>
+      </div>  
+      <div class="row" *ngFor="let parameter of node.parameters.parameters;index as i">
+        <div class="col-2"><input [(ngModel)]="parameter.name"></div>
+        <div class="col-2"><input [(ngModel)]="parameter.type"></div>
+        <div class="col-7"><input [(ngModel)]="parameter.default"></div>
+        <div class="col-1">
+          <button mat-icon-button (click)="deleteParameterDeclaration(i)"><mat-icon>delete</mat-icon></button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-11"></div>
+        <div class="col-1">
+          <button mat-icon-button (click)="addParameterDeclaration()"><mat-icon>add_circle</mat-icon></button>
         </div>
       </div>
     </div>
