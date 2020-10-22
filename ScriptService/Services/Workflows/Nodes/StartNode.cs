@@ -81,6 +81,8 @@ namespace ScriptService.Services.Workflows.Nodes {
                                 else {
                                     if (parametervalue is IDictionary dic)
                                         parametervalue = dic.ToType(type);
+                                    else if (parametervalue is IDictionary<string, object> expando)
+                                        parametervalue = expando.ToType(type);
                                     else parametervalue = Converter.Convert(parametervalue, type);
                                 }
                             }

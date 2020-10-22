@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using ScriptService.Errors;
 using ScriptService.Services.Scripts;
 using ScriptService.Services.Workflows.Nodes;
 using ScriptService.Tests.Data;
+using Utf8Json;
 
 namespace ScriptService.Tests.Workflows.Nodes {
     
@@ -188,7 +190,12 @@ namespace ScriptService.Tests.Workflows.Nodes {
             Dictionary<string, object> variables = new Dictionary<string, object> {
                 ["input"] = new Dictionary<string, object> {
                     ["Type"] = new Dictionary<string, object> {
-                        ["Name"] = "Peter"
+                        ["Name"] = "Peter",
+                        ["Array"] = new[] {
+                            new Dictionary<string, object> {
+                                ["Name"] = "Bärbel"
+                            }
+                        }
                     }
                 }
             };
@@ -197,7 +204,38 @@ namespace ScriptService.Tests.Workflows.Nodes {
             RecursiveType input = variables["input"] as RecursiveType;
             Assert.NotNull(input);
             Assert.NotNull(input.Type);
+            Assert.NotNull(input.Type.Array);
             Assert.AreEqual("Peter", input.Type.Name);
+            Assert.AreEqual(1, input.Type.Array.Length);
+            Assert.AreEqual("Bärbel", input.Type.Array[0].Name);
         }
+        
+        [Test, Parallelizable]
+        public async Task ForcedParameterComplexType() {
+            IScriptParser parser=new ScriptParser();
+            parser.Types.AddType<Campaign>();
+            
+            Mock<IScriptCompiler> compiler=new Mock<IScriptCompiler>();
+            compiler.Setup(s => s.CompileCode(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => parser.Parse(code));
+            compiler.Setup(s => s.CompileCodeAsync(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => parser.ParseAsync(code));
+            
+            StartNode node=new StartNode("Start", new StartParameters {
+                Parameters = new[] {
+                    new ParameterDeclaration {
+                        Name = "input",
+                        Type = "campaign",
+                    }
+                }
+            }, compiler.Object);
+
+            Dictionary<string, object> variables = new Dictionary<string, object> {
+                ["input"] = JsonSerializer.Deserialize<Dictionary<string,object>>(typeof(StartNodeTests).Assembly.GetManifestResourceStream("ScriptService.Tests.Data.2020-10-22_campaign.json"))
+            };
+            await node.Execute(null, null, variables, CancellationToken.None);
+
+            Campaign campaign = variables["input"] as Campaign;
+            Assert.NotNull(campaign);
+        }
+
     }
 }

@@ -24,6 +24,8 @@
     <EmbeddedResource Include="Data\Evaluate.Campaign.json" />
     <None Remove="Data\Campaign.json" />
     <EmbeddedResource Include="Data\Campaign.json" />
+    <None Remove="Data\2020-10-22_campaign.json" />
+    <EmbeddedResource Include="Data\2020-10-22_campaign.json" />
   </ItemGroup>
 
 </Project>
