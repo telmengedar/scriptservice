@@ -10,5 +10,10 @@ namespace ScriptService.Dto.Workflows.Nodes {
         /// types which are imported by the workflow
         /// </summary>
         public ImportDeclaration[] Imports { get; set; }
+
+        /// <summary>
+        /// parameters expected by workflow
+        /// </summary>
+        public ParameterDeclaration[] Parameters { get; set; }
     }
 }

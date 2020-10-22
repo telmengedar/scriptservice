@@ -18,7 +18,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="NightlyCode.AspNetCore.Services" Version="0.1.0-preview" />
     <PackageReference Include="NightlyCode.Database" Version="0.11.5-preview" />
-    <PackageReference Include="NightlyCode.Scripting" Version="0.17.45-preview" />
+    <PackageReference Include="NightlyCode.Scripting" Version="0.17.46-preview" />
     <PackageReference Include="Npgsql" Version="4.1.4" />
     <PackageReference Include="React.Core" Version="5.2.10" />
   </ItemGroup>

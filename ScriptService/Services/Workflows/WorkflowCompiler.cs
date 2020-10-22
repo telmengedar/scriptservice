@@ -102,7 +102,7 @@ namespace ScriptService.Services.Workflows {
             IInstanceNode instance;
             switch(node.Type) {
             case NodeType.Start:
-                instance = new StartNode(node.Name, node.Parameters.Deserialize<StartParameters>());
+                instance = new StartNode(node.Name, node.Parameters.Deserialize<StartParameters>(), compiler);
                 break;
             case NodeType.Expression:
                 ExecuteExpressionParameters parameters = node.Parameters.Deserialize<ExecuteExpressionParameters>();
