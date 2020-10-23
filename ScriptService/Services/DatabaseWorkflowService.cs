@@ -59,7 +59,7 @@ namespace ScriptService.Services {
             loadworkflowbyid = database.Load<Workflow>().Where(w => w.Id == DBParameter.Int64).Prepare();
             loadworkflowbyname = database.Load<Workflow>().Where(w => w.Name == DBParameter.String).Prepare();
 
-            loadnodes = database.Load<WorkflowNode>(n => n.Id, n => n.Name, n => n.Type, n => n.Parameters, n=>n.Variable).Where(n => n.WorkflowId == DBParameter.Int64).Prepare();
+            loadnodes = database.Load<WorkflowNode>(n => n.Id, n => n.Name, n=>n.Group, n => n.Type, n => n.Parameters, n=>n.Variable).Where(n => n.WorkflowId == DBParameter.Int64).Prepare();
             loadtransitions = database.Load<WorkflowTransition>(t => t.OriginId, t => t.TargetId, t => t.Condition, t=>t.Type, t=>t.Log).Where(t => t.WorkflowId == DBParameter.Int64).Prepare();
             insertnode = database.Insert<WorkflowNode>().Columns(n => n.Id, n => n.WorkflowId, n => n.Name, n => n.Type, n => n.Parameters, n=>n.Group, n=>n.Variable).Prepare();
             inserttransition = database.Insert<WorkflowTransition>().Columns(t => t.WorkflowId, t => t.OriginId, t => t.TargetId, t => t.Condition, t=>t.Type, t=>t.Log).Prepare();
@@ -93,9 +93,10 @@ namespace ScriptService.Services {
             workflow.Nodes = await loadnodes.ExecuteTypeAsync(r => new NodeDetails {
                 Id = r.GetValue<Guid>(0),
                 Name = r.GetValue<string>(1),
-                Type = r.GetValue<NodeType>(2),
-                Parameters = r.GetValue<string>(3).Deserialize<IDictionary<string,object>>(),
-                Variable = r.GetValue<string>(4)
+                Group = r.GetValue<string>(2),
+                Type = r.GetValue<NodeType>(3),
+                Parameters = r.GetValue<string>(4).Deserialize<IDictionary<string,object>>(),
+                Variable = r.GetValue<string>(5)
             }, workflow.Id);
             workflow.Transitions = await loadtransitions.ExecuteTypeAsync(r => new TransitionData {
                 OriginId = r.GetValue<Guid>(0),
