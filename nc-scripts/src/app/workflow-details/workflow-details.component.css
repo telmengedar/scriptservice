@@ -76,3 +76,7 @@
 .workflowgraph {
     overflow: hidden;
 }
+
+.cluster {
+    pointer-events: none;
+}
