@@ -11,6 +11,7 @@ using NightlyCode.Database.Entities.Operations;
 using NightlyCode.Database.Entities.Operations.Prepared;
 using NightlyCode.Database.Expressions;
 using NightlyCode.Database.Fields;
+using NightlyCode.Database.Tokens;
 using ScriptService.Dto;
 using ScriptService.Dto.Tasks;
 using ScriptService.Extensions;
@@ -122,6 +123,7 @@ namespace ScriptService.Services {
 
                 WorkableTask[] results = await database.Load<TaskDb>(t => t.Id, t => t.WorkableId, t => t.WorkableRevision, t => t.WorkableName, t => t.Started, t => t.Finished, t => t.Status, t => t.Result)
                     .ApplyFilter(filter)
+                    .OrderBy(new OrderByCriteria(DB.Property<WorkableTask>(w => w.Started), false))
                     .Where(tasks?.Content).ExecuteTypeAsync(
                         t => new WorkableTask {
                             Id = t.GetValue<Guid>(0),

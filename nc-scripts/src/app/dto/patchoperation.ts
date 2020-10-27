@@ -9,7 +9,19 @@ export interface PatchOperation {
      *  remove:     remove an item from an array
      */
     op: string,
+
+    /**
+     * path to property to patch
+     */
     path: string,
+
+    /**
+     * value to use when patching property
+     */
     value: any,
+
+    /**
+     * original path to property used for certain operations like 'move'
+     */
     from?: string
 }
