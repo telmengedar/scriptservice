@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,11 +21,12 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// <summary>
         /// creates a new <see cref="ScriptNode"/>
         /// </summary>
+        /// <param name="nodeid">id of workflow node</param>
         /// <param name="name">name of node</param>
         /// <param name="parameters">parameters for script</param>
         /// <param name="compiler">compiler used to retrieve script instance</param>
-        public ScriptNode(string name, CallWorkableParameters parameters, IScriptCompiler compiler) 
-        : base(name) {
+        public ScriptNode(Guid nodeid, string name, CallWorkableParameters parameters, IScriptCompiler compiler) 
+        : base(nodeid, name) {
             this.compiler = compiler;
             Name = parameters.Name;
             Arguments = parameters.Arguments.BuildArguments(compiler);
@@ -42,12 +44,11 @@ namespace ScriptService.Services.Workflows.Nodes {
         IDictionary<string, IScript> Arguments { get; }
 
         /// <inheritdoc />
-        public override async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
+        public override async Task<object> Execute(WorkflowInstanceState state, CancellationToken token) {
             CompiledScript script = await compiler.CompileScriptAsync(Name);
-            IDictionary<string, object> arguments = await Arguments.EvaluateArguments(state, token);
-            variables = new StateVariableProvider(variables, arguments);
-            logger.Info($"Executing script '{script.Name}'", string.Join("\n", arguments.Select(p => $"{p.Key}: {p.Value}")));
-            return await script.Instance.ExecuteAsync(variables, token);
+            IDictionary<string, object> arguments = await Arguments.EvaluateArguments(state.Variables, token);
+            state.Logger.Info($"Executing script '{script.Name}'", string.Join("\n", arguments.Select(p => $"{p.Key}: {p.Value}")));
+            return await script.Instance.ExecuteAsync(new VariableProvider(state.Variables, arguments), token);
         }
     }
 }

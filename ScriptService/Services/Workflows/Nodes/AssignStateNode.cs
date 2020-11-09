@@ -17,7 +17,6 @@ namespace ScriptService.Services.Workflows.Nodes {
     /// </summary>
     public class AssignStateNode : IInstanceNode {
         readonly IInstanceNode node;
-        readonly IScriptCompiler compiler;
         readonly IScript operation;
         
         /// <summary>
@@ -29,7 +28,6 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// <param name="compiler">compiler to use to compile variable operation</param>
         public AssignStateNode(IInstanceNode node, string variableName, VariableOperation variableoperation, IScriptCompiler compiler) {
             this.node = node;
-            this.compiler = compiler;
             VariableName = variableName;
             if (variableoperation != VariableOperation.Assign)
                 operation = compiler.CompileCode($"$lhs{variableoperation.ToOperatorString()}$rhs", ScriptLanguage.NCScript);
@@ -39,6 +37,9 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// name of variable to assign result to
         /// </summary>
         public string VariableName { get; }
+
+        /// <inheritdoc />
+        public Guid NodeId => node.NodeId;
 
         /// <inheritdoc />
         public string NodeName => node.NodeName;
@@ -53,17 +54,17 @@ namespace ScriptService.Services.Workflows.Nodes {
         public List<InstanceTransition> LoopTransitions => node.LoopTransitions;
 
         /// <inheritdoc />
-        public async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
-            object result = await node.Execute(logger, variables, state, token);
+        public async Task<object> Execute(WorkflowInstanceState state, CancellationToken token) {
+            object result = await node.Execute(state, token);
             if (operation != null) {
                 if (result != null) {
-                    if (!state.TryGetValue(VariableName, out object lhs))
+                    if (!state.Variables.TryGetValue(VariableName, out object lhs))
                         lhs = result is string ? "" : Activator.CreateInstance(result.GetType());
-                    result = await operation.ExecuteAsync(new VariableProvider(variables, new Variable("lhs", lhs), new Variable("rhs", result)), token);
+                    result = await operation.ExecuteAsync(new VariableProvider(state.Variables, new Variable("lhs", lhs), new Variable("rhs", result)), token);
                 }
             }
 
-            state[VariableName] = result;
+            state.Variables[VariableName] = result;
             return result;
         }
     }

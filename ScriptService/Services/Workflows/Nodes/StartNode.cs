@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using NightlyCode.AspNetCore.Services.Convert;
 using NightlyCode.Scripting.Extensions;
-using NightlyCode.Scripting.Parser;
 using ScriptService.Dto;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Errors;
@@ -23,11 +22,12 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// <summary>
         /// creates a new <see cref="StartNode"/>
         /// </summary>
+        /// <param name="nodeid">id of workflow node</param>
         /// <param name="nodeName">name of node</param>
         /// <param name="parameters">parameters for workflow start</param>
         /// <param name="compiler">parser used to convert parameter data</param>
-        public StartNode(string nodeName, StartParameters parameters, IScriptCompiler compiler)
-            : base(nodeName) {
+        public StartNode(Guid nodeid, string nodeName, StartParameters parameters, IScriptCompiler compiler)
+            : base(nodeid, nodeName) {
             this.compiler = compiler;
             Parameters = parameters;
         }
@@ -38,22 +38,22 @@ namespace ScriptService.Services.Workflows.Nodes {
         public StartParameters Parameters { get; }
 
         /// <inheritdoc />
-        public override async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
+        public override async Task<object> Execute(WorkflowInstanceState state, CancellationToken token) {
             if (Parameters?.Parameters?.Length > 0) {
                 foreach (ParameterDeclaration parameter in Parameters.Parameters) {
                     Type type = (await compiler.CompileCodeAsync(parameter.Type, ScriptLanguage.NCScript)).Execute<Type>();
                     
-                    if (!state.TryGetValue(parameter.Name, out object parametervalue)) {
+                    if (!state.Variables.TryGetValue(parameter.Name, out object parametervalue)) {
                         if (string.IsNullOrEmpty(parameter.Default))
                             throw new WorkflowException($"Missing required parameter '{parameter.Name}'");
 
-                        parametervalue = await (await compiler.CompileCodeAsync(parameter.Default, ScriptLanguage.NCScript)).ExecuteAsync(state, token);
+                        parametervalue = await (await compiler.CompileCodeAsync(parameter.Default, ScriptLanguage.NCScript)).ExecuteAsync(state.Variables, token);
                     }
                     
                     if(parametervalue == null) {
                         if (type.IsValueType)
                             throw new WorkflowException($"Unable to pass null to the value parameter '{parameter.Name}'");
-                        state[parameter.Name] = null;
+                        state.Variables[parameter.Name] = null;
                     }
                     else {
                         if(!type.IsInstanceOfType(parametervalue)) {
@@ -90,7 +90,7 @@ namespace ScriptService.Services.Workflows.Nodes {
                                 throw new WorkflowException($"Unable to convert parameter '{parametervalue}' to '{type.Name}'", e);
                             }
                         }
-                        state[parameter.Name] = parametervalue;
+                        state.Variables[parameter.Name] = parametervalue;
                     }
 
                 }

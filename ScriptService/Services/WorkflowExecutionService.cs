@@ -71,16 +71,16 @@ namespace ScriptService.Services {
             else {
                 if(variables!=null)
                     foreach (KeyValuePair<string, object> entry in variables)
-                        state.State[entry.Key] = entry.Value.DetermineValue(state.State);
+                        state.Variables[entry.Key] = entry.Value.DetermineValue(state.Variables);
             }
 
-            InstanceTransition transition = await EvaluateTransitions(state.Node, tasklogger, state.State, state.Node.Transitions, token);
+            InstanceTransition transition = await EvaluateTransitions(state.Node, tasklogger, state.Variables, state.Node.Transitions, token);
             if (transition == null) {
                 tasklogger.Warning("Suspend node has no transition defined for current state. Workflow ends by default.");
                 return lastresult;
             }
 
-            return await Execute(state.Variables, tasklogger, token, state.State, transition.Target, lastresult);
+            return await Execute(new WorkflowInstanceState(tasklogger, state.Variables), token, transition.Target, lastresult);
         }
 
         void HandleTaskResult(Task<object> t, WorkableTask task, WorkableLogger tasklogger) {
@@ -148,9 +148,9 @@ namespace ScriptService.Services {
 
         /// <inheritdoc />
         public Task<object> Execute(WorkflowInstance workflow, WorkableLogger tasklogger, IDictionary<string, object> arguments, CancellationToken token) {
-            IVariableProvider variables = new StateVariableProvider(ProcessImports(tasklogger, workflow.StartNode.Parameters?.Imports));
-            arguments = arguments.Clone();
-            return Execute(variables, tasklogger, token, arguments, workflow.StartNode);
+            StateVariableProvider variables = new StateVariableProvider(ProcessImports(tasklogger, workflow.StartNode.Parameters?.Imports));
+            variables.Add(arguments);
+            return Execute(new WorkflowInstanceState(tasklogger, variables), token, workflow.StartNode);
         }
 
         Task<InstanceTransition> EvaluateTransitions(IInstanceNode current, WorkableLogger tasklogger, IDictionary<string, object> state, List<InstanceTransition> transitions, CancellationToken token) {
@@ -187,10 +187,10 @@ namespace ScriptService.Services {
             return transition;
         }
 
-        async Task<object> Execute(IVariableProvider variables, WorkableLogger tasklogger, CancellationToken token, IDictionary<string, object> state, IInstanceNode current, object lastresult=null) {
+        async Task<object> Execute(WorkflowInstanceState state, CancellationToken token, IInstanceNode current, object lastresult=null) {
             while (current != null) {
                 try {
-                    lastresult = await current.Execute(tasklogger, variables, state, token);
+                    lastresult = await current.Execute(state, token);
 
                     if (token.IsCancellationRequested)
                         return null;
@@ -200,9 +200,9 @@ namespace ScriptService.Services {
                         return lastresult;
                 }
                 catch (Exception e) {
-                    tasklogger.Warning($"Error while executing node '{current.NodeName}'", e.Message);
+                    state.Logger.Warning($"Error while executing node '{current.NodeName}'", e.Message);
                     
-                    InstanceTransition next = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(new VariableProvider(variables, new Variable("error", e)), state), current.ErrorTransitions, token);
+                    InstanceTransition next = await EvaluateTransitions(current, state.Logger, new VariableProvider(state.Variables, new Variable("error", e)), current.ErrorTransitions, token);
                     if (next == null)
                         throw;
                     
@@ -212,18 +212,18 @@ namespace ScriptService.Services {
 
                 try {
                     if (lastresult is LoopCommand) {
-                        InstanceTransition transition = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(variables, state), current.LoopTransitions, token);
+                        InstanceTransition transition = await EvaluateTransitions(current, state.Logger, state.Variables, current.LoopTransitions, token);
                         current =  transition?.Target ?? current;
                     }
                     else {
-                        InstanceTransition transition = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(variables, state), current.Transitions, token);
+                        InstanceTransition transition = await EvaluateTransitions(current, state.Logger, state.Variables, current.Transitions, token);
                         current = transition?.Target;
                     }
                 }
                 catch (Exception e) {
-                    tasklogger.Warning($"Error while evaluating transitions of node '{current?.NodeName}'", e.Message);
+                    state.Logger.Warning($"Error while evaluating transitions of node '{current?.NodeName}'", e.Message);
                     
-                    InstanceTransition next = await EvaluateTransitions(current, tasklogger, new StateVariableProvider(new VariableProvider(variables, new Variable("error", e)), state), current.ErrorTransitions, token);
+                    InstanceTransition next = await EvaluateTransitions(current, state.Logger, new VariableProvider(state.Variables, new Variable("error", e)), current.ErrorTransitions, token);
                     if(next == null)
                         throw;
                     

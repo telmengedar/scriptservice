@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
 using NightlyCode.Scripting;
@@ -21,11 +21,12 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// <summary>
         /// creates a new <see cref="IteratorNode"/>
         /// </summary>
+        /// <param name="nodeid">id of workflow node</param>
         /// <param name="nodeName">name of node</param>
         /// <param name="parameters">parameters to use</param>
         /// <param name="compiler">compiler used to compile expressions</param>
-        public IteratorNode(string nodeName, IteratorParameters parameters, IScriptCompiler compiler) 
-            : base(nodeName) {
+        public IteratorNode(Guid nodeid, string nodeName, IteratorParameters parameters, IScriptCompiler compiler) 
+            : base(nodeid, nodeName) {
             this.compiler = compiler;
             Parameters = parameters;
         }
@@ -34,31 +35,27 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// parameters
         /// </summary>
         public IteratorParameters Parameters { get; set; }
-
-        /// <summary>
-        /// current item in enumeration
-        /// </summary>
-        public IEnumerator Current { get; private set; }
-
-        async Task CreateEnumerator(IVariableProvider variables, CancellationToken token) {
+        
+        async Task<IEnumerator> CreateEnumerator(IVariableProvider variables, CancellationToken token) {
             IScript enumerationscript = await compiler.CompileCodeAsync(Parameters.Collection, ScriptLanguage.NCScript);
             if (!(await enumerationscript.ExecuteAsync(variables, token) is IEnumerable enumerable))
                 throw new WorkflowException("Can not enumerate null");
 
-            Current = enumerable.GetEnumerator();
+            return enumerable.GetEnumerator();
         }
 
         /// <inheritdoc />
-        public override async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
-            if (Current == null)
-                await CreateEnumerator(new VariableProvider(variables, state), token);
+        public override async Task<object> Execute(WorkflowInstanceState state, CancellationToken token) {
+            IEnumerator current = state.GetNodeData<IEnumerator>(NodeId);
+            if (current == null)
+                state[NodeId] = current = await CreateEnumerator(state.Variables, token);
 
-            if (Current.MoveNext()) {
-                state[Parameters.Item ?? "item"] = Current.Current;
+            if (current.MoveNext()) {
+                state.Variables[Parameters.Item ?? "item"] = current.Current;
                 return new LoopCommand();
             }
 
-            Current = null;
+            state.RemoveNodeData(NodeId);
             return null;
         }
     }

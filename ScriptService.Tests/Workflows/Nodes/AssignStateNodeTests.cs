@@ -6,8 +6,8 @@ using NightlyCode.Scripting.Parser;
 using NUnit.Framework;
 using ScriptService.Dto;
 using ScriptService.Dto.Workflows.Nodes;
-using ScriptService.Services;
 using ScriptService.Services.Scripts;
+using ScriptService.Services.Workflows;
 using ScriptService.Services.Workflows.Nodes;
 
 namespace ScriptService.Tests.Workflows.Nodes {
@@ -31,7 +31,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
         [Parallelizable]
         public async Task AssignWithOperationVariableNotExisting(VariableOperation operation, object expected) {
             Mock<IInstanceNode> instancenode=new Mock<IInstanceNode>();
-            instancenode.Setup(s => s.Execute(It.IsAny<WorkableLogger>(), It.IsAny<IVariableProvider>(), It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+            instancenode.Setup(s => s.Execute(It.IsAny<WorkflowInstanceState>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(11);
             Mock<IScriptCompiler> compiler=new Mock<IScriptCompiler>();
             compiler.Setup(s => s.CompileCode(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().Parse(code));
@@ -39,7 +39,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             AssignStateNode node=new AssignStateNode(instancenode.Object, "result", operation, compiler.Object);
             
             Dictionary<string, object> variables=new Dictionary<string, object>();
-            await node.Execute(null, null, variables, CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None);
 
             Assert.That(variables.ContainsKey("result"));
             Assert.AreEqual(expected, variables["result"]);
@@ -61,7 +61,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
         [Parallelizable]
         public async Task AssignWithOperationExistingVariable(VariableOperation operation, object expected) {
             Mock<IInstanceNode> instancenode=new Mock<IInstanceNode>();
-            instancenode.Setup(s => s.Execute(It.IsAny<WorkableLogger>(), It.IsAny<IVariableProvider>(), It.IsAny<IDictionary<string, object>>(), It.IsAny<CancellationToken>()))
+            instancenode.Setup(s => s.Execute(It.IsAny<WorkflowInstanceState>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(11);
             Mock<IScriptCompiler> compiler=new Mock<IScriptCompiler>();
             compiler.Setup(s => s.CompileCode(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().Parse(code));
@@ -71,7 +71,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             Dictionary<string, object> variables = new Dictionary<string, object> {
                 ["result"] = 7
             };
-            await node.Execute(null, null, variables, CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None);
 
             Assert.That(variables.ContainsKey("result"));
             Assert.AreEqual(expected, variables["result"]);

@@ -10,7 +10,6 @@ namespace ScriptService.Services.Workflows {
     /// provides state variables to expressions
     /// </summary>
     public class StateVariableProvider : IVariableProvider {
-        readonly IVariableProvider parentprovider;
 
         /// <summary>
         /// creates a new <see cref="VariableProvider"/>
@@ -24,18 +23,17 @@ namespace ScriptService.Services.Workflows {
         }
 
         /// <summary>
-        /// creates a new <see cref="VariableProvider"/>
+        /// adds arguments of a dictionary to the variable provider
         /// </summary>
-        /// <param name="parentprovider">parent variable scope</param>
-        /// <param name="variables">variables to provide</param>
-        public StateVariableProvider(IVariableProvider parentprovider, IDictionary<string, object> variables) {
-            this.parentprovider = parentprovider;
-            Values = variables;
+        /// <param name="variables"></param>
+        public void Add(IDictionary<string, object> variables) {
+            foreach ((string key, object value) in variables)
+                Values[key] = value;
         }
-
+        
         /// <inheritdoc />
         public object this[string name] {
-            get => GetProvider(name).GetVariable(name);
+            get => GetVariable(name);
             set => Values[name] = value;
         }
 
@@ -52,6 +50,26 @@ namespace ScriptService.Services.Workflows {
             return Values[name];
         }
 
+        /// <summary>
+        /// gets variable from provider or null if value was not found
+        /// </summary>
+        /// <param name="name">name of variable to get</param>
+        /// <returns>value of variable or null if variable was not found</returns>
+        public object GetOrDefault(string name) {
+            Values.TryGetValue(name, out object value);
+            return value;
+        }
+
+        /// <summary>
+        /// tries to get value
+        /// </summary>
+        /// <param name="name">name of variable to get</param>
+        /// <param name="value">value to store result in</param>
+        /// <returns>true if variable was found, false otherwise</returns>
+        public bool TryGetValue(string name, out object value) {
+            return Values.TryGetValue(name, out value);
+        }
+        
         /// <inheritdoc />
         public bool ContainsVariable(string name) {
             return Values.ContainsKey(name);
@@ -59,7 +77,7 @@ namespace ScriptService.Services.Workflows {
 
         /// <inheritdoc />
         public bool ContainsVariableInHierarchy(string name) {
-            return Values.ContainsKey(name) || (parentprovider?.ContainsVariable(name) ?? false);
+            return ContainsVariable(name);
         }
 
         /// <summary>
@@ -70,16 +88,10 @@ namespace ScriptService.Services.Workflows {
         public IVariableProvider GetProvider(string variable) {
             if(ContainsVariable(variable))
                 return this;
-            return parentprovider?.GetProvider(variable);
+            return null;
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> Variables {
-            get {
-                if(parentprovider != null)
-                    return Values.Keys.Concat(parentprovider.Variables);
-                return Values.Keys;
-            }
-        }
+        public IEnumerable<string> Variables => Values.Keys;
     }
 }

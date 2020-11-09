@@ -18,6 +18,7 @@ namespace ScriptService.Tests {
     public class IteratorTests {
 
         [Test, Parallelizable]
+        [Timeout(5000)]
         public async Task SumConditionalLoop() {
             IEntityManager database = TestSetup.CreateMemoryDatabase();
             CacheService cache = new CacheService(new NullLogger<CacheService>());

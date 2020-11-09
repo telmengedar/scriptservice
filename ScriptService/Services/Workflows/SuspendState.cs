@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using NightlyCode.Scripting.Parser;
-using ScriptService.Services.Workflows.Nodes;
+﻿using ScriptService.Services.Workflows.Nodes;
 
 namespace ScriptService.Services.Workflows {
 
@@ -8,16 +6,15 @@ namespace ScriptService.Services.Workflows {
     /// state used to continue suspended workflows
     /// </summary>
     public class SuspendState {
+        
         /// <summary>
         /// creates a new <see cref="SuspendState"/>
         /// </summary>
         /// <param name="node">suspended node</param>
         /// <param name="variables">variables of executing workflow</param>
-        /// <param name="state">state of suspended workflow</param>
         /// <param name="subflow">suspended sub workflow (optional)</param>
-        public SuspendState(IInstanceNode node, IVariableProvider variables, IDictionary<string, object> state, SuspendState subflow=null) {
+        public SuspendState(IInstanceNode node, StateVariableProvider variables, SuspendState subflow=null) {
             Variables = variables;
-            State = state;
             Node = node;
             Subflow = subflow;
         }
@@ -25,13 +22,8 @@ namespace ScriptService.Services.Workflows {
         /// <summary>
         /// script variables
         /// </summary>
-        public IVariableProvider Variables { get; }
-
-        /// <summary>
-        /// current variable state
-        /// </summary>
-        public IDictionary<string, object> State { get; }
-
+        public StateVariableProvider Variables { get; }
+        
         /// <summary>
         /// node at which workflow was suspended
         /// </summary>

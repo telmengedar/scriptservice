@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NightlyCode.AspNetCore.Services.Convert;
 using NightlyCode.Scripting;
+using NightlyCode.Scripting.Parser;
 using ScriptService.Dto;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Errors;
@@ -186,7 +187,7 @@ namespace ScriptService.Extensions {
         /// <param name="state">state to use as variable source</param>
         /// <param name="token">token used for cancellation</param>
         /// <returns>workable parameter values</returns>
-        public static async Task<IDictionary<string, object>> EvaluateArguments(this IDictionary<string, IScript> arguments, IDictionary<string, object> state, CancellationToken token) {
+        public static async Task<IDictionary<string, object>> EvaluateArguments(this IDictionary<string, IScript> arguments, IVariableProvider state, CancellationToken token) {
             if (arguments == null)
                 return new Dictionary<string, object>();
 

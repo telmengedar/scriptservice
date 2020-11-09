@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using NightlyCode.Scripting;
-using NightlyCode.Scripting.Parser;
 
 namespace ScriptService.Services.Workflows.Nodes {
 
@@ -15,17 +14,18 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// <summary>
         /// creates a new <see cref="ScriptNode"/>
         /// </summary>
+        /// <param name="nodeid">id of workflow node</param>
         /// <param name="name">name of node</param>
         /// <param name="script">script to execute</param>
-        public ExpressionNode(string name, IScript script) 
-        : base(name)
+        public ExpressionNode(Guid nodeid, string name, IScript script) 
+        : base(nodeid, name)
         {
             this.script = script;
         }
 
         /// <inheritdoc />
-        public override async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
-            return await script.ExecuteAsync(new StateVariableProvider(variables, state), token);
+        public override async Task<object> Execute(WorkflowInstanceState state, CancellationToken token) {
+            return await script.ExecuteAsync(state.Variables, token);
         }
     }
 }

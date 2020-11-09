@@ -11,6 +11,7 @@ using ScriptService.Dto.Workflows;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Errors;
 using ScriptService.Services.Scripts;
+using ScriptService.Services.Workflows;
 using ScriptService.Services.Workflows.Nodes;
 using ScriptService.Tests.Data;
 using Utf8Json;
@@ -26,10 +27,10 @@ namespace ScriptService.Tests.Workflows.Nodes {
             compiler.Setup(s => s.CompileCode(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().Parse(code));
             compiler.Setup(s => s.CompileCodeAsync(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().ParseAsync(code));
             
-            StartNode node=new StartNode("Start", new StartParameters(), compiler.Object);
+            StartNode node=new StartNode(Guid.NewGuid(), "Start", new StartParameters(), compiler.Object);
 
             Dictionary<string, object> variables = new Dictionary<string, object>();
-            await node.Execute(null, null, variables, CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None);
         }
 
         [Test, Parallelizable]
@@ -38,7 +39,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             compiler.Setup(s => s.CompileCode(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().Parse(code));
             compiler.Setup(s => s.CompileCodeAsync(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().ParseAsync(code));
             
-            StartNode node=new StartNode("Start", new StartParameters {
+            StartNode node=new StartNode(Guid.NewGuid(), "Start", new StartParameters {
                 Parameters = new[] {
                     new ParameterDeclaration {
                         Name = "input",
@@ -50,7 +51,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             Dictionary<string, object> variables = new Dictionary<string, object>() {
                 ["input"] = "7"
             };
-            await node.Execute(null, null, variables, CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None);
 
             Assert.AreEqual(7, variables["input"]);
         }
@@ -61,7 +62,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             compiler.Setup(s => s.CompileCode(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().Parse(code));
             compiler.Setup(s => s.CompileCodeAsync(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().ParseAsync(code));
             
-            StartNode node=new StartNode("Start", new StartParameters {
+            StartNode node=new StartNode(Guid.NewGuid(), "Start", new StartParameters {
                 Parameters = new[] {
                     new ParameterDeclaration {
                         Name = "input",
@@ -71,7 +72,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             }, compiler.Object);
 
             Dictionary<string, object> variables = new Dictionary<string, object>();
-            Assert.ThrowsAsync<WorkflowException>(() => node.Execute(null, null, variables, CancellationToken.None));
+            Assert.ThrowsAsync<WorkflowException>(() => node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None));
         }
         
         [Test, Parallelizable]
@@ -80,7 +81,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             compiler.Setup(s => s.CompileCode(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().Parse(code));
             compiler.Setup(s => s.CompileCodeAsync(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().ParseAsync(code));
             
-            StartNode node=new StartNode("Start", new StartParameters {
+            StartNode node=new StartNode(Guid.NewGuid(), "Start", new StartParameters {
                 Parameters = new[] {
                     new ParameterDeclaration {
                         Name = "input",
@@ -91,7 +92,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             }, compiler.Object);
 
             Dictionary<string, object> variables = new Dictionary<string, object>();
-            Assert.ThrowsAsync<WorkflowException>(() => node.Execute(null, null, variables, CancellationToken.None));
+            Assert.ThrowsAsync<WorkflowException>(() => node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None));
         }
         
         [Test, Parallelizable]
@@ -100,7 +101,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             compiler.Setup(s => s.CompileCode(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().Parse(code));
             compiler.Setup(s => s.CompileCodeAsync(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().ParseAsync(code));
             
-            StartNode node=new StartNode("Start", new StartParameters {
+            StartNode node=new StartNode(Guid.NewGuid(), "Start", new StartParameters {
                 Parameters = new[] {
                     new ParameterDeclaration {
                         Name = "input",
@@ -111,7 +112,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             }, compiler.Object);
 
             Dictionary<string, object> variables = new Dictionary<string, object>();
-            await node.Execute(null, null, variables, CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None);
 
             IEnumerable<int> input = variables["input"] as IEnumerable<int>;
             Assert.NotNull(input);
@@ -127,7 +128,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             compiler.Setup(s => s.CompileCode(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => parser.Parse(code));
             compiler.Setup(s => s.CompileCodeAsync(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => parser.ParseAsync(code));
             
-            StartNode node=new StartNode("Start", new StartParameters {
+            StartNode node=new StartNode(Guid.NewGuid(), "Start", new StartParameters {
                 Parameters = new[] {
                     new ParameterDeclaration {
                         Name = "input",
@@ -138,7 +139,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             }, compiler.Object);
 
             Dictionary<string, object> variables = new Dictionary<string, object>();
-            await node.Execute(null, null, variables, CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None);
 
             Transition[] input = variables["input"] as Transition[];
             Assert.NotNull(input);
@@ -152,7 +153,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             compiler.Setup(s => s.CompileCode(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().Parse(code));
             compiler.Setup(s => s.CompileCodeAsync(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => new ScriptParser().ParseAsync(code));
             
-            StartNode node=new StartNode("Start", new StartParameters {
+            StartNode node=new StartNode(Guid.NewGuid(), "Start", new StartParameters {
                 Parameters = new[] {
                     new ParameterDeclaration {
                         Name = "input",
@@ -163,7 +164,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             }, compiler.Object);
 
             Dictionary<string, object> variables = new Dictionary<string, object>();
-            await node.Execute(null, null, variables, CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None);
 
             Assert.That(variables.ContainsKey("input"));
             Assert.AreEqual(12, variables["input"]);
@@ -178,7 +179,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             compiler.Setup(s => s.CompileCode(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => parser.Parse(code));
             compiler.Setup(s => s.CompileCodeAsync(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => parser.ParseAsync(code));
             
-            StartNode node=new StartNode("Start", new StartParameters {
+            StartNode node=new StartNode(Guid.NewGuid(), "Start", new StartParameters {
                 Parameters = new[] {
                     new ParameterDeclaration {
                         Name = "input",
@@ -199,7 +200,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
                     }
                 }
             };
-            await node.Execute(null, null, variables, CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None);
 
             RecursiveType input = variables["input"] as RecursiveType;
             Assert.NotNull(input);
@@ -219,7 +220,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             compiler.Setup(s => s.CompileCode(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => parser.Parse(code));
             compiler.Setup(s => s.CompileCodeAsync(It.IsAny<string>(), ScriptLanguage.NCScript)).Returns<string, ScriptLanguage>((code, language) => parser.ParseAsync(code));
             
-            StartNode node=new StartNode("Start", new StartParameters {
+            StartNode node=new StartNode(Guid.NewGuid(), "Start", new StartParameters {
                 Parameters = new[] {
                     new ParameterDeclaration {
                         Name = "input",
@@ -231,7 +232,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             Dictionary<string, object> variables = new Dictionary<string, object> {
                 ["input"] = JsonSerializer.Deserialize<Dictionary<string,object>>(typeof(StartNodeTests).Assembly.GetManifestResourceStream("ScriptService.Tests.Data.2020-10-22_campaign.json"))
             };
-            await node.Execute(null, null, variables, CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None);
 
             Campaign campaign = variables["input"] as Campaign;
             Assert.NotNull(campaign);

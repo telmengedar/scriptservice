@@ -98,44 +98,46 @@ namespace ScriptService.Services.Workflows {
             });
         }
 
-        async Task<IInstanceNode> BuildNode(NodeData node) {
+        async Task<IInstanceNode> BuildNode(NodeData node, Guid? nodeid=null) {
+            nodeid ??= Guid.NewGuid();
+            
             IInstanceNode instance;
             switch(node.Type) {
             case NodeType.Start:
-                instance = new StartNode(node.Name, node.Parameters.Deserialize<StartParameters>(), compiler);
+                instance = new StartNode(nodeid.Value, node.Name, node.Parameters.Deserialize<StartParameters>(), compiler);
                 break;
             case NodeType.Expression:
                 ExecuteExpressionParameters parameters = node.Parameters.Deserialize<ExecuteExpressionParameters>();
-                instance = new ExpressionNode(node.Name, await compiler.CompileCodeAsync(parameters.Code, parameters.Language));
+                instance = new ExpressionNode(nodeid.Value, node.Name, await compiler.CompileCodeAsync(parameters.Code, parameters.Language));
                 break;
             case NodeType.Script:
-                instance = new ScriptNode(node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), compiler);
+                instance = new ScriptNode(nodeid.Value, node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), compiler);
                 break;
             case NodeType.Workflow:
-                instance = new WorkflowInstanceNode(node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), GetWorkflowInstance, workflowexecutor.Execute, compiler);
+                instance = new WorkflowInstanceNode(nodeid.Value, node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), GetWorkflowInstance, workflowexecutor.Execute, compiler);
                 break;
             case NodeType.BinaryOperation:
                 BinaryOpParameters binparameters = node.Parameters.Deserialize<BinaryOpParameters>();
-                instance = new BinaryNode(node.Name, binparameters, compiler);
+                instance = new BinaryNode(nodeid.Value, node.Name, binparameters, compiler);
                 break;
             case NodeType.Value:
                 ValueParameters valueparameters = node.Parameters.Deserialize<ValueParameters>();
-                instance = new ValueNode(node.Name, valueparameters.Value, compiler);
+                instance = new ValueNode(nodeid.Value, node.Name, valueparameters.Value, compiler);
                 break;
             case NodeType.Suspend:
-                instance = new SuspendNode(node.Name, node.Parameters.Deserialize<SuspendParameters>());
+                instance = new SuspendNode(nodeid.Value, node.Name, node.Parameters.Deserialize<SuspendParameters>());
                 break;
             case NodeType.Call:
-                instance = new CallNode(node.Name, node.Parameters.Deserialize<CallParameters>(), compiler);
+                instance = new CallNode(nodeid.Value, node.Name, node.Parameters.Deserialize<CallParameters>(), compiler);
                 break;
             case NodeType.Iterator:
-                instance = new IteratorNode(node.Name, node.Parameters.Deserialize<IteratorParameters>(), compiler);
+                instance = new IteratorNode(nodeid.Value, node.Name, node.Parameters.Deserialize<IteratorParameters>(), compiler);
                 break;
             case NodeType.Log:
-                instance = new LogNode(node.Name, compiler, node.Parameters.Deserialize<LogParameters>());
+                instance = new LogNode(nodeid.Value, node.Name, compiler, node.Parameters.Deserialize<LogParameters>());
                 break;
             default:
-                instance = new InstanceNode(node.Name);
+                instance = new InstanceNode(nodeid.Value, node.Name);
                 break;
             }
 
@@ -161,7 +163,7 @@ namespace ScriptService.Services.Workflows {
 
             Dictionary<Guid, IInstanceNode> nodes = new Dictionary<Guid, IInstanceNode>();
             foreach(NodeDetails node in workflow.Nodes) {
-                IInstanceNode nodeinstance = await BuildNode(node);
+                IInstanceNode nodeinstance = await BuildNode(node, node.Id);
                 nodes[node.Id] = nodeinstance;
 
                 if(nodeinstance is StartNode startinstance) {

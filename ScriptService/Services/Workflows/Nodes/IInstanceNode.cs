@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NightlyCode.Scripting.Parser;
 
 namespace ScriptService.Services.Workflows.Nodes {
 
@@ -10,6 +10,11 @@ namespace ScriptService.Services.Workflows.Nodes {
     /// </summary>
     public interface IInstanceNode {
 
+        /// <summary>
+        /// id of workflow node
+        /// </summary>
+        public Guid NodeId { get; }
+        
         /// <summary>
         /// name of node
         /// </summary>
@@ -33,7 +38,7 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// <summary>
         /// executes the node
         /// </summary>
-        public Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token);
+        public Task<object> Execute(WorkflowInstanceState state, CancellationToken token);
 
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using NightlyCode.Scripting.Parser;
 using ScriptService.Errors;
+using ScriptService.Services.Workflows;
 
 namespace ScriptService.Extensions {
 
@@ -67,7 +69,7 @@ namespace ScriptService.Extensions {
         /// <param name="data">data containing characters to parse</param>
         /// <param name="state">state variables</param>
         /// <returns>parsed value</returns>
-        public static object ParseValue(ReadOnlySpan<char> data, IDictionary<string, object> state) {
+        public static object ParseValue(ReadOnlySpan<char> data, StateVariableProvider state) {
             if (data.Length == 0)
                 return null;
 
@@ -117,7 +119,7 @@ namespace ScriptService.Extensions {
         /// <param name="value">value to analyse</param>
         /// <param name="state">state variables</param>
         /// <returns>value to use</returns>
-        public static object DetermineValue(this object value, IDictionary<string, object> state) {
+        public static object DetermineValue(this object value, StateVariableProvider state) {
             if (value is string stringvalue)
                 return ParseValue(stringvalue, state);
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using ScriptService.Dto.Workflows.Nodes;
@@ -12,7 +13,7 @@ namespace ScriptService.Tests {
 
         [Test, Parallelizable]
         public async Task TestAdd() {
-            BinaryNode node=new BinaryNode(null, new BinaryOpParameters {
+            BinaryNode node=new BinaryNode(Guid.NewGuid(), null, new BinaryOpParameters {
                 Lhs = "3",
                 Operation = BinaryOperation.Add,
                 Rhs = "7"
@@ -23,7 +24,7 @@ namespace ScriptService.Tests {
 
         [Test, Parallelizable]
         public async Task TestAddVariable() {
-            BinaryNode node = new BinaryNode(null, new BinaryOpParameters {
+            BinaryNode node = new BinaryNode(Guid.NewGuid(),null, new BinaryOpParameters {
                 Lhs = "lhs",
                 Operation = BinaryOperation.Add,
                 Rhs = "rhs"

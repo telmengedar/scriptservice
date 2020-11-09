@@ -31,5 +31,31 @@ namespace ScriptService.Tests {
             Assert.AreEqual(10, tasks.Result.Length);
             Assert.AreEqual(31, tasks.Result[0].Started.Day);
         }
+        
+        [Test, Parallelizable]
+        public async Task MostRecentFirstWithoutCriterias() {
+            IEntityManager database = TestSetup.CreateMemoryDatabase();
+            DatabaseTaskService taskservice = new DatabaseTaskService(database);
+
+            for (int i = 0; i < 700; ++i) {
+                await taskservice.StoreTask(new WorkableTask() {
+                    Id = Guid.NewGuid(),
+                    Started = new DateTime(2020, 01, 01),
+                    Finished = new DateTime(2020, 01, 1, 1, 0, 0)
+                });
+            }
+
+            await taskservice.StoreTask(new WorkableTask() {
+                Id = Guid.NewGuid(),
+                Started = new DateTime(2020, 01, 2),
+                Finished = new DateTime(2020, 01, 2, 1, 0, 0)
+            });
+
+            Page<WorkableTask> tasks = await taskservice.ListTasks();
+
+            Assert.AreEqual(500, tasks.Result.Length);
+            Assert.AreEqual(02, tasks.Result[0].Started.Day);
+        }
+
     }
 }

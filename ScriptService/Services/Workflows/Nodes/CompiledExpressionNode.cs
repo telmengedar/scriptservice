@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using NightlyCode.Scripting;
-using NightlyCode.Scripting.Parser;
 using ScriptService.Dto;
 using ScriptService.Services.Scripts;
 
@@ -19,10 +18,11 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// <summary>
         /// creates a new <see cref="CompiledExpressionNode"/>
         /// </summary>
+        /// <param name="nodeid">id of workflow node</param>
         /// <param name="nodeName">name of node</param>
         /// <param name="compiler">compiler used to compile scripts</param>
-        protected CompiledExpressionNode(string nodeName, IScriptCompiler compiler) 
-            : base(nodeName) {
+        protected CompiledExpressionNode(Guid nodeid, string nodeName, IScriptCompiler compiler) 
+            : base(nodeid, nodeName) {
             this.compiler = compiler;
         }
 
@@ -33,9 +33,9 @@ namespace ScriptService.Services.Workflows.Nodes {
         protected abstract string GenerateCode();
 
         /// <inheritdoc />
-        public override async Task<object> Execute(WorkableLogger logger, IVariableProvider variables, IDictionary<string, object> state, CancellationToken token) {
+        public override async Task<object> Execute(WorkflowInstanceState state, CancellationToken token) {
             expression ??= await compiler.CompileCodeAsync(GenerateCode(), ScriptLanguage.NCScript);
-            object result = await expression.ExecuteAsync(new VariableProvider(variables, state), token);
+            object result = await expression.ExecuteAsync(state.Variables, token);
             if (result is Task task) {
                 await task;
                 PropertyInfo resultproperty = task.GetType().GetProperty("Result");

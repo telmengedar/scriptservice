@@ -125,6 +125,7 @@ namespace ScriptService.Tests {
         }
 
         [Test, Parallelizable]
+        [Timeout(5000)]
         public async Task ExecuteLoop() {
             Mock<IJavascriptImportService> importservice=new Mock<IJavascriptImportService>();
             importservice.Setup(s => s.Clone(It.IsAny<WorkableLogger>())).Returns(() => importservice.Object);
@@ -332,6 +333,7 @@ namespace ScriptService.Tests {
         }
 
         [Test, Parallelizable]
+        [Timeout(5000)]
         public async Task ExecuteSubWorkflowWithParametersInLoop() {
             Mock<IJavascriptImportService> importservice=new Mock<IJavascriptImportService>();
             importservice.Setup(s => s.Clone(It.IsAny<WorkableLogger>())).Returns(() => importservice.Object);
