@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Scripting.Hosting;
@@ -34,7 +33,13 @@ namespace ScriptService.Services.Python {
 
         /// <inheritdoc />
         public object Execute(IVariableProvider variables = null) {
-            throw new NotImplementedException();
+            Dictionary<string,object> dic=new Dictionary<string, object>();
+            if (variables != null) {
+                foreach (string key in variables.Variables)
+                    dic[key] = variables.GetProvider(key).GetVariable(key);
+            }
+
+            return Execute(dic);
         }
 
         /// <inheritdoc />
@@ -44,17 +49,17 @@ namespace ScriptService.Services.Python {
 
         /// <inheritdoc />
         public T Execute<T>(IVariableProvider variables = null) {
-            throw new NotImplementedException();
+            return Converter.Convert<T>(Execute(variables));
         }
 
         /// <inheritdoc />
         public Task<object> ExecuteAsync(IDictionary<string, object> variables, CancellationToken cancellationtoken = new CancellationToken()) {
-            return ExecuteAsync(new VariableProvider(variables), cancellationtoken);
+            return Task.Run(() => Execute(variables), cancellationtoken);
         }
 
         /// <inheritdoc />
         public Task<object> ExecuteAsync(IVariableProvider variables = null, CancellationToken cancellationtoken = new CancellationToken()) {
-            throw new NotImplementedException();
+            return Task.Run(() => Execute(variables), cancellationtoken);
         }
 
         /// <inheritdoc />
@@ -64,7 +69,7 @@ namespace ScriptService.Services.Python {
 
         /// <inheritdoc />
         public async Task<T> ExecuteAsync<T>(IVariableProvider variables = null, CancellationToken cancellationtoken = new CancellationToken()) {
-            throw new NotImplementedException();
+            return Converter.Convert<T>(await ExecuteAsync(variables, cancellationtoken));
         }
 
         /// <inheritdoc />
