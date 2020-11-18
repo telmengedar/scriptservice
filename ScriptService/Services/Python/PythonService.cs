@@ -31,7 +31,7 @@ namespace ScriptService.Services.Python {
             List<string> imports=new List<string>();
 
             foreach (string line in code.Split('\n')) {
-                Match match = Regex.Match(line, "^\\s*import\\s+(?<type>(Host)|(Script)|(Workflow))\\s+(?<name>[a-zA-Z0-9.]+)\\sas\\s(?<variable>[a-zA-Z0-9])$");
+                Match match = Regex.Match(line, "^\\s*import\\s+(?<type>(Host)|(Script)|(Workflow))\\s+(?<name>[a-zA-Z0-9.]+)\\sas\\s(?<variable>[a-zA-Z0-9]+)$");
                 if (match.Success) {
                     realcode.Add($"{match.Groups["variable"].Value}=load.{match.Groups["type"].Value}(\"{match.Groups["name"].Value}\")");
                 }
