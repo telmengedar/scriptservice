@@ -62,7 +62,7 @@ export enum NodeType {
 
 export namespace NodeType {
 
-    export function getName(type: any): string {
+    export function getNodeTypeName(type: any): string {
         if(typeof type === "number")
             return NodeType[type];
 
@@ -76,7 +76,7 @@ export namespace NodeType {
         return type.toString();
     }
 
-    export function getValue(type: any): NodeType {
+    export function getNodeTypeValue(type: any): NodeType {
         if(type as string) {
             let num=parseInt(type);
             if(num>=0)
