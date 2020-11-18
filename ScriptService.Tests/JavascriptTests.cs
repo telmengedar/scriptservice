@@ -8,6 +8,7 @@ using ScriptService.Dto;
 using ScriptService.Dto.Scripts;
 using ScriptService.Services;
 using ScriptService.Services.JavaScript;
+using ScriptService.Services.Python;
 using ScriptService.Services.Scripts;
 
 namespace ScriptService.Tests {
@@ -25,7 +26,7 @@ namespace ScriptService.Tests {
 
         [Test, Parallelizable]
         public void TypeConversion() {
-            JavaScript script = new JavaScript("test.TestMethod({Name:'Test'})", new JavascriptImportService(null));
+            JavaScript script = new JavaScript("test.TestMethod({Name:'Test'})", new ScriptImportService(null));
             Assert.AreEqual("Test", script.Execute(new Dictionary<string, object> {
                 ["log"] = new WorkableLogger(new NullLogger<JavascriptTests>(), null),
                 ["test"] = this
@@ -34,7 +35,7 @@ namespace ScriptService.Tests {
 
         [Test, Parallelizable]
         public void IntCall() {
-            JavaScript script = new JavaScript("test.TestNumber(7)", new JavascriptImportService(null));
+            JavaScript script = new JavaScript("test.TestNumber(7)", new ScriptImportService(null));
             Assert.AreEqual(7, script.Execute(new Dictionary<string, object> {
                 ["log"] = new WorkableLogger(new NullLogger<JavascriptTests>(), null),
                 ["test"] = this
@@ -52,7 +53,7 @@ namespace ScriptService.Tests {
                 Instance = ncscript
             });
 
-            Mock<IJavascriptImportService> importservice=new Mock<IJavascriptImportService>();
+            Mock<IScriptImportService> importservice=new Mock<IScriptImportService>();
             importservice.Setup(s => s.Script(It.IsAny<string>(), It.IsAny<int?>())).Returns(new ScriptExecutor(new WorkableLogger(new NullLogger<JavascriptTests>(), null), scriptcompiler.Object, "Test", 1));
             importservice.Setup(s => s.Clone(It.IsAny<WorkableLogger>())).Returns(() => importservice.Object);
 
@@ -64,10 +65,10 @@ namespace ScriptService.Tests {
 
         [Test, Parallelizable]
         public void TestTypescript() {
-            Mock<IJavascriptImportService> importservice = new Mock<IJavascriptImportService>();
+            Mock<IScriptImportService> importservice = new Mock<IScriptImportService>();
             importservice.Setup(s => s.Clone(It.IsAny<WorkableLogger>())).Returns(() => importservice.Object);
 
-            ScriptCompiler compiler =new ScriptCompiler(new NullLogger<ScriptCompiler>(), null, null, null, null, null, importservice.Object);
+            ScriptCompiler compiler =new ScriptCompiler(new NullLogger<ScriptCompiler>(), null, null, null, null, null, importservice.Object, null);
 
             IScript script = compiler.CompileCode("function next(value: number): number {return value+1;} const result: number=next(8); return result;", ScriptLanguage.TypeScript);
             Assert.AreEqual(9, script.Execute(new Dictionary<string, object> {

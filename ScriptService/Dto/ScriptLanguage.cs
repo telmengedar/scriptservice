@@ -18,6 +18,11 @@
         /// <summary>
         /// typescript
         /// </summary>
-        TypeScript=2
+        TypeScript=2,
+        
+        /// <summary>
+        /// python
+        /// </summary>
+        Python
     }
 }

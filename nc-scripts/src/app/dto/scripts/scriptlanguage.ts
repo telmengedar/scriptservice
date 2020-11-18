@@ -16,7 +16,12 @@ export enum ScriptLanguage {
     /**
      * typescript
      */
-    TypeScript=2
+    TypeScript=2,
+
+    /**
+     * python
+     */
+    Python=3
 }
 
 export namespace ScriptLanguage {

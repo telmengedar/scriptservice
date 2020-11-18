@@ -5,7 +5,7 @@ namespace ScriptService.Services.JavaScript {
     /// <summary>
     /// service used to provide imports to javascript
     /// </summary>
-    public interface IJavascriptImportService {
+    public interface IScriptImportService {
 
         /// <summary>
         /// imports an object for usage in javascript
@@ -31,10 +31,10 @@ namespace ScriptService.Services.JavaScript {
         IWorkableExecutor Workflow(string name, int? revision);
 
         /// <summary>
-        /// creates a new <see cref="IJavascriptImportService"/> with a new logger
+        /// creates a new <see cref="IScriptImportService"/> with a new logger
         /// </summary>
         /// <param name="logger">logger to use</param>
         /// <returns>cloned import service</returns>
-        IJavascriptImportService Clone(WorkableLogger logger);
+        IScriptImportService Clone(WorkableLogger logger);
     }
 }

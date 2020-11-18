@@ -6,16 +6,16 @@ using ScriptService.Services.Workflows;
 namespace ScriptService.Services.JavaScript {
 
     /// <inheritdoc />
-    public class JavascriptImportService : IJavascriptImportService {
+    public class ScriptImportService : IScriptImportService {
         readonly IServiceProvider serviceprovider;
         readonly WorkableLogger logger;
 
         /// <summary>
-        /// creates a new <see cref="JavascriptImportService"/>
+        /// creates a new <see cref="ScriptImportService"/>
         /// </summary>
         /// <param name="serviceprovider">used for service access</param>
         /// <param name="logger">logger used for script and workflow logging</param>
-        public JavascriptImportService(IServiceProvider serviceprovider, WorkableLogger logger=null) {
+        public ScriptImportService(IServiceProvider serviceprovider, WorkableLogger logger=null) {
             this.serviceprovider = serviceprovider;
             this.logger = logger;
         }
@@ -36,8 +36,8 @@ namespace ScriptService.Services.JavaScript {
         }
 
         /// <inheritdoc />
-        public IJavascriptImportService Clone(WorkableLogger logger) {
-            return new JavascriptImportService(serviceprovider, logger);
+        public IScriptImportService Clone(WorkableLogger logger) {
+            return new ScriptImportService(serviceprovider, logger);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace ScriptService.Dto.Scripts {
     public class JavaScript : IScript {
         Esprima.Ast.Script script;
         readonly string code;
-        readonly IJavascriptImportService importservice;
+        readonly IScriptImportService importservice;
         readonly ScriptLanguage language;
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace ScriptService.Dto.Scripts {
         /// <param name="code">code to execute</param>
         /// <param name="importservice">access to imports in javascript</param>
         /// <param name="language">language to evaluate (optional, must be a javascript relative)</param>
-        public JavaScript(string code, IJavascriptImportService importservice, ScriptLanguage language=ScriptLanguage.JavaScript) {
+        public JavaScript(string code, IScriptImportService importservice, ScriptLanguage language=ScriptLanguage.JavaScript) {
             this.code = code;
             this.importservice = importservice;
             this.language = language;

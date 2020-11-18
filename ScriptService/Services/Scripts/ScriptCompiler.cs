@@ -7,6 +7,7 @@ using ScriptService.Dto;
 using ScriptService.Dto.Scripts;
 using ScriptService.Services.Cache;
 using ScriptService.Services.JavaScript;
+using ScriptService.Services.Python;
 using ScriptService.Services.Scripts.Extensions;
 
 namespace ScriptService.Services.Scripts {
@@ -18,7 +19,8 @@ namespace ScriptService.Services.Scripts {
         readonly IScriptParser parser;
         readonly ICacheService cache;
         readonly IArchiveService archive;
-        readonly IJavascriptImportService importservice;
+        readonly IScriptImportService importservice;
+        IPythonService pythonservice;
 
         /// <summary>
         /// creates a new <see cref="ScriptCompiler"/>
@@ -30,12 +32,14 @@ namespace ScriptService.Services.Scripts {
         /// <param name="scriptservice">used to load scripts if not found in cache</param>
         /// <param name="archive">archive used to load revisions</param>
         /// <param name="importservice">access to javascript imports</param>
-        public ScriptCompiler(ILogger<ScriptCompiler> logger, IScriptParser parser, ICacheService cache, IMethodProviderService methodprovider, IScriptService scriptservice, IArchiveService archive, IJavascriptImportService importservice) {
+        /// <param name="pythonservice">access to python script logic</param>
+        public ScriptCompiler(ILogger<ScriptCompiler> logger, IScriptParser parser, ICacheService cache, IMethodProviderService methodprovider, IScriptService scriptservice, IArchiveService archive, IScriptImportService importservice, IPythonService pythonservice) {
             this.parser = parser;
             this.cache = cache;
             this.scriptservice = scriptservice;
             this.archive = archive;
             this.importservice = importservice;
+            this.pythonservice = pythonservice;
             this.logger = logger;
 
             if (parser != null) {
@@ -122,6 +126,8 @@ namespace ScriptService.Services.Scripts {
             case ScriptLanguage.JavaScript:
             case ScriptLanguage.TypeScript:
                 return new Dto.Scripts.JavaScript(code, importservice, language);
+            case ScriptLanguage.Python:
+                return new PythonScript(pythonservice, code);                
             default:
                 throw new ArgumentException($"Unsupported script language '{language}'");
             }

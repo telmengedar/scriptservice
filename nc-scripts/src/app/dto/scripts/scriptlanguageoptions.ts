@@ -18,5 +18,10 @@ export const ScriptLanguageOptions=[
         type: ScriptLanguage.TypeScript,
         name: "TypeScript",
         description: "TypeScript"
-    }  
+    },
+    {
+        type: ScriptLanguage.Python,
+        name: "Python",
+        description: "Python"
+    }
 ];
