@@ -31,20 +31,26 @@ namespace ScriptService.Services.Python {
             List<string> imports=new List<string>();
 
             foreach (string line in code.Split('\n')) {
-                Match match = Regex.Match(line, "^\\s*import\\s+(?<name>[a-zA-Z0-9]+)$");
+                Match match = Regex.Match(line, "^\\s*import\\s+(?<type>(Host)|(Script)|(Workflow))\\s+(?<name>[a-zA-Z0-9.]+)\\sas\\s(?<variable>[a-zA-Z0-9])$");
                 if (match.Success) {
-                    string typename = match.Groups["name"].Value;
-                    if (!typecreator.Contains(typename))
-                        throw new ArgumentException($"Type '{typename}' not known");
-                    imports.Add(typename);
+                    realcode.Add($"{match.Groups["variable"].Value}=load.{match.Groups["type"].Value}(\"{match.Groups["name"].Value}\")");
                 }
                 else {
-                    if (line.Trim().StartsWith("import"))
-                        throw new ArgumentException($"Invalid import statement: '{line}'");
-                    if (Regex.IsMatch(line, "^\\s*clr\\s*.\\s*AddReference"))
-                        throw new ArgumentException($"Importing references using clr not supported");
-                    
-                    realcode.Add(line);
+                    match = Regex.Match(line, "^\\s*import\\s+(?<name>[a-zA-Z0-9]+)$");
+                    if (match.Success) {
+                        string typename = match.Groups["name"].Value;
+                        if (!typecreator.Contains(typename))
+                            throw new ArgumentException($"Type '{typename}' not known");
+                        imports.Add(typename);
+                    }
+                    else {
+                        if (line.Trim().StartsWith("import"))
+                            throw new ArgumentException($"Invalid import statement: '{line}'");
+                        if (Regex.IsMatch(line, "^\\s*clr\\s*.\\s*AddReference"))
+                            throw new ArgumentException($"Importing references using clr not supported");
+
+                        realcode.Add(line);
+                    }
                 }
             }
 
