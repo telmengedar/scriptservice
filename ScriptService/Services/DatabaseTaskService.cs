@@ -59,6 +59,8 @@ namespace ScriptService.Services {
 
         /// <inheritdoc />
         public Task StoreTask(WorkableTask task) {
+            task.Finished ??= DateTime.Now;
+
             return insert.ExecuteAsync(task.Id,
                 task.Type,
                 task.WorkableId,
