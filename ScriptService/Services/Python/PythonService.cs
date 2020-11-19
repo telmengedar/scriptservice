@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using ScriptService.Services.JavaScript;
@@ -81,7 +82,20 @@ namespace ScriptService.Services.Python {
             variables.TryGetValue("log", out object logvalue);
             scope.SetVariable("load", importservice.Clone(logvalue as WorkableLogger));
             scope.SetVariable("type", typecreator);
+            scope.SetVariable("await", (Func<Task,object>)AwaitTask);
             return script.Execute(scope);
+        }
+
+        object AwaitTask(Task task) {
+            if (task.Status == TaskStatus.Created)
+                task.Start();
+
+            task.Wait();
+            
+            if (!task.GetType().IsGenericType)
+                return null;
+
+            return task.GetType().GetProperty("Result")?.GetValue(task);
         }
     }
 }

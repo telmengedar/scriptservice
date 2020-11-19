@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
@@ -27,7 +28,20 @@ namespace ScriptService.Tests {
         public int TestNumber(int number) {
             return number;
         }
-        
+
+        public Task<string> TestTask() {
+            return Task.Run(() => "test");
+        }
+
+        [Test, Parallelizable]
+        public void AwaitTask() {
+            PythonService pythonservice=new PythonService(new Mock<IScriptImportService>().Object, null);
+            PythonScript script = new PythonScript(pythonservice, "await(test.TestTask())");
+            Assert.AreEqual("test", script.Execute(new Dictionary<string, object> {
+                ["test"] = this
+            }));
+        }
+
         [Test, Parallelizable]
         public void TypeConversion() {
             Mock<IConfigurationSection> typeconfig = new Mock<IConfigurationSection>();
