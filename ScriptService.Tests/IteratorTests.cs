@@ -23,7 +23,7 @@ namespace ScriptService.Tests {
         public async Task SumConditionalLoop() {
             IEntityManager database = TestSetup.CreateMemoryDatabase();
             CacheService cache = new CacheService(new NullLogger<CacheService>());
-            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object, null, new Mock<IPythonService>().Object);
+            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object, null, new Mock<IPythonService>().Object, null);
             WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new DatabaseTaskService(database), null);
             WorkflowCompiler workflowcompiler=new WorkflowCompiler(new NullLogger<WorkflowCompiler>(), cache, null, compiler, executionservice);
             WorkableTask task = await executionservice.Execute(await workflowcompiler.BuildWorkflow(new WorkflowStructure {

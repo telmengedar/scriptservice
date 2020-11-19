@@ -21,7 +21,12 @@ export enum ScriptLanguage {
     /**
      * python
      */
-    Python=3
+    Python=3,
+
+    /**
+     * lua
+     */
+    Lua=4
 }
 
 export namespace ScriptLanguage {

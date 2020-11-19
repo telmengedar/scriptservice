@@ -24,6 +24,7 @@ using Npgsql;
 using ScriptService.Services;
 using ScriptService.Services.Cache;
 using ScriptService.Services.JavaScript;
+using ScriptService.Services.Lua;
 using ScriptService.Services.Python;
 using ScriptService.Services.Scripts;
 using ScriptService.Services.Sense;
@@ -118,6 +119,7 @@ namespace ScriptService {
             services.AddSingleton<IScheduledTaskService, DatabaseScheduledTaskService>();
             services.AddSingleton<IWorkflowCompiler, WorkflowCompiler>();
             services.AddSingleton<IPythonService, PythonService>();
+            services.AddSingleton<ILuaService, LuaService>();
             services.AddSingleton<IScriptImportService, ScriptImportService>();
             services.AddSingleton<ITypeCreator, TypeCreator>();
             

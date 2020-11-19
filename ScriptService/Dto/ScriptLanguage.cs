@@ -23,6 +23,11 @@
         /// <summary>
         /// python
         /// </summary>
-        Python
+        Python=3,
+        
+        /// <summary>
+        /// lua
+        /// </summary>
+        Lua=4
     }
 }

@@ -25,7 +25,7 @@ namespace ScriptService.Tests {
         public async Task SuspendAndContinue() {
             IEntityManager database = TestSetup.CreateMemoryDatabase();
             CacheService cache = new CacheService(new NullLogger<CacheService>());
-            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object, null, null);
+            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object, null, null, null);
             WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new DatabaseTaskService(database), null);
             WorkflowCompiler workflowcompiler = new WorkflowCompiler(new NullLogger<WorkflowCompiler>(), cache, null, compiler, executionservice);
 
@@ -90,7 +90,7 @@ namespace ScriptService.Tests {
 
             IEntityManager database = TestSetup.CreateMemoryDatabase();
             CacheService cache = new CacheService(new NullLogger<CacheService>());
-            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object, importservice.Object, null);
+            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object, importservice.Object, null, null);
             WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new DatabaseTaskService(database), null);
             WorkflowCompiler workflowcompiler = new WorkflowCompiler(new NullLogger<WorkflowCompiler>(), cache, null, compiler, executionservice);
 
@@ -132,7 +132,7 @@ namespace ScriptService.Tests {
 
             IEntityManager database = TestSetup.CreateMemoryDatabase();
             CacheService cache = new CacheService(new NullLogger<CacheService>());
-            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object, importservice.Object, null);
+            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object, importservice.Object, null, null);
             WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new DatabaseTaskService(database), null);
             WorkflowCompiler workflowcompiler = new WorkflowCompiler(new NullLogger<WorkflowCompiler>(), cache, null, compiler, executionservice);
 
@@ -211,7 +211,7 @@ namespace ScriptService.Tests {
             
             IEntityManager database = TestSetup.CreateMemoryDatabase();
             CacheService cache = new CacheService(new NullLogger<CacheService>());
-            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, archiveservice.Object, importservice.Object, null);
+            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, archiveservice.Object, importservice.Object, null, null);
             WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new DatabaseTaskService(database), null);
             IWorkflowService workflowservice = new DatabaseWorkflowService(database, archiveservice.Object);
             WorkflowCompiler workflowcompiler = new WorkflowCompiler(new NullLogger<WorkflowCompiler>(), cache, workflowservice, compiler, executionservice);
@@ -272,7 +272,7 @@ namespace ScriptService.Tests {
         public async Task SuspendAndContinueWithParameters() {
             IEntityManager database = TestSetup.CreateMemoryDatabase();
             CacheService cache = new CacheService(new NullLogger<CacheService>());
-            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object, null, null);
+            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object, null, null, null);
             WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new DatabaseTaskService(database), null);
             WorkflowCompiler workflowcompiler = new WorkflowCompiler(new NullLogger<WorkflowCompiler>(), cache, null, compiler, executionservice);
 
@@ -341,7 +341,7 @@ namespace ScriptService.Tests {
             
             IEntityManager database = TestSetup.CreateMemoryDatabase();
             CacheService cache = new CacheService(new NullLogger<CacheService>());
-            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, archiveservice.Object, importservice.Object, null);
+            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, archiveservice.Object, importservice.Object, null, null);
             WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new DatabaseTaskService(database), null);
             IWorkflowService workflowservice = new DatabaseWorkflowService(database, archiveservice.Object);
             WorkflowCompiler workflowcompiler = new WorkflowCompiler(new NullLogger<WorkflowCompiler>(), cache, workflowservice, compiler, executionservice);

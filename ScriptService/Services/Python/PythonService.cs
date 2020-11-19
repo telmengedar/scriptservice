@@ -82,20 +82,8 @@ namespace ScriptService.Services.Python {
             variables.TryGetValue("log", out object logvalue);
             scope.SetVariable("load", importservice.Clone(logvalue as WorkableLogger));
             scope.SetVariable("type", typecreator);
-            scope.SetVariable("await", (Func<Task,object>)AwaitTask);
+            scope.SetVariable("await", (Func<Task,object>)Helpers.Tasks.AwaitTask);
             return script.Execute(scope);
-        }
-
-        object AwaitTask(Task task) {
-            if (task.Status == TaskStatus.Created)
-                task.Start();
-
-            task.Wait();
-            
-            if (!task.GetType().IsGenericType)
-                return null;
-
-            return task.GetType().GetProperty("Result")?.GetValue(task);
         }
     }
 }

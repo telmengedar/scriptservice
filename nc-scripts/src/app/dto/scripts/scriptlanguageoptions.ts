@@ -23,5 +23,10 @@ export const ScriptLanguageOptions=[
         type: ScriptLanguage.Python,
         name: "Python",
         description: "Python"
+    },
+    {
+        type: ScriptLanguage.Lua,
+        name: "Lua",
+        description: "Lua"
     }
 ];

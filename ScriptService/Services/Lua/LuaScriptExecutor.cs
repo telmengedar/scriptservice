@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using ScriptService.Dto.Scripts;
+using ScriptService.Services.JavaScript;
 using ScriptService.Services.Scripts;
 
-namespace ScriptService.Services.JavaScript {
+namespace ScriptService.Services.Lua {
     
     /// <summary>
     /// executes scripts from scripts
     /// </summary>
-    public class ScriptExecutor : IWorkableExecutor {
+    public class LuaScriptExecutor : IWorkableExecutor {
         readonly WorkableLogger logger;
         readonly IScriptCompiler compiler;
         readonly string name;
@@ -19,7 +21,7 @@ namespace ScriptService.Services.JavaScript {
         /// <param name="compiler">compiler used to parse script</param>
         /// <param name="name">name of script to execute</param>
         /// <param name="revision">revision of script to execute</param>
-        public ScriptExecutor(WorkableLogger logger, IScriptCompiler compiler, string name, int? revision) {
+        public LuaScriptExecutor(WorkableLogger logger, IScriptCompiler compiler, string name, int? revision) {
             this.logger = logger;
             this.compiler = compiler;
             this.name = name;
@@ -28,8 +30,12 @@ namespace ScriptService.Services.JavaScript {
 
         /// <inheritdoc />
         public object Execute(IDictionary<string, object> arguments) {
+            arguments.TranslateDictionary();
             arguments["log"] = logger;
-            return compiler.CompileScriptAsync(name, revision).GetAwaiter().GetResult().Instance.Execute(arguments);
+
+            CompiledScript script = compiler.CompileScriptAsync(name, revision).GetAwaiter().GetResult();
+            object result = script.Instance.Execute(arguments);
+            return result;
         }
     }
 }

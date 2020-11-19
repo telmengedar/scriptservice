@@ -8,7 +8,6 @@ using ScriptService.Dto;
 using ScriptService.Dto.Scripts;
 using ScriptService.Services;
 using ScriptService.Services.JavaScript;
-using ScriptService.Services.Python;
 using ScriptService.Services.Scripts;
 
 namespace ScriptService.Tests {
@@ -68,7 +67,7 @@ namespace ScriptService.Tests {
             Mock<IScriptImportService> importservice = new Mock<IScriptImportService>();
             importservice.Setup(s => s.Clone(It.IsAny<WorkableLogger>())).Returns(() => importservice.Object);
 
-            ScriptCompiler compiler =new ScriptCompiler(new NullLogger<ScriptCompiler>(), null, null, null, null, null, importservice.Object, null);
+            ScriptCompiler compiler =new ScriptCompiler(new NullLogger<ScriptCompiler>(), null, null, null, null, null, importservice.Object, null, null);
 
             IScript script = compiler.CompileCode("function next(value: number): number {return value+1;} const result: number=next(8); return result;", ScriptLanguage.TypeScript);
             Assert.AreEqual(9, script.Execute(new Dictionary<string, object> {
