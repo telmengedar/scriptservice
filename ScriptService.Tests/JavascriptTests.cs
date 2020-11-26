@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NightlyCode.Scripting;
@@ -23,6 +24,10 @@ namespace ScriptService.Tests {
             return number;
         }
 
+        public Task<string> TestTask() {
+            return Task.Run(() => "test");
+        }
+
         [Test, Parallelizable]
         public void TypeConversion() {
             JavaScript script = new JavaScript("test.TestMethod({Name:'Test'})", new ScriptImportService(null));
@@ -36,6 +41,15 @@ namespace ScriptService.Tests {
         public void IntCall() {
             JavaScript script = new JavaScript("test.TestNumber(7)", new ScriptImportService(null));
             Assert.AreEqual(7, script.Execute(new Dictionary<string, object> {
+                ["log"] = new WorkableLogger(new NullLogger<JavascriptTests>(), null),
+                ["test"] = this
+            }));
+        }
+
+        [Test, Parallelizable]
+        public void AwaitTask() {
+            JavaScript script = new JavaScript("await(test.TestTask())", new ScriptImportService(null));
+            Assert.AreEqual("test", script.Execute(new Dictionary<string, object> {
                 ["log"] = new WorkableLogger(new NullLogger<JavascriptTests>(), null),
                 ["test"] = this
             }));

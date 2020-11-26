@@ -13,7 +13,9 @@ namespace ScriptService.Services.JavaScript {
 
         /// <inheritdoc />
         public object Convert(object value, Type type, IFormatProvider formatProvider) {
-            throw new NotImplementedException();
+            if (type.IsInstanceOfType(value))
+                return value;
+            throw new ArgumentException($"Cant convert '{value}' to '{type.Name}'");
         }
 
         /// <inheritdoc />

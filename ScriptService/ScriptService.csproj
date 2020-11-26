@@ -18,7 +18,7 @@
     <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.0-preview.7.20365.15" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="MoonSharp" Version="2.0.0" />
-    <PackageReference Include="NightlyCode.AspNetCore.Services" Version="0.1.0-preview" />
+    <PackageReference Include="NightlyCode.AspNetCore.Services" Version="0.2.0-preview" />
     <PackageReference Include="NightlyCode.Database" Version="0.11.14-preview" />
     <PackageReference Include="NightlyCode.Scripting" Version="0.17.49-preview" />
     <PackageReference Include="Npgsql" Version="4.1.4" />

@@ -51,6 +51,7 @@ namespace ScriptService.Dto.Scripts {
             
             WorkableLogger logger=variables.GetProvider("log").GetVariable("log") as WorkableLogger;
             engine.SetValue("load", importservice.Clone(logger));
+            engine.SetValue("await", (Func<Task,object>)Helpers.Tasks.AwaitTask);
             
             foreach (string name in variables.Variables) {
                 object hostobject = variables[name];
