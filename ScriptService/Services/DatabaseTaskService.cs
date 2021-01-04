@@ -94,7 +94,7 @@ namespace ScriptService.Services {
                 Finished = dbtask.Finished,
                 Runtime = dbtask.Finished-dbtask.Started,
                 Result = dbtask.Result.Deserialize<object>(),
-                Log = new List<string>(dbtask.Log.Deserialize<string[]>())
+                Log = new List<string>(dbtask.Log.Deserialize<string[]>()??new string[0])
             };
         }
 
