@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -57,12 +58,13 @@ namespace ScriptService.Extensions {
                         // array without an element type should not happen ever
                         continue;
 
-                    if(entries.Value is List<object> list) {
-                        array = Array.CreateInstance(elementtype, list.Count);
-                        for(int i = 0; i < list.Count; ++i) {
-                            if (list[i] is IDictionary<string, object> dic)
+                    if(!(entries.Value is string) && entries.Value is IEnumerable list) {
+                        object[] sourcelist = list as object[] ?? list.Cast<object>().ToArray();
+                        array = Array.CreateInstance(elementtype, sourcelist.Length);
+                        for(int i = 0; i < sourcelist.Length; ++i) {
+                            if (sourcelist[i] is IDictionary<string, object> dic)
                                 array.SetValue(dic.Deserialize(elementtype), i);
-                            else array.SetValue(Converter.Convert(list[i], elementtype), i);
+                            else array.SetValue(Converter.Convert(sourcelist[i], elementtype), i);
                         }
                     }
                     else {
