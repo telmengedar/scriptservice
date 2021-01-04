@@ -1,6 +1,6 @@
 ﻿using System;
-using Utf8Json;
-using Utf8Json.Resolvers;
+using NightlyCode.AspNetCore.Services.Formatters;
+using NightlyCode.Json;
 
 namespace ScriptService.Extensions {
 
@@ -23,7 +23,7 @@ namespace ScriptService.Extensions {
                 return default;
 
             try {
-                return JsonSerializer.Deserialize<T>(data, StandardResolver.ExcludeNullCamelCase);
+                return Json.Read<T>(data);
             }
             catch(Exception) {
                 return default;
@@ -38,7 +38,7 @@ namespace ScriptService.Extensions {
         public static string Serialize(this object data) {
             if (data == null)
                 return null;
-            return JsonSerializer.ToJsonString(data, StandardResolver.ExcludeNullCamelCase);
+            return Json.WriteString(data, JsonSettings.Options);
         }
     }
 }

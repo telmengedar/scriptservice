@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
+using NightlyCode.Json;
 using NightlyCode.Scripting.Parser;
 using NUnit.Framework;
 using ScriptService.Dto;
@@ -14,7 +15,6 @@ using ScriptService.Services.Scripts;
 using ScriptService.Services.Workflows;
 using ScriptService.Services.Workflows.Nodes;
 using ScriptService.Tests.Data;
-using Utf8Json;
 
 namespace ScriptService.Tests.Workflows.Nodes {
     
@@ -230,7 +230,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             }, compiler.Object);
 
             Dictionary<string, object> variables = new Dictionary<string, object> {
-                ["input"] = JsonSerializer.Deserialize<Dictionary<string,object>>(typeof(StartNodeTests).Assembly.GetManifestResourceStream("ScriptService.Tests.Data.2020-10-22_campaign.json"))
+                ["input"] = await Json.ReadAsync(typeof(StartNodeTests).Assembly.GetManifestResourceStream("ScriptService.Tests.Data.2020-10-22_campaign.json"))
             };
             await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None);
 

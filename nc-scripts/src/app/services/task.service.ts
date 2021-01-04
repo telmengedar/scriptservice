@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {environment} from 'src/environments/environment'
 import { TaskFilter } from '../dto/scripttaskfilter';
+import { Rest } from '../helpers/rest';
 
 @Injectable({
   providedIn: 'root'
@@ -18,16 +19,9 @@ export class TaskService {
    * lists existing script tasks
    * @param filter filter to apply to listing
    */
-  listTasks(filter: TaskFilter): Observable<Page<WorkableTask>> {
-    let params=new HttpParams();
-    if(filter.status&&filter.status.length>0)
-      filter.status.forEach(s=>params=params.append("status", s));
-    if(filter.from)
-      params=params.append("from", filter.from.toString());
-    if(filter.to)
-      params=params.append("to", filter.to.toString());
+  listTasks(filter?: TaskFilter): Observable<Page<WorkableTask>> {
     return this.http.get<Page<WorkableTask>>(this.tasksurl, {
-      params: params
+      params: Rest.createParameters(filter)
     });
   }
 

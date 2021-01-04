@@ -1,11 +1,10 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using NightlyCode.AspNetCore.Services.Errors.Exceptions;
-using Utf8Json;
-using Utf8Json.Resolvers;
+using NightlyCode.AspNetCore.Services.Formatters;
+using NightlyCode.Json;
 
 namespace ScriptService.Services.Hosts {
 
@@ -53,7 +52,7 @@ namespace ScriptService.Services.Hosts {
                 if (body is HttpContent httpcontent)
                     request.Content = httpcontent;
                 else
-                    request.Content = new StringContent(JsonSerializer.ToJsonString(body, StandardResolver.ExcludeNullCamelCase), Encoding.UTF8, "application/json");
+                    request.Content = new StringContent(Json.WriteString(body, JsonSettings.Options), Encoding.UTF8, "application/json");
             }
 
             return request;
@@ -64,7 +63,7 @@ namespace ScriptService.Services.Hosts {
             CheckHttpResponse(response);
             if(response.Content.Headers.ContentLength == 0)
                 return Task.FromResult((object)null);
-            return await JsonSerializer.DeserializeAsync<object>(await response.Content.ReadAsStreamAsync());
+            return await Json.ReadAsync(await response.Content.ReadAsStreamAsync());
         }
 
         /// <summary>

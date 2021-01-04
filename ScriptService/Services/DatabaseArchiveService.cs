@@ -7,9 +7,9 @@ using NightlyCode.Database.Clients;
 using NightlyCode.Database.Entities;
 using NightlyCode.Database.Entities.Operations.Prepared;
 using NightlyCode.Database.Fields;
+using NightlyCode.Json;
 using ScriptService.Dto;
 using ScriptService.Extensions;
-using JsonSerializer = Utf8Json.JsonSerializer;
 
 namespace ScriptService.Services {
     /// <inheritdoc />
@@ -33,10 +33,9 @@ namespace ScriptService.Services {
         /// <inheritdoc />
         public async Task ArchiveObject<T>(Transaction transaction, long id, int revision, T objectdata, string typename=null) {
             typename ??= typeof(T).Name;
-            byte[] serialized = JsonSerializer.Serialize(objectdata);
             await using MemoryStream output = new MemoryStream();
             await using (GZipStream gzip = new GZipStream(output, CompressionLevel.Optimal)) {
-                gzip.Write(serialized);
+                await Json.WriteAsync(objectdata, gzip);
             }
 
             await insert.ExecuteAsync(transaction, typename, id, revision, output.ToArray());
@@ -54,7 +53,7 @@ namespace ScriptService.Services {
             await using MemoryStream source = new MemoryStream(data.Data);
             await using GZipStream gzip = new GZipStream(source, CompressionMode.Decompress);
 
-            return JsonSerializer.Deserialize<T>(gzip);
+            return Json.Read<T>(gzip);
         }
 
         /// <inheritdoc />

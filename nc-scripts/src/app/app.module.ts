@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 
-import { MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatNativeDateModule, MatMenuModule, MatDialogModule} from  '@angular/material';
+import { MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatNativeDateModule, MatMenuModule, MatDialogModule, MatTableModule, MatPaginatorModule} from  '@angular/material';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatInputModule} from '@angular/material/input';
@@ -40,6 +40,7 @@ import { TokenInterceptor } from './services/token.interceptor';
 import { NavigationPathComponent } from './navigation-path/navigation-path.component';
 import { ScheduledTasksComponent } from './scheduled-tasks/scheduled-tasks.component';
 import { ScheduledTaskEditorComponent } from './scheduled-task-editor/scheduled-task-editor.component';
+import { DisplayPipe } from './pipes/display.pipe';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { ScheduledTaskEditorComponent } from './scheduled-task-editor/scheduled-
     LoginComponent,
     NavigationPathComponent,
     ScheduledTasksComponent,
-    ScheduledTaskEditorComponent
+    ScheduledTaskEditorComponent,
+    DisplayPipe,
   ],
   imports: [
     BrowserModule,
@@ -73,6 +75,8 @@ import { ScheduledTaskEditorComponent } from './scheduled-task-editor/scheduled-
     MatCheckboxModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTableModule,
+    MatPaginatorModule,
     FormsModule,
     CommonModule,
     NgxGraphModule,

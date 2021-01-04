@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using NightlyCode.Database.Entities;
@@ -23,10 +25,10 @@ namespace ScriptService.Tests {
         public void ArrayDeserializeOutcome() {
             string json = "[{\"id\": \"guid\", \"name\": \"bla\", \"type\": \"Start\"}]";
             object result = json.Deserialize<object>();
-            Assert.That(result is List<object> array);
-            array = (List<object>) result; // what a hack ...
-            Assert.AreEqual(1, array.Count);
-            Assert.That(array[0] is IDictionary<string, object>);
+            Assert.That(result is IEnumerable array);
+            array = (IEnumerable) result; // what a hack ...
+            Assert.AreEqual(1, array.Cast<object>().Count());
+            Assert.That(array.Cast<object>().FirstOrDefault() is IDictionary<string, object>);
         }
 
         [Test, Parallelizable]
