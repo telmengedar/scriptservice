@@ -90,7 +90,7 @@ namespace ScriptService.Services {
         }
 
         async Task<WorkflowDetails> FillWorkflow(WorkflowDetails workflow) {
-            workflow.Nodes = await loadnodes.ExecuteTypeAsync(r => new NodeDetails {
+            workflow.Nodes = await loadnodes.ExecuteTypesAsync(r => new NodeDetails {
                 Id = r.GetValue<Guid>(0),
                 Name = r.GetValue<string>(1),
                 Group = r.GetValue<string>(2),
@@ -98,7 +98,7 @@ namespace ScriptService.Services {
                 Parameters = r.GetValue<string>(4).Deserialize<IDictionary<string,object>>(),
                 Variable = r.GetValue<string>(5)
             }, workflow.Id);
-            workflow.Transitions = await loadtransitions.ExecuteTypeAsync(r => new TransitionData {
+            workflow.Transitions = await loadtransitions.ExecuteTypesAsync(r => new TransitionData {
                 OriginId = r.GetValue<Guid>(0),
                 TargetId = r.GetValue<Guid>(1),
                 Condition = r.GetValue<string>(2),
