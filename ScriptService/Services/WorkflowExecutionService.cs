@@ -9,6 +9,7 @@ using NightlyCode.Scripting.Parser;
 using NightlyCode.Scripting.Providers;
 using ScriptService.Dto;
 using ScriptService.Dto.Tasks;
+using ScriptService.Dto.Workflows;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Extensions;
 using ScriptService.Services.Workflows;
@@ -23,6 +24,8 @@ namespace ScriptService.Services {
         readonly ILogger<WorkflowExecutionService> logger;
         readonly ITaskService taskservice;
         readonly IImportProvider importprovider;
+        readonly IWorkflowService workflowservice;
+        readonly IWorkflowCompiler workflowcompiler;
 
         /// <summary>
         /// creates a new <see cref="WorkflowExecutionService"/>
@@ -30,10 +33,20 @@ namespace ScriptService.Services {
         /// <param name="logger">access to logging</param>
         /// <param name="taskservice">access to task information</param>
         /// <param name="importprovider">access to host imports</param>
-        public WorkflowExecutionService(ILogger<WorkflowExecutionService> logger, ITaskService taskservice, IMethodProviderService importprovider) { 
+        /// <param name="workflowservice">provides workflow data</param>
+        /// <param name="workflowcompiler">compiled workflow data to executable instances</param>
+        public WorkflowExecutionService(ILogger<WorkflowExecutionService> logger, ITaskService taskservice, IMethodProviderService importprovider, IWorkflowService workflowservice, IWorkflowCompiler workflowcompiler) { 
             this.logger = logger;
             this.taskservice = taskservice;
             this.importprovider = importprovider;
+            this.workflowservice = workflowservice;
+            this.workflowcompiler = workflowcompiler;
+        }
+
+        async Task<WorkflowInstance> GetWorkflowInstance(string name) {
+            WorkflowDetails workflow = await workflowservice.GetWorkflow(name);
+            WorkflowInstance instance = await workflowcompiler.BuildWorkflow(workflow);
+            return instance;
         }
 
         /// <inheritdoc />
@@ -80,7 +93,7 @@ namespace ScriptService.Services {
                 return lastresult;
             }
 
-            return await Execute(new WorkflowInstanceState(tasklogger, state.Variables), token, transition.Target, lastresult);
+            return await Execute(new WorkflowInstanceState(tasklogger, state.Variables, GetWorkflowInstance, this), token, transition.Target, lastresult);
         }
 
         void HandleTaskResult(Task<object> t, WorkableTask task, WorkableLogger tasklogger) {
@@ -150,13 +163,9 @@ namespace ScriptService.Services {
         public Task<object> Execute(WorkflowInstance workflow, WorkableLogger tasklogger, IDictionary<string, object> arguments, CancellationToken token) {
             StateVariableProvider variables = new StateVariableProvider(ProcessImports(tasklogger, workflow.StartNode.Parameters?.Imports));
             variables.Add(arguments);
-            return Execute(new WorkflowInstanceState(tasklogger, variables), token, workflow.StartNode);
+            return Execute(new WorkflowInstanceState(tasklogger, variables, GetWorkflowInstance, this), token, workflow.StartNode);
         }
-
-        Task<InstanceTransition> EvaluateTransitions(IInstanceNode current, WorkableLogger tasklogger, IDictionary<string, object> state, List<InstanceTransition> transitions, CancellationToken token) {
-            return EvaluateTransitions(current, tasklogger, new VariableProvider(state), transitions, token);
-        }
-
+        
         async Task<InstanceTransition> EvaluateTransitions(IInstanceNode current, WorkableLogger tasklogger, IVariableProvider variableprovider, List<InstanceTransition> transitions, CancellationToken token) {
             InstanceTransition transition = null;
             foreach (InstanceTransition conditionaltransition in transitions.Where(c=>c.Condition!=null)) {

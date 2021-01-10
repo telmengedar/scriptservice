@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ScriptService.Services.Workflows {
     
@@ -7,18 +8,23 @@ namespace ScriptService.Services.Workflows {
     /// state of a workflow instance
     /// </summary>
     public class WorkflowInstanceState {
+        readonly Func<string, Task<WorkflowInstance>> workflowprovider;
         readonly Dictionary<Guid, object> nodedata=new Dictionary<Guid, object>();
+        readonly Dictionary<string, WorkflowInstance> workflowcache=new Dictionary<string, WorkflowInstance>();
 
         /// <summary>
         /// creates a new <see cref="WorkflowInstanceState"/>
         /// </summary>
         /// <param name="logger">access to logging</param>
         /// <param name="variables">workflow state variables</param>
-        public WorkflowInstanceState(WorkableLogger logger, StateVariableProvider variables) {
+        /// <param name="workflowprovider">provides workflows by name</param>
+        public WorkflowInstanceState(WorkableLogger logger, StateVariableProvider variables, Func<string, Task<WorkflowInstance>> workflowprovider, IWorkflowExecutionService workflowexecutor) {
+            this.workflowprovider = workflowprovider;
             Logger = logger;
             Variables = variables;
+            WorkflowExecutor = workflowexecutor;
         }
-
+        
         /// <summary>
         /// accessor for node instance data
         /// </summary>
@@ -48,6 +54,21 @@ namespace ScriptService.Services.Workflows {
         public void RemoveNodeData(Guid nodeid) {
             nodedata.Remove(nodeid);
         }
+
+        /// <summary>
+        /// get a workflow instance by workflow name
+        /// </summary>
+        /// <param name="name">name of workflow to get</param>
+        /// <returns>workflow instance with the specified name</returns>
+        public async Task<WorkflowInstance> GetWorkflow(string name) {
+            if (workflowcache.TryGetValue(name, out WorkflowInstance workflow))
+                return workflow;
+
+            workflow = await workflowprovider(name);
+            workflowcache[name] = workflow;
+            
+            return workflow;
+        }
         
         /// <summary>
         /// logger for workflow execution
@@ -58,5 +79,10 @@ namespace ScriptService.Services.Workflows {
         /// current workflow variables
         /// </summary>
         public StateVariableProvider Variables { get; }
+
+        /// <summary>
+        /// executor for workflows
+        /// </summary>
+        public IWorkflowExecutionService WorkflowExecutor { get; }
     }
 }

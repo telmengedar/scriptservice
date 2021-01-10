@@ -97,7 +97,7 @@ namespace ScriptService.Tests.Data {
         /// <summary>
         /// type of description (eg. html)
         /// </summary>
-        public ContentType? DescriptionType { get; set; }
+        public int? DescriptionType { get; set; }
 
         /// <summary>
         /// salary information

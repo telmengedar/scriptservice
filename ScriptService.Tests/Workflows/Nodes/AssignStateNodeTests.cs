@@ -39,7 +39,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             AssignStateNode node=new AssignStateNode(instancenode.Object, "result", operation, compiler.Object);
             
             Dictionary<string, object> variables=new Dictionary<string, object>();
-            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables), s => null, null), CancellationToken.None);
 
             Assert.That(variables.ContainsKey("result"));
             Assert.AreEqual(expected, variables["result"]);
@@ -71,7 +71,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             Dictionary<string, object> variables = new Dictionary<string, object> {
                 ["result"] = 7
             };
-            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables)), CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables), s => null, null), CancellationToken.None);
 
             Assert.That(variables.ContainsKey("result"));
             Assert.AreEqual(expected, variables["result"]);

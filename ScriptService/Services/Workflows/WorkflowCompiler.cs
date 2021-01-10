@@ -20,7 +20,6 @@ namespace ScriptService.Services.Workflows {
         readonly ICacheService cacheservice;
         readonly IWorkflowService workflowservice;
         readonly IScriptCompiler compiler;
-        readonly IWorkflowExecutionService workflowexecutor;
 
         /// <summary>
         /// creates a new <see cref="WorkflowCompiler"/>
@@ -29,21 +28,13 @@ namespace ScriptService.Services.Workflows {
         /// <param name="cacheservice">access to object cache</param>
         /// <param name="workflowservice">access to workflow data</param>
         /// <param name="compiler">compiles scripts for conditions and internal workflow code</param>
-        /// <param name="workflowexecutor">executes workflow instances</param>
-        public WorkflowCompiler(ILogger<WorkflowCompiler> logger, ICacheService cacheservice, IWorkflowService workflowservice, IScriptCompiler compiler, IWorkflowExecutionService workflowexecutor) {
+        public WorkflowCompiler(ILogger<WorkflowCompiler> logger, ICacheService cacheservice, IWorkflowService workflowservice, IScriptCompiler compiler) {
             this.logger = logger;
             this.cacheservice = cacheservice;
             this.workflowservice = workflowservice;
             this.compiler = compiler;
-            this.workflowexecutor = workflowexecutor;
         }
-
-        async Task<WorkflowInstance> GetWorkflowInstance(string name) {
-            WorkflowDetails workflow = await workflowservice.GetWorkflow(name);
-            WorkflowInstance instance = await BuildWorkflow(workflow);
-            return instance;
-        }
-
+        
         /// <inheritdoc />
         public async Task<WorkflowInstance> BuildWorkflow(WorkflowStructure workflow) {
             logger.LogInformation($"Building workflow '{workflow.Name}'");
@@ -114,7 +105,7 @@ namespace ScriptService.Services.Workflows {
                 instance = new ScriptNode(nodeid.Value, node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), compiler);
                 break;
             case NodeType.Workflow:
-                instance = new WorkflowInstanceNode(nodeid.Value, node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), GetWorkflowInstance, workflowexecutor.Execute, compiler);
+                instance = new WorkflowInstanceNode(nodeid.Value, node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), compiler);
                 break;
             case NodeType.BinaryOperation:
                 BinaryOpParameters binparameters = node.Parameters.Deserialize<BinaryOpParameters>();
