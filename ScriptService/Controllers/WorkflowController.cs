@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NightlyCode.AspNetCore.Services.Data;
+using ScriptService.Dto;
 using ScriptService.Dto.Patches;
 using ScriptService.Dto.Workflows;
 using ScriptService.Services;
@@ -16,18 +17,21 @@ namespace ScriptService.Controllers {
     public class WorkflowController : ControllerBase {
         readonly ILogger<WorkflowController> logger;
         readonly IWorkflowService workflowservice;
-        IWorkflowExportService exportservice;
-        
+        readonly IWorkflowExportService exportservice;
+        readonly IArchiveService archiveservice;
+
         /// <summary>
         /// creates a new <see cref="WorkflowController"/>
         /// </summary>
         /// <param name="logger">access to logging</param>
         /// <param name="workflowservice">access to workflow data</param>
         /// <param name="exportservice">exports workflow data to structures</param>
-        public WorkflowController(ILogger<WorkflowController> logger, IWorkflowService workflowservice, IWorkflowExportService exportservice) {
+        /// <param name="archiveservice">archived object data</param>
+        public WorkflowController(ILogger<WorkflowController> logger, IWorkflowService workflowservice, IWorkflowExportService exportservice, IArchiveService archiveservice) {
             this.logger = logger;
             this.workflowservice = workflowservice;
             this.exportservice = exportservice;
+            this.archiveservice = archiveservice;
         }
 
         /// <summary>
@@ -48,7 +52,7 @@ namespace ScriptService.Controllers {
         /// <param name="data">workflow data</param>
         [HttpPut("{workflowid}")]
         public async Task<WorkflowDetails> UpdateWorkflow(long workflowid, [FromBody]WorkflowStructure data) {
-            logger.LogInformation($"Updating workflow '{workflowid}'");
+            logger.LogInformation("Updating workflow '{workflowid}'", workflowid);
             await workflowservice.UpdateWorkflow(workflowid, data);
             return await workflowservice.GetWorkflow(workflowid);
         }
@@ -61,6 +65,17 @@ namespace ScriptService.Controllers {
         [HttpGet("{workflowid}")]
         public Task<WorkflowDetails> GetWorkflow(long workflowid) {
             return workflowservice.GetWorkflow(workflowid);
+        }
+
+        /// <summary>
+        /// get a workflow from backend
+        /// </summary>
+        /// <param name="workflowid">workflowid of workflow to get</param>
+        /// <param name="revision">workflow revision to load</param>
+        /// <returns>full workflow information</returns>
+        [HttpGet("{workflowid}/{revision}")]
+        public Task<WorkflowDetails> GetWorkflow(long workflowid, int revision) {
+            return archiveservice.GetArchivedObject<WorkflowDetails>(workflowid, revision, ArchiveTypes.Workflow);
         }
 
         /// <summary>
@@ -90,7 +105,7 @@ namespace ScriptService.Controllers {
         /// <param name="patches">patches to apply</param>
         [HttpPatch("{workflowid}")]
         public async Task<WorkflowDetails> PatchWorkflow(long workflowid, [FromBody]PatchOperation[] patches) {
-            logger.LogInformation($"Patching workflow {workflowid}");
+            logger.LogInformation("Patching workflow {workflowid}", workflowid);
             await workflowservice.PatchWorkflow(workflowid, patches);
             return await workflowservice.GetWorkflow(workflowid);
         }
@@ -101,7 +116,7 @@ namespace ScriptService.Controllers {
         /// <param name="workflowid">id of workflow to delete</param>
         [HttpDelete("{workflowid}")]
         public Task DeleteWorkflow(long workflowid) {
-            logger.LogInformation($"Deleting workflow {workflowid}");
+            logger.LogInformation("Deleting workflow {workflowid}", workflowid);
             return workflowservice.DeleteWorkflow(workflowid);
         }
 

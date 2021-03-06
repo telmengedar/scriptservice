@@ -16,15 +16,18 @@ namespace ScriptService.Controllers {
     public class ScriptController : ControllerBase {
         readonly ILogger<ScriptController> logger;
         readonly IScriptService scriptservice;
+        readonly IArchiveService archiveservice;
 
         /// <summary>
         /// creates a new <see cref="ScriptController"/>
         /// </summary>
         /// <param name="logger">access to logging</param>
         /// <param name="scriptservice">access to script service</param>
-        public ScriptController(ILogger<ScriptController> logger, IScriptService scriptservice) {
+        /// <param name="archiveservice">archived object data</param>
+        public ScriptController(ILogger<ScriptController> logger, IScriptService scriptservice, IArchiveService archiveservice) {
             this.logger = logger;
             this.scriptservice = scriptservice;
+            this.archiveservice = archiveservice;
         }
 
         /// <summary>
@@ -34,7 +37,7 @@ namespace ScriptService.Controllers {
         /// <returns>id of created script</returns>
         [HttpPost]
         public async Task<Script> CreateScript(ScriptData script) {
-            logger.LogInformation($"Creating new script {script.Name}");
+            logger.LogInformation("Creating new script {scriptname}", script.Name);
             return await scriptservice.GetScript(await scriptservice.CreateScript(script));
         }
 
@@ -46,6 +49,17 @@ namespace ScriptService.Controllers {
         [HttpGet("{scriptid}")]
         public Task<Script> GetScript(long scriptid) {
             return scriptservice.GetScript(scriptid);
+        }
+
+        /// <summary>
+        /// get a script by id
+        /// </summary>
+        /// <param name="scriptid">id of script to get</param>
+        /// <param name="revision">script revision to load</param>
+        /// <returns>script with the specified id</returns>
+        [HttpGet("{scriptid}/{revision}")]
+        public Task<Script> GetScript(long scriptid, int revision) {
+            return archiveservice.GetArchivedObject<Script>(scriptid, revision);
         }
 
         /// <summary>
@@ -65,7 +79,7 @@ namespace ScriptService.Controllers {
         /// <param name="patches">patches to apply</param>
         [HttpPatch("{scriptid}")]
         public async Task<Script> PatchScript(long scriptid, [FromBody] PatchOperation[] patches) {
-            logger.LogInformation($"Patching script {scriptid}");
+            logger.LogInformation("Patching script {scriptid}", scriptid);
             await scriptservice.PatchScript(scriptid, patches);
             return await scriptservice.GetScript(scriptid);
         }
@@ -76,7 +90,7 @@ namespace ScriptService.Controllers {
         /// <param name="scriptid">id of script to delete</param>
         [HttpDelete("{scriptid}")]
         public Task DeleteScript(long scriptid) {
-            logger.LogInformation($"Deleting script {scriptid}");
+            logger.LogInformation("Deleting script {scriptid}", scriptid);
             return scriptservice.DeleteScript(scriptid);
         }
     }
