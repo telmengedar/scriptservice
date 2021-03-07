@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 
-import { MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatNativeDateModule, MatMenuModule, MatDialogModule, MatTableModule, MatPaginatorModule} from  '@angular/material';
+import { MatIconModule, MatSidenavModule, MatListModule, MatButtonModule, MatNativeDateModule, MatMenuModule, MatDialogModule, MatTableModule, MatPaginatorModule, MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from  '@angular/material';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatInputModule} from '@angular/material/input';
@@ -41,6 +41,9 @@ import { NavigationPathComponent } from './navigation-path/navigation-path.compo
 import { ScheduledTasksComponent } from './scheduled-tasks/scheduled-tasks.component';
 import { ScheduledTaskEditorComponent } from './scheduled-task-editor/scheduled-task-editor.component';
 import { DisplayPipe } from './pipes/display.pipe';
+import { ObjectStructurePipe } from './pipes/object-structure.pipe';
+import { ConfirmDeleteComponent } from './dialogs/confirm-delete/confirm-delete.component';
+import { TestWorkableComponent } from './dialogs/test-workable/test-workable.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +61,9 @@ import { DisplayPipe } from './pipes/display.pipe';
     ScheduledTasksComponent,
     ScheduledTaskEditorComponent,
     DisplayPipe,
+    ObjectStructurePipe,
+    ConfirmDeleteComponent,
+    TestWorkableComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +83,7 @@ import { DisplayPipe } from './pipes/display.pipe';
     MatNativeDateModule,
     MatTableModule,
     MatPaginatorModule,
+    MatSnackBarModule,
     FormsModule,
     CommonModule,
     NgxGraphModule,
@@ -91,10 +98,13 @@ import { DisplayPipe } from './pipes/display.pipe';
   ],
   entryComponents: [
     TransitionEditorComponent,
-    NodeEditorComponent
+    NodeEditorComponent,
+    ConfirmDeleteComponent,
+    TestWorkableComponent
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 5000}}
   ],
   bootstrap: [AppComponent]
 })

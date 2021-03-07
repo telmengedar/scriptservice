@@ -3,6 +3,11 @@ import { WorkflowService } from '../services/workflow.service';
 import { Workflow } from '../dto/workflows/workflow';
 import { timer, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { Paging } from '../helpers/paging';
+import { Tables } from '../helpers/tables';
+import { MatDialog, MatTableDataSource } from '@angular/material';
+import { Column } from '../dto/column';
+import { ConfirmDeleteComponent } from '../dialogs/confirm-delete/confirm-delete.component';
 
 /**
  * provides a list of workflows.
@@ -14,12 +19,31 @@ import { Router } from '@angular/router';
   styleUrls: ['./workflows.component.css']
 })
 export class WorkflowsComponent implements OnInit, OnDestroy {
-  workflows: Workflow[];
+  Paging=Paging;
+  Tables=Tables;
+
+  workflows: MatTableDataSource<Workflow>=new MatTableDataSource<Workflow>();
+
   reloadsub: Subscription;
   page: number;
   pages: number;
 
-  constructor(private workflowservice: WorkflowService, private router: Router) { }
+  columns: Column[]=[
+    {
+      display: "Name",
+      name: "name",
+    },
+    {
+      display: "Revision",
+      name: "revision",
+    },
+    {
+      display: "",
+      name: "_actions",
+    }
+  ]
+
+  constructor(private workflowservice: WorkflowService, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.listWorkflows();
@@ -35,7 +59,7 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
    */
   listWorkflows() {
     this.workflowservice.listWorkflows().subscribe(p=>{
-      this.workflows=p.result;
+      this.workflows.data=p.result;
       this.pages=Math.ceil(p.total/50);
       if(p.continue) {
         this.page=Math.floor(p.continue/50)
@@ -48,9 +72,18 @@ export class WorkflowsComponent implements OnInit, OnDestroy {
    * deletes a workflow
    * @param workflowId id of workflow to delete
    */
-  deleteWorkflow(workflowId: number): void {
-    this.workflowservice.deleteWorkflow(workflowId).subscribe(s=>{
-      this.listWorkflows();
+  deleteWorkflow(workflow: Workflow): void {
+    const dialogRef=this.dialog.open(ConfirmDeleteComponent, {
+      data: workflow
+    });
+
+    dialogRef.afterClosed().subscribe(r=>{
+      if(r)
+      {
+        this.workflowservice.deleteWorkflow(workflow.id).subscribe(s=>{
+          this.listWorkflows();
+        });
+      }
     });
   }
 

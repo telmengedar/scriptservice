@@ -1,12 +1,18 @@
-.workflowgraph {
-    height: 600px;
+.workflowcontainer {
+    background-color: black;
+    width: 90%;
 }
+
+.workflowgraph {
+    height: 750px;
+}
+
 .hint{
     color: #606060;
 }
 
 .transition{
-    stroke: black;
+    stroke: #9a9a9a;
 }
 
 .transitionhighlight {
@@ -79,4 +85,18 @@
 
 .cluster {
     pointer-events: none;
+}
+
+.arrow-head {
+    stroke: whitesmoke;
+    fill: #9a9a9a;
+}
+
+.edge-label {
+    fill: whitesmoke !important;
+}
+
+.chart-container{
+    margin: 0;
+    padding: 0;
 }

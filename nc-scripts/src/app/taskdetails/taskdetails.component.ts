@@ -48,8 +48,9 @@ export class TaskDetailsComponent implements OnInit, OnDestroy {
 
     if(task.status==="Running")
     {
-      console.log("setting timeout");
-      setTimeout(()=>this.loadTask(), 500);
+      // if task is still running, reload task after some delay
+      // to show updated log data
+      setTimeout(()=>this.loadTask(), 1000);
     }
   }
 

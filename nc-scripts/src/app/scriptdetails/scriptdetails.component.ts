@@ -1,15 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Script } from '../dto/scripts/script';
 import {Location} from '@angular/common';
 import { ScriptService } from '../services/script.service';
 import { PatchOperation } from '../dto/patchoperation';
 import { Patch } from '../helpers/patch';
 import { ActivatedRoute } from '@angular/router';
-import { WorkableTask } from '../dto/workabletask';
-import { TaskService } from '../services/task.service';
-import { NavigationItem } from '../dto/navigation/navigationItem';
 import { ScriptLanguage } from '../dto/scripts/scriptlanguage';
 import { ScriptLanguageOptions } from '../dto/scripts/scriptlanguageoptions';
+import { MatDialog, MatSnackBar } from '@angular/material';
+import { TestWorkableComponent } from '../dialogs/test-workable/test-workable.component';
+import { WorkableType } from '../dto/tasks/workabletype';
 
 /**
  * editor component for a single script.
@@ -20,11 +20,7 @@ import { ScriptLanguageOptions } from '../dto/scripts/scriptlanguageoptions';
   templateUrl: './scriptdetails.component.html',
   styleUrls: ['./scriptdetails.component.css']
 })
-export class ScriptDetailsComponent implements OnInit, OnDestroy {
-  navigationPath: NavigationItem[]=[
-    {url: "/scripts", display: "Scripts"}
-  ]
-
+export class ScriptDetailsComponent implements OnInit {
   script: Script={
     name: "",
     code: "",
@@ -32,9 +28,6 @@ export class ScriptDetailsComponent implements OnInit, OnDestroy {
   };
 
   oldscript: Script;
-
-  parameters: any={};
-  task: WorkableTask;
 
   languages=ScriptLanguageOptions;
 
@@ -47,26 +40,17 @@ export class ScriptDetailsComponent implements OnInit, OnDestroy {
       enabled: false
     },
     scrollbar: {
-      vertical: 'hidden',
-      horizontal: 'hidden'
+      vertical: 'auto',
+      horizontal: 'auto'
     },
     highlightActiveIndentGuide: true,
     renderLineHighlight: "gutter"
   };
   changed:boolean=false;
-  taskrunning: boolean=false;
-  isdestroyed:boolean=false;
 
-  constructor(private scriptservice: ScriptService, private taskservice: TaskService, private location: Location, route: ActivatedRoute) { 
+  constructor(private scriptservice: ScriptService, private location: Location, route: ActivatedRoute, private snackbar: MatSnackBar, private dialog: MatDialog) { 
     if(route.snapshot.params.scriptId!=="create") {
       this.script.id=route.snapshot.params.scriptId;
-      this.navigationPath.push({
-        display: this.script.id.toString()
-      });
-    } else {
-      this.navigationPath.push({
-        display: "New Script"
-      });
     }
   }
 
@@ -75,10 +59,6 @@ export class ScriptDetailsComponent implements OnInit, OnDestroy {
       this.scriptservice.getScript(this.script.id).subscribe(s=>this.scriptLoaded(s));
     }
     else this.oldscript=Object.assign({}, this.script);
-  }
-
-  ngOnDestroy() {
-    this.isdestroyed=true;
   }
 
   /**
@@ -94,8 +74,6 @@ export class ScriptDetailsComponent implements OnInit, OnDestroy {
   save(): void {
     if(this.script.id)
     {
-      console.log(this.oldscript);
-      console.log(this.script);
       let patches:PatchOperation[]=Patch.generatePatches(this.oldscript, this.script);
       this.scriptservice.patchScript(this.script.id, patches).subscribe(s=>this.scriptLoaded(s));
     }
@@ -105,55 +83,16 @@ export class ScriptDetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * adds a new parameter for script test execution
-   */
-  addParameter(name: string): void {
-    this.parameters[name]="";
-  }
-
-  /**
-   * changes value of an existing parameter
-   * @param name name of parameter to set
-   * @param value value of parameter to set
-   */
-  setParameter(name: string, value: string): void {
-    this.parameters[name]=value;
-  }
-
-  /**
    * executes test for the current script with the specified parameters
    */
-  executeTest(): void {
-    this.taskrunning=true;
-    this.scriptservice.execute({
-      code: {
-        name: this.script.name,
-        code: this.script.code,
-        language: this.script.language
+  startTest(): void {
+    this.dialog.open(TestWorkableComponent, {
+      data: {
+        type: WorkableType.Script,
+        workable: this.script
       },
-      parameters: this.parameters
-    }).subscribe(t=>this.taskLoaded(t));
-  }
-
-  private getTaskInfo() {
-    if(!this.task)
-    {
-      this.taskrunning=false;
-      return;
-    }
-
-    this.taskservice.getTask(this.task.id).subscribe(t=>this.taskLoaded(t));
-  }
-
-  private taskLoaded(task: WorkableTask): void {
-    if(this.isdestroyed)
-      return;
-    this.task=task;
-    if(task.status==="Running")
-    {
-      setTimeout(()=>this.getTaskInfo(), 500);
-    }
-    else this.taskrunning=false;
+      width: '50%'
+    });
   }
 
   private scriptLoaded(script: Script): void {
@@ -161,5 +100,38 @@ export class ScriptDetailsComponent implements OnInit, OnDestroy {
     this.script.language=ScriptLanguage.getNodeTypeValue(this.script.language);
     this.oldscript=Object.assign({}, this.script);
     this.changed=false;
+  }
+
+  /**
+   * loads a script revision
+   */
+  loadRevision(): void {
+    if(!this.script.revision)
+      return;
+
+    if(this.script.revision<=0)
+    {
+      this.scriptservice.getScript(this.script.id).subscribe(s=>this.scriptLoaded(s));
+      return;
+    }
+    
+    this.scriptservice.getScriptRevision(this.script.id, this.script.revision)
+    .toPromise()
+    .then(s=>{
+      this.script=s;
+      this.script.language=ScriptLanguage.getNodeTypeValue(this.script.language);
+      this.oldscript={
+        id: s.id,
+        revision: s.revision,
+        name: undefined,
+        code: undefined,
+        language: undefined
+      };
+
+      this.changed=true;
+    })
+    .catch(e=>{
+      this.snackbar.open(e.error.text, "Close");
+    });
   }
 }

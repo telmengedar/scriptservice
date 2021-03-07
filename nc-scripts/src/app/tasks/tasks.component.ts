@@ -7,6 +7,7 @@ import { Column } from '../dto/column';
 import { MatTableDataSource } from '@angular/material';
 import { Paging } from '../helpers/paging';
 import { TaskFilter } from '../dto/scripttaskfilter';
+import { Tables } from '../helpers/tables';
 
 @Component({
   selector: 'app-tasks',
@@ -16,7 +17,8 @@ import { TaskFilter } from '../dto/scripttaskfilter';
 
 export class TasksComponent implements OnInit, OnDestroy {
   Paging=Paging;
-
+  Tables=Tables;
+  
   page: number=0;
   total: number=0;
 
@@ -116,5 +118,11 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   getDisplayedColumns(): string[] {
     return this.columns.map<string>(c=>c.name);
+  }
+
+  onPageChanged(page: number, size: number): void {
+    this.filter.continue=page*size;
+    this.filter.count=size;
+    this.listTasks(false);
   }
 }

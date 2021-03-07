@@ -1,27 +1,37 @@
 <div class="content-page">
-  <div class="side-panel">
-    <h2>Workflows</h2>
+  <div class="descriptor">
+    <h1>Workflows</h1>
   </div>
-  <div class="content-panel">
-    <div class="container">
-      <div class="row header">
-        <div class="col-1">Id</div>
-        <div class="col-1">Revision</div>
-        <div class="col-2">Scope</div>
-        <div class="col-7">Name</div>
-        <div class="col-1"></div>
-      </div>
-      <div class="row" *ngFor="let workflow of workflows">
-        <div class="col-1" (click)="editWorkflow(workflow.id)">{{workflow.id}}</div>
-        <div class="col-1" (click)="editWorkflow(workflow.id)">{{workflow.revision}}</div>
-        <div class="col-9" (click)="editWorkflow(workflow.id)">{{workflow.name}}</div>
-        <div class="col-1"><button mat-icon-button (click)="deleteWorkflow(workflow.id)"><mat-icon>delete</mat-icon></button></div>
-      </div>
-      <div class="row footer">
-        <div class="col-3"><button mat-icon-button (click)="newWorkflow()"><mat-icon>add_circle</mat-icon></button></div>
-        <div class="col-6 text-center align-self-center">Page {{page}}/{{pages}}</div>
-        <div class="col-3"></div>
-      </div>
-    </div>
+
+  <div class="container">
+    <table mat-table [dataSource]="workflows" >
+      <ng-container [matColumnDef]="column.name" *ngFor="let column of columns">
+          <th mat-header-cell *matHeaderCellDef>{{column.display}}</th>
+          <td mat-cell *matCellDef="let element">
+              <div [ngSwitch]="column.name">
+                  <div *ngSwitchCase="'_actions'">
+                      <button mat-icon-button color="primary" (click)="editWorkflow(element.id)">
+                        <mat-icon>visibility</mat-icon>
+                      </button>
+                      <button mat-icon-button color="warn" (click)="deleteWorkflow(element)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                  </div>
+                  <span *ngSwitchDefault>{{element[column.name] | display:column.format}}</span>
+              </div>
+          </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="Tables.getColumnProperties(columns)"></tr>
+      <tr mat-row *matRowDef="let row; columns: Tables.getColumnProperties(columns);"></tr>
+    </table>
+    <mat-toolbar>
+      <mat-toolbar-row>
+        <button mat-icon-button color="primary" (click)="newWorkflow()">
+          <mat-icon class="actionicon">add_box</mat-icon>
+        </button>
+        <mat-paginator class="paginator" [pageIndex]="page" [length]="total" [pageSizeOptions]="Paging.pageSizes" (page)="onPageChanged($event.pageIndex, $event.pageSize)"></mat-paginator>
+    </mat-toolbar-row>
+    </mat-toolbar>
   </div>
 </div>

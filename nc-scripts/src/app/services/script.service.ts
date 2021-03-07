@@ -48,6 +48,14 @@ export class ScriptService {
     return this.http.get<Script>(`${this.scriptsurl}/${scriptId}`);
   }
 
+    /**
+   * get a script from server
+   * @param scriptId id of script to retrieve
+   */
+  getScriptRevision(scriptId: number, revision: number): Observable<Script> {
+    return this.http.get<Script>(`${this.scriptsurl}/${scriptId}/${revision}`);
+  }
+
   /**
    * patches properties of a script
    * @param scriptId id of script to patch

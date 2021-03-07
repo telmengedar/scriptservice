@@ -1,93 +1,43 @@
-<app-navigation-path [path]="navigationPath"></app-navigation-path>
 <div class="content-page">
-  <div class="side-panel">
+  <div class="descriptor">
+    <h1>Script Editor</h1>
+  </div>
   <div class="container">
-    <div class="row header">
-      <div class="col-12">Script <span>{{script.id}}.{{script.revision}}</span></div>
-    </div>
     <div class="row">
-      <div class="col-2 property align-self-center">Name</div>
-      <div class="col-10 value">
-      <mat-form-field>
-        <input matInput [(ngModel)]="script.name" (ngModelChange)="changed=true">
-      </mat-form-field>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-2 property align-self-center">Language</div>
-      <div class="col-10 value">
-        <ngx-select [(ngModel)]="script.language" [items]="languages" optionValueField="type" optionTextField="name">
+      <div class="col-2 value">
+        <ngx-select [(ngModel)]="script.language" [items]="languages" optionValueField="type" optionTextField="name" (ngModelChange)="changed=true">
           <ng-template ngx-select-option let-option>
             <span>{{option.data.name}}</span><br>
             <small>{{option.data.description}}</small>
           </ng-template>
         </ngx-select>  
       </div>
-    </div>
-  </div>  
-  <p></p>
-  <h5>Test</h5>
-  <div class="container">
-    <div class="row header">
-      <div class="col-12">Parameters</div>
-    </div>
-    <div class="row" *ngFor="let parameter of parameters | keyvalue">
-      <div class="col-3">{{parameter.key}}</div>
-      <div class="col-9">
+      <div class="col-9 value">
         <mat-form-field>
-          <input matInput [value]="parameter.value" (change)="setParameter(parameter.key,$event.target.value)">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="script.name" (ngModelChange)="changed=true">
+        </mat-form-field>
+      </div>
+      <div class="col-1 value">
+        <mat-form-field>
+          <mat-label>Revision</mat-label>
+          <input matInput [(ngModel)]="script.revision" (ngModelChange)="loadRevision()">
         </mat-form-field>
       </div>
     </div>
-    <div class="row">
-      <div class="col-3">
-        <mat-form-field>
-          <input matInput (change)="addParameter($event.target.value)">
-        </mat-form-field>
-      </div>
-      <div class="col-9">New Parameter</div>
-    </div>
   </div>
-  <p></p>
-    <div class="actionbutton">
-      <button mat-button [disabled]="taskrunning" (click)="executeTest()">Test</button>
-    </div>
-  <p></p>
   <div class="container">
-    <div class="row header">
-      <div class="col-12">Log</div>
-    </div>
-    <div *ngIf="task">
-      <div class="row log" *ngFor="let line of task.log">
-        <div class="col-12" >
-          {{line}}
-        </div>
-      </div>
-    </div>
-    <div *ngIf="!task">
-      <div class="row log">
-        <div class="col-12" >
-        Test execution not started
-        </div>
-      </div>  
-    </div>
-
-  </div>  
-  </div>
-  <div class="content-panel">
-    <div class="container">
-      <div class="row header">
-        <div class="col-12">Code</div>
-      </div>
       <div class="row">
         <ngx-monaco-editor class="codeeditor" [options]="editorOptions" [(ngModel)]="script.code" (ngModelChange)="changed=true"></ngx-monaco-editor>
       </div>
-    </div>
     <p></p>
-    <div class="container">
-      <div class="actionbutton">
-        <button mat-button [disabled]="!changed" (click)="save()">Save</button>
-      </div>
+  </div>
+  <div class="container">
+    <div class="actionbutton">
+      <button mat-raised-button color="primary" [disabled]="!changed" (click)="save()">Save</button>
+    </div>
+    <div class="actionbutton">
+      <button mat-raised-button color="primary" [disabled]="script.code.length===0" (click)="startTest()">Test</button>
     </div>
   </div>
 </div>

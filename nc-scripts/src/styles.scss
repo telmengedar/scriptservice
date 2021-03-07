@@ -9,8 +9,8 @@ $nc-palette: (
   500: #5574b8,
   600: #2e4e94,
   700: #1c3e88,
-  800: #103380,
-  900: #08286d,
+  800: #1f3463,
+  900: #142447,
   A100: #bdcef3,
   A200: #98acd8,
   A400: #5b77b3,
@@ -101,12 +101,14 @@ $nc-scripts-theme: mat-dark-theme($nc-scripts-primary, $nc-scripts-accent, $nc-s
     width:100%;
   }
   input{
+    background-color: rgba(0,0,0,0.07);
     width:100%;
-    border: 0;
+    border: 1;
+    border-color: rgba(255,255,255,0.1);
     box-shadow: none;
     border-radius: 0;
-    padding: 5px;
     margin: 0;
+    color: whitesmoke;
   }
   select {
     width: 100%;
@@ -118,6 +120,7 @@ $nc-scripts-theme: mat-dark-theme($nc-scripts-primary, $nc-scripts-accent, $nc-s
   }
   .actionbutton {
     display: inline-block;
+    padding-right: 1em;
   }
 
   .editor-dialog-container .mat-dialog-container {

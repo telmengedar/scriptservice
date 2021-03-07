@@ -24,15 +24,19 @@
     </div>
   </div>
     
-  <div class="container mat-elevation-z8">
+  <div class="container">
     <table mat-table [dataSource]="tasks" >
       <ng-container [matColumnDef]="column.name" *ngFor="let column of columns">
           <th mat-header-cell *matHeaderCellDef>{{column.display}}</th>
           <td mat-cell *matCellDef="let element">
               <div [ngSwitch]="column.name">
                   <div *ngSwitchCase="'_actions'">
-                      <a [routerLink]="element.id"><mat-icon>visibility</mat-icon></a>
-                      <mat-icon (click)="cancelTask(element.id)">trash</mat-icon>
+                    <button mat-icon-button color="primary" (click)="showDetails(element.id)">
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="cancelTask(element.id)" *ngIf="element.status==='Running'">
+                      <mat-icon>delete</mat-icon>
+                    </button>
                   </div>
                   <span *ngSwitchDefault>{{element[column.name] | display:column.format}}</span>
               </div>
@@ -42,6 +46,6 @@
       <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
       <tr [class.tasksuccess]="row.status==='Success'" [class.taskcanceled]="row.status==='Canceled'" [class.taskfailure]="row.status==='Failure'" mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
     </table>
-    <mat-paginator [pageIndex]="page" [length]="total" [pageSizeOptions]="Paging.pageSizes"></mat-paginator>
+    <mat-paginator [pageIndex]="page" [length]="total" [pageSizeOptions]="Paging.pageSizes" (page)="onPageChanged($event.pageIndex, $event.pageSize)"></mat-paginator>
   </div>
 </div>

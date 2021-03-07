@@ -15,10 +15,6 @@ import { Patch } from '../helpers/patch';
 export class ScheduledTaskEditorComponent implements OnInit {
   ScheduledDays=ScheduledDays;
 
-  navigationPath: NavigationItem[]=[
-    {url: "/scheduler", display: "Scheduler"}
-  ]
-
   original: ScheduledTask;
   task: ScheduledTask;
   changed: boolean;
@@ -46,15 +42,7 @@ export class ScheduledTaskEditorComponent implements OnInit {
 
     if(route.snapshot.params.taskId!=="create") {
       this.task.id=route.snapshot.params.taskId;
-      this.navigationPath.push({
-        display: this.task.id.toString()
-      });
       this.scheduledTaskService.getById(this.task.id).subscribe(t=>this.handleTaskResult(t));
-    }
-    else{ 
-      this.navigationPath.push({
-        display: "New Task"
-      });
     }
   }
 

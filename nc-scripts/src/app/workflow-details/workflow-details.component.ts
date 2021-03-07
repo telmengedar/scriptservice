@@ -1,12 +1,10 @@
 import {Location} from '@angular/common';
-import { Component, ViewChild, HostListener, OnInit, OnDestroy } from '@angular/core';
-import { WorkableTask } from '../dto/workabletask';
+import { Component, ViewChild, HostListener, OnInit } from '@angular/core';
 import { WorkflowDetails } from '../dto/workflows/workflowdetails';
 import { Node, Edge, ClusterNode } from '@swimlane/ngx-graph';
 import { WorkflowService } from '../services/workflow.service';
-import { TaskService } from '../services/task.service';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, Subscription, timer, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { NodeData } from '../dto/workflows/nodeData';
 import { IndexTransition } from '../dto/workflows/indexTransition';
 import { MatMenuTrigger } from '@angular/material';
@@ -21,24 +19,18 @@ import { NodeEditorParameters } from '../dto/workflows/nodeeditorparameters';
 import { ImportDeclaration } from '../dto/workflows/importdeclaration';
 import { TransitionType } from '../dto/workflows/transitionType';
 import { NodeType } from '../dto/workflows/nodetype';
-import { Parameter } from '../dto/scripts/parameter';
-import { NavigationItem } from '../dto/navigation/navigationItem';
-import { Parameters } from '../helpers/parameters';
+import { TestWorkableComponent } from '../dialogs/test-workable/test-workable.component';
+import { WorkableType } from '../dto/tasks/workabletype';
 
 @Component({
   selector: 'app-workflow-details',
   templateUrl: './workflow-details.component.html',
   styleUrls: ['./workflow-details.component.css']
 })
-export class WorkflowDetailsComponent implements OnInit, OnDestroy {
+export class WorkflowDetailsComponent implements OnInit{
   NodeType=NodeType;
-
-  navigationPath: NavigationItem[]=[
-    {url: "/workflows", display: "Workflows"}
-  ]
   workflowid?: number;
 
-  task: WorkableTask;
   workflow: WorkflowDetails={
     id: 0,
     revision: 0,
@@ -57,28 +49,15 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
 
   selectedNode: Node;
   selectedEdge: Edge;
-  parameters: any={};
-  tasksub: Subscription;
-
-  newparameter: Parameter = {
-    name: "",
-    value: ""
-  }
 
   @ViewChild(MatMenuTrigger)
   contextMenu: MatMenuTrigger;
   contextMenuPosition = { x: '0px', y: '0px' };
 
-  constructor(private workflowservice: WorkflowService, private taskservice: TaskService, private location: Location, route: ActivatedRoute, private dialogservice: MatDialog) { 
+  constructor(private workflowservice: WorkflowService, private location: Location, route: ActivatedRoute, private dialogservice: MatDialog) { 
     if(route.snapshot.params.workflowId!=="create") {
         this.workflowid=route.snapshot.params.workflowId;
-        this.navigationPath.push({
-          display: this.workflowid.toString()
-        });
     }
-    else this.navigationPath.push({
-      display: "New Workflow"
-    });
   }
 
   ngOnInit() {
@@ -106,10 +85,6 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
       this.createTransition(t);
     });
     this.generateClusters();
-
-    if(this.workflow.name)
-      this.navigationPath[this.navigationPath.length-1].display=this.workflow.name;
-    else this.navigationPath[this.navigationPath.length-1].display=`${this.workflow.id}.${this.workflow.revision}`;
   }
 
   private createNode(node: WorkflowNode): void {
@@ -139,11 +114,6 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
         highlighted: false
       }
     });
-  }
-
-  ngOnDestroy() {
-    if(this.tasksub)
-      this.tasksub.unsubscribe();
   }
 
   /**
@@ -187,7 +157,6 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
       cluster.childNodeIds.push(n.data.node.id);
     });
 
-    console.log(clusters.length);
     this.clusters=clusters;
   }
 
@@ -239,73 +208,21 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * adds a new parameter for workflow test execution
+   * starts test for the current workflow
    */
-  addParameter(): void {
-    if(!this.newparameter.name||this.newparameter.name==="")
-      return;
-
-    this.parameters[this.newparameter.name]=this.newparameter.value;
-    this.newparameter.name="";
-    this.newparameter.value="";
-  }
-
-  /**
-   * changes value of an existing parameter
-   * @param name name of parameter to set
-   * @param value value of parameter to set
-   */
-  setParameter(name: string, value: string): void {
-    this.parameters[name]=value;
-  }
-
-  /**
-   * removes a test parameter
-   * @param name name of parameter to delete
-   */
-  deleteParameter(name: string): void {
-    delete this.parameters[name];
-  }
-
-  /**
-   * executes test for the current script with the specified parameters
-   */
-  executeTest(): void {
-    let result: Observable<WorkableTask>=null;
-
-    if(this.task&&this.task.status==="Suspended") {
-      result=this.workflowservice.continue(this.task.id, {
-          parameters: this.parameters
-      });
-    }
-    else {
-      result=this.workflowservice.execute({
-        workflow: {
+  startTest(): void {
+    this.dialogservice.open(TestWorkableComponent, {
+      data: {
+        type: WorkableType.Workflow,
+        workable: {
           scope: this.workflow.scope,
           name: this.workflow.name,
           nodes: this.buildNodes(),
           transitions: this.buildTransitions()
-        },
-        parameters: Parameters.translate(this.parameters)
-      });
-    }
-
-    result.subscribe(t=>{
-      this.taskLoaded(t);
-      if(t.status==="Running") {
-        this.tasksub=timer(500,500).subscribe(timer=>{
-          this.taskservice.getTask(this.task.id).subscribe(tsk=>{
-            this.taskLoaded(tsk);
-          })
-        });
-      }
+        }
+      },
+      width: '50%'
     });
-  }
-
-  private taskLoaded(task: WorkableTask): void {
-    this.task=task;
-    if(this.tasksub && task.status!=="Running")
-      this.tasksub.unsubscribe();
   }
 
   private buildNodes(): NodeData[] {
@@ -453,7 +370,6 @@ export class WorkflowDetailsComponent implements OnInit, OnDestroy {
     if(event.key==="Delete") {
       if(this.selectedEdge) {
         const index: number=this.transitions.findIndex(t=>t.source===this.selectedEdge.source && t.target===this.selectedEdge.target);
-        console.log(index);
         if(index>-1)
           this.transitions.splice(index, 1);
         this.selectedEdge=null;

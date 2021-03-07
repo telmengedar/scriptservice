@@ -9,6 +9,9 @@ export class Parameters {
      * @param parameters parameter object to translate
      */
     public static translate(parameters: any) : any {
+        if(!parameters)
+            return undefined;
+        
         var translated: any={}
         for (const [key, value] of Object.entries(parameters)) {
             if(typeof value === "string")

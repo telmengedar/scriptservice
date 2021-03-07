@@ -1,6 +1,6 @@
 <div class="content-page" *ngIf="task">
   <button mat-icon-button (click)="back()" id="back"><mat-icon>arrow_back</mat-icon>back to tasks</button>
-  <div class="container">
+  <div class="container mat-elevation-z8">
     <div class="row header">
       <div class="col-12">Script Information</div>
     </div>
@@ -22,17 +22,17 @@
     </div>
   </div>
     <p></p>
-    <div class="container">
+    <div class="container mat-elevation-z8">
       <div class="row header">
         <div class="col-12">Execution Parameters</div>
       </div>
       <div class="row" *ngFor="let parameter of task.parameters | keyvalue">
-        <div class="col-sm-2">{{parameter.key}}</div>
-        <div class="col-sm-10">{{parameter.value}}</div>
+        <div class="propertykey col-sm-2">{{parameter.key}}</div>
+        <div class="col-sm-10"><pre>{{parameter.value | objectStructure}}</pre></div>
       </div>
     </div>
     <p></p>
-    <div class="container">
+    <div class="container mat-elevation-z8">
     <div class="row header">
       <div class="col-12">Execution Information</div>
     </div>
@@ -54,11 +54,11 @@
     </div>
     <div class="row">
       <div class="col-sm-2 property">Result</div>
-      <div class="col-sm-10 value">{{task.result}}</div>
+      <div class="col-sm-10 value">{{task.result | objectStructure}}</div>
     </div>
     </div>
   <p></p>
-  <div class="container">
+  <div class="container mat-elevation-z8">
     <div class="row header">
       <div class="col-12">Script Log</div>
     </div>

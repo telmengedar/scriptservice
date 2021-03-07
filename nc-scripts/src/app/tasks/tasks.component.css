@@ -3,19 +3,19 @@
 }
 
 .tasksuccess {
-    background: #4d774d;
+    background: #355235;
 }
 
 .tasksuccess:nth-child(even) {
-    background: #416441;
+    background: #304930;
 }
 
 .taskcanceled {
-    background: #6e6e47;
+    background: #4d4d31;
 }
 
 .taskcanceled:nth-child(even) {
-    background: #5a5839;
+    background: #44422b;
 }
 
 .taskfailure {

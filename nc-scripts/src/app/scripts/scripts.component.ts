@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ScriptService } from '../services/script.service';
 import { Script } from '../dto/scripts/script';
 import { Router } from '@angular/router';
+import { Column } from '../dto/column';
+import { Paging } from '../helpers/paging';
+import { MatDialog, MatTableDataSource } from '@angular/material';
+import { Tables } from '../helpers/tables';
+import { ConfirmDeleteComponent } from '../dialogs/confirm-delete/confirm-delete.component';
 
 @Component({
   selector: 'app-scripts',
@@ -9,12 +14,34 @@ import { Router } from '@angular/router';
   styleUrls: ['./scripts.component.css']
 })
 export class ScriptsComponent implements OnInit {
-  scripts: Script[]
+  Paging=Paging;
+  Tables=Tables;
+  
+  scripts: MatTableDataSource<Script>=new MatTableDataSource<Script>();
+  
   page: number
   pages: number
 
-  
-  constructor(private scriptservice: ScriptService, private router: Router) { }
+  columns: Column[]=[
+    {
+      display: "Name",
+      name: "name",
+    },
+    {
+      display: "Revision",
+      name: "revision",
+    },
+    {
+      display: "Language",
+      name: "language",
+    },
+    {
+      display: "",
+      name: "_actions",
+    }
+  ]
+
+  constructor(private scriptservice: ScriptService, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.loadScripts();
@@ -25,7 +52,7 @@ export class ScriptsComponent implements OnInit {
    */
   loadScripts(): void {
     this.scriptservice.listScripts({}).subscribe(s=>{
-      this.scripts=s.result;
+      this.scripts.data=s.result;
       this.pages=Math.ceil(s.total/50);
       if(s.continue) {
         this.page=Math.floor(s.continue/50)
@@ -36,11 +63,20 @@ export class ScriptsComponent implements OnInit {
 
   /**
    * deletes a script
-   * @param scriptId id of script to delete
+   * @param script script to delete
    */
-  deleteScript(scriptId: number): void {
-    this.scriptservice.deleteScript(scriptId).subscribe(s=>{
-      this.loadScripts();
+  deleteScript(script: Script): void {
+    const dialogRef=this.dialog.open(ConfirmDeleteComponent, {
+      data: script
+    });
+
+    dialogRef.afterClosed().subscribe(r=>{
+      if(r)
+      {
+        this.scriptservice.deleteScript(script.id).subscribe(s=>{
+          this.loadScripts();
+        });    
+      }
     });
   }
 

@@ -1,0 +1,34 @@
+<h2>Test {{WorkableType.getName(data.type)}}</h2>
+<div class="row header">
+  <div class="col-11">Parameters</div>
+  <div class="col-1">
+    <button mat-icon-button color="primary" (click)="addParameter()">
+      <mat-icon>add_circle</mat-icon>
+    </button>
+  </div>    
+</div>
+<div class="row" *ngFor="let parameter of parameters; index as i">
+  <div class="col-2">
+    <input type="text" [(ngModel)]="parameter.name" name="paramname{i}">
+  </div>
+  <div class="col-9">
+    <input type="text" [(ngModel)]="parameter.value" name="paramvalue{i}">
+  </div>
+  <div class="col-1">
+    <button mat-icon-button color="warn" (click)="removeParameter(i)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>
+<p></p>
+<div class="row header">
+  <div class="col-12">Log</div>
+</div>
+<div class="row log" *ngFor="let line of task.log">
+  <div class="col-sm-12" >
+    {{line}}
+  </div>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-button [disabled]="task && task.status==='Running'" (click)="startTest()">Start Test</button>
+</mat-dialog-actions>
