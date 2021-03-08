@@ -149,7 +149,7 @@ export class WorkflowDetailsComponent implements OnInit{
 
     if(currentline!=="")
       node.data.lines.push(currentline);
-      
+
     node.label=data.name;
     node.dimension={
       width: maxsize,
@@ -328,28 +328,14 @@ export class WorkflowDetailsComponent implements OnInit{
   }
 
   addNode(): string {
-    let n: NodeData={
+    const n: WorkflowNode={
+      id: guid(),
       name: "New Node",
       type: NodeType.Node,
       parameters: {}
     }
-
-    let node: Node={
-      id: guid(),
-      label: n.name,
-      dimension: {
-        width: 100,
-        height: 80
-      },
-      data: {
-        node: n,
-        type: n.type,
-        parameters: n.parameters
-      }
-    };
-    this.nodes.push(node);
-    this.changed=true;
-    return node.id;
+    this.createNode(n);
+    return n.id;
   }
 
   refreshLayout(): void {
