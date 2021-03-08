@@ -92,8 +92,8 @@ export class WorkflowDetailsComponent implements OnInit{
       id: node.id,
       label: node.name,
       dimension: {
-        width: 100,
-        height: 80
+        width: Math.max(node.name.length*10, 100),
+        height: node.variable?95:80
       },
       data: {
         node: node,

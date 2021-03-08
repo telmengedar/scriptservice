@@ -30,15 +30,15 @@
         </ng-template>
 
         <ng-template #nodeTemplate let-node>
-          <svg:g class="node" ngx-tooltip [tooltipPlacement]="'top'" [tooltipType]="'tooltip'" [tooltipTitle]="node.label" (click)="nodeClick($event, node)" width="100" height="80" (dblclick)="editNode($event, node)">
-            <svg:rect width="100" height="15" fill="#606060" />
+          <svg:g class="node" ngx-tooltip [tooltipPlacement]="'top'" [tooltipType]="'tooltip'" [tooltipTitle]="node.label" (click)="nodeClick($event, node)" [attr.width]="node.dimension.width" [attr.height]="node.dimension.height" (dblclick)="editNode($event, node)">
+            <svg:rect [attr.width]="node.dimension.width" height="15" fill="#606060" />
             <svg:text alignment-baseline="central" [attr.x]="5" [attr.y]="7.5" font-size="10" fill="#FFFFFF">
               {{NodeType.getNodeTypeName(node.data.node.type)}}
             </svg:text>
             <svg:rect
               class="workflownode"
               y="15"
-              width="100"
+              [attr.width]="node.dimension.width"
               height="65"
               [ngClass]="{
                 'nodetypestart': NodeType.getNodeTypeValue(node.data.node.type)===NodeType.Start, 
@@ -53,9 +53,15 @@
                 'nodetypeiterator': NodeType.getNodeTypeValue(node.data.node.type)===NodeType.Iterator,
                 'nodehighlight': node.data.highlighted }"
             />              
-            <svg:text alignment-baseline="central" text-anchor="middle" x="50" y="47.5">
+            <svg:text alignment-baseline="central" text-anchor="middle" [attr.x]="node.dimension.width*0.5" y="47.5">
               {{node.data.node.name}}
             </svg:text>
+            <ng-container *ngIf="node.data.node.variable">
+              <svg:rect y="80" [attr.width]="node.dimension.width" height="15" fill="#404060" />
+              <svg:text alignment-baseline="central" [attr.x]="5" [attr.y]="87.5" font-size="10" fill="#FFFFFF">
+                ⮩ {{node.data.node.variable}}
+              </svg:text>
+            </ng-container>
           </svg:g>
         </ng-template>
         <ng-template #linkTemplate let-link>
