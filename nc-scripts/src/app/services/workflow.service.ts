@@ -52,6 +52,15 @@ export class WorkflowService {
   }
 
   /**
+   * get a workflow from backend by specifying its id
+   * @param workflowid id of workflow to get
+   * @param revision revision of workflow to load
+   */
+  getWorkflowRevision(workflowid: number, revision: number): Observable<WorkflowDetails> {
+    return this.http.get<WorkflowDetails>(`${this.workflowsurl}/${workflowid}/${revision}`);
+  }
+  
+  /**
    * lists workflows in backend
    * @param filter filter to apply
    */

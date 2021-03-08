@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { NodeData } from '../dto/workflows/nodeData';
 import { IndexTransition } from '../dto/workflows/indexTransition';
-import { MatMenuTrigger } from '@angular/material';
+import { MatMenuTrigger, MatSnackBar } from '@angular/material';
 import { v4 as guid } from 'uuid';
 import {MatDialog} from '@angular/material/dialog';
 import { TransitionEditorComponent } from './transition-editor/transition-editor.component';
@@ -54,7 +54,7 @@ export class WorkflowDetailsComponent implements OnInit{
   contextMenu: MatMenuTrigger;
   contextMenuPosition = { x: '0px', y: '0px' };
 
-  constructor(private workflowservice: WorkflowService, private location: Location, route: ActivatedRoute, private dialogservice: MatDialog) { 
+  constructor(private workflowservice: WorkflowService, private location: Location, route: ActivatedRoute, private dialogservice: MatDialog, private snackbar: MatSnackBar) { 
     if(route.snapshot.params.workflowId!=="create") {
         this.workflowid=route.snapshot.params.workflowId;
     }
@@ -72,6 +72,35 @@ export class WorkflowDetailsComponent implements OnInit{
       this.workflowservice.getWorkflowById(this.workflowid).subscribe(w=>{
         this.processWorkflowData(w);
       });
+  }
+
+  loadRevision(): void {
+    if(!this.workflowid)
+      return;
+    
+    if(this.workflow.revision<=0)
+    {
+      this.workflowservice.getWorkflowById(this.workflowid)
+      .toPromise()
+      .then(w=>{
+        this.processWorkflowData(w);
+        this.changed=false;
+      })
+      .catch(e=>{
+        this.snackbar.open(e.error.text, "Close");
+      });
+      return;
+    }
+
+    this.workflowservice.getWorkflowRevision(this.workflow.id, this.workflow.revision)
+    .toPromise()
+    .then(w=>{
+      this.processWorkflowData(w);
+      this.changed=false;
+    })
+    .catch(e=>{
+      this.snackbar.open(e.error.text, "Close");
+    });
   }
 
   private processWorkflowData(data: WorkflowDetails): void {
