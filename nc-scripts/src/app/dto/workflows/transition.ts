@@ -23,5 +23,10 @@ export interface Transition {
     /**
      * determines whether transition is used for error handling
      */
-    type: TransitionType
+    type: TransitionType,
+
+    /**
+     * data to be written to log
+     */
+    log?: string
 }

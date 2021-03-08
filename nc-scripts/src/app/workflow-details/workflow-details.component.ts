@@ -149,7 +149,7 @@ export class WorkflowDetailsComponent implements OnInit{
 
     if(currentline!=="")
       node.data.lines.push(currentline);
-    console.log(node.data.lines);
+      
     node.label=data.name;
     node.dimension={
       width: maxsize,

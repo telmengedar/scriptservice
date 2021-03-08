@@ -18,7 +18,7 @@ import { Tables } from '../helpers/tables';
 export class TasksComponent implements OnInit, OnDestroy {
   Paging=Paging;
   Tables=Tables;
-  
+
   page: number=0;
   total: number=0;
 
@@ -83,7 +83,7 @@ export class TasksComponent implements OnInit, OnDestroy {
       this.page=Math.floor(task.continue/this.filter.count)-1;
     }
     else {
-      this.page=task.total/this.filter.count;
+      this.page=task.total/this.filter.count-1;
     }
 
     if(timer && !this.isdestroyed)
