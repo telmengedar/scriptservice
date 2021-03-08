@@ -1,7 +1,7 @@
 import {Location} from '@angular/common';
 import { Component, ViewChild, HostListener, OnInit } from '@angular/core';
 import { WorkflowDetails } from '../dto/workflows/workflowdetails';
-import { Node, Edge, ClusterNode } from '@swimlane/ngx-graph';
+import { Node, Edge, ClusterNode, NodeDimension } from '@swimlane/ngx-graph';
 import { WorkflowService } from '../services/workflow.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -116,21 +116,60 @@ export class WorkflowDetailsComponent implements OnInit{
     this.generateClusters();
   }
 
+  layoutNode(data: WorkflowNode, node: Node): void {
+    const threshold=80+20*Math.max(data.name.length*10, 100)/100;
+    let linecount=1;
+    let maxsize=threshold;
+    let currentsize=0;
+    let currentline="";
+    node.data.lines=[];
+    for(let character of data.name) {
+      switch(character) {
+        case ' ':
+          if(currentsize>threshold) {
+            maxsize=Math.max(maxsize, currentsize);
+            currentsize=0;
+            ++linecount;
+            node.data.lines.push(currentline);
+            currentline="";
+          }
+          else {
+            currentsize+=10;
+            currentline+=' ';
+          }
+        default:
+          currentline+=character;
+          currentsize+=10;
+          break;
+      }
+    }
+
+    if(currentsize>threshold)
+      maxsize=Math.max(maxsize, currentsize);
+
+    if(currentline!=="")
+      node.data.lines.push(currentline);
+    console.log(node.data.lines);
+    node.label=data.name;
+    node.dimension={
+      width: maxsize,
+      height: 15+Math.max(65,50+linecount*15)+(data.variable?15:0)
+    }
+  }
+
   private createNode(node: WorkflowNode): void {
-    this.nodes.push({
+    let graphnode: Node={
       id: node.id,
       label: node.name,
-      dimension: {
-        width: Math.max(node.name.length*10, 100),
-        height: node.variable?95:80
-      },
       data: {
         node: node,
         type: node.type,
         parameters: node.parameters,
         highlighted: false
       }
-    });
+    };
+    this.layoutNode(node, graphnode);
+    this.nodes.push(graphnode);
   }
 
   private createTransition(transition: Transition): void {

@@ -22,7 +22,7 @@
 
   <div class="container workflowcontainer">
     <div class="row workflowgraph" (click)="resetTransition()">
-      <ngx-graph class="chart-container" layout="dagreCluster" [nodes]="nodes" [links]="transitions" [clusters]="clusters" [update$]="updateGraph$" (contextmenu)="onContextMenu($event)" [draggingEnabled]="false">
+      <ngx-graph class="chart-container" layout="dagreCluster" [nodes]="nodes" [links]="transitions" [clusters]="clusters" [update$]="updateGraph$" [draggingEnabled]="false">
         <ng-template #defsTemplate>
           <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
             <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
@@ -39,7 +39,7 @@
               class="workflownode"
               y="15"
               [attr.width]="node.dimension.width"
-              height="65"
+              [attr.height]="node.dimension.height-(node.data.node.variable?30:15)"
               [ngClass]="{
                 'nodetypestart': NodeType.getNodeTypeValue(node.data.node.type)===NodeType.Start, 
                 'nodetypeexpression': NodeType.getNodeTypeValue(node.data.node.type)===NodeType.Expression, 
@@ -52,13 +52,13 @@
                 'nodetypelog': NodeType.getNodeTypeValue(node.data.node.type)===NodeType.Log, 
                 'nodetypeiterator': NodeType.getNodeTypeValue(node.data.node.type)===NodeType.Iterator,
                 'nodehighlight': node.data.highlighted }"
-            />              
-            <svg:text alignment-baseline="central" text-anchor="middle" [attr.x]="node.dimension.width*0.5" y="47.5">
-              {{node.data.node.name}}
+            />
+            <svg:text alignment-baseline="central" text-anchor="middle" [attr.x]="node.dimension.width*0.5" [attr.y]="(node.dimension.height-(node.data.node.variable?15:0))*0.5-node.data.lines.length*7.5">
+              <svg:tspan [attr.x]="node.dimension.width*0.5" dy="1.2em" *ngFor="let line of node.data.lines">{{line}}</svg:tspan>
             </svg:text>
             <ng-container *ngIf="node.data.node.variable">
-              <svg:rect y="80" [attr.width]="node.dimension.width" height="15" fill="#404060" />
-              <svg:text alignment-baseline="central" [attr.x]="5" [attr.y]="87.5" font-size="10" fill="#FFFFFF">
+              <svg:rect [attr.y]="node.dimension.height-15" [attr.width]="node.dimension.width" height="15" fill="#404060" />
+              <svg:text alignment-baseline="central" [attr.x]="5" [attr.y]="node.dimension.height-7.5" font-size="10" fill="#FFFFFF">
                 ⮩ {{node.data.node.variable}}
               </svg:text>
             </ng-container>
