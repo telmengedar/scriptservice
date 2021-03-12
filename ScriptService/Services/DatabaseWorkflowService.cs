@@ -49,8 +49,13 @@ namespace ScriptService.Services {
             database.UpdateSchema<WorkflowNode>();
             database.UpdateSchema<WorkflowTransition>();
 
-            insertworkflow = database.Insert<Workflow>().Columns(w=>w.Revision, w => w.Name).ReturnID().Prepare();
-            updateworkflow = database.Update<Workflow>().Set(w => w.Revision == w.Revision + 1, w => w.Name == DBParameter.String).Where(w => w.Id == DBParameter.Int64).Prepare();
+            insertworkflow = database.Insert<Workflow>().Columns(w=>w.Revision, w => w.Name, w=>w.Language)
+                .ReturnID()
+                .Prepare();
+            updateworkflow = database.Update<Workflow>()
+                .Set(w => w.Revision == w.Revision + 1, w => w.Name == DBParameter.String, w => w.Language == DBParameter<ScriptLanguage?>.Value)
+                .Where(w => w.Id == DBParameter.Int64)
+                .Prepare();
 
             deletetransitions = database.Delete<WorkflowTransition>().Where(t => t.WorkflowId == DBParameter.Int64).Prepare();
             deletenodes = database.Delete<WorkflowNode>().Where(n => n.WorkflowId == DBParameter.Int64).Prepare();
@@ -69,8 +74,8 @@ namespace ScriptService.Services {
             return loadworkflowbyname.ExecuteEntityAsync(name);
         }
 
-        Task UpdateWorkflow(Transaction transaction, long workflowid, string name) {
-            return updateworkflow.ExecuteAsync(transaction, name, workflowid);
+        Task UpdateWorkflow(Transaction transaction, long workflowid, string name, ScriptLanguage? language) {
+            return updateworkflow.ExecuteAsync(transaction, name, language, workflowid);
         }
 
         Task CreateNode(Transaction transaction, Guid nodeid, long workflowid, string name, string group, NodeType type, object parameters, string result) {
@@ -124,7 +129,7 @@ namespace ScriptService.Services {
 
             using Transaction transaction = database.Transaction();
 
-            long workflowid = await insertworkflow.ExecuteAsync(1, data.Name);
+            long workflowid = await insertworkflow.ExecuteAsync(1, data.Name, data.Language);
             await CreateNodeAndTransitions(transaction, workflowid, data.Nodes, data.Transitions);
             transaction.Commit();
             return workflowid;
@@ -147,7 +152,7 @@ namespace ScriptService.Services {
             
             await DeleteNodes(transaction, workflowid);
             await DeleteTransitions(transaction, workflowid);
-            await UpdateWorkflow(transaction, workflowid, data.Name);
+            await UpdateWorkflow(transaction, workflowid, data.Name, data.Language);
             await CreateNodeAndTransitions(transaction, workflowid, data.Nodes, data.Transitions);
             transaction.Commit();
         }
