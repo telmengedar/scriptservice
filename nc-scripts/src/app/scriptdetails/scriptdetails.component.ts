@@ -97,7 +97,7 @@ export class ScriptDetailsComponent implements OnInit {
 
   private scriptLoaded(script: Script): void {
     this.script=script;
-    this.script.language=ScriptLanguage.getNodeTypeValue(this.script.language);
+    this.script.language=ScriptLanguage.getValue(this.script.language);
     this.oldscript=Object.assign({}, this.script);
     this.changed=false;
   }
@@ -119,7 +119,7 @@ export class ScriptDetailsComponent implements OnInit {
     .toPromise()
     .then(s=>{
       this.script=s;
-      this.script.language=ScriptLanguage.getNodeTypeValue(this.script.language);
+      this.script.language=ScriptLanguage.getValue(this.script.language);
       this.oldscript={
         id: s.id,
         revision: s.revision,

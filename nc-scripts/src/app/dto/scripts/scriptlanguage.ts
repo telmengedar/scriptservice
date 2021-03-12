@@ -31,7 +31,7 @@ export enum ScriptLanguage {
 
 export namespace ScriptLanguage {
 
-    export function getNodeTypeName(type: any): string {
+    export function getName(type: any): string {
         if(typeof type === "number")
             return ScriptLanguage[type];
 
@@ -45,7 +45,7 @@ export namespace ScriptLanguage {
         return type.toString();
     }
 
-    export function getNodeTypeValue(type: any): ScriptLanguage {
+    export function getValue(type: any): ScriptLanguage {
         if(typeof type === "number")
             return type as number;
 

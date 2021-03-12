@@ -1,3 +1,5 @@
+import { ScriptLanguage } from "../scripts/scriptlanguage";
+
 /**
  * basic data of a workflow
  */
@@ -9,7 +11,7 @@ export interface WorkflowData {
     name: string,
 
     /**
-     * variable scope of workflow
+     * default script language used for expressions
      */
-    scope: string
+    language?: ScriptLanguage
 }

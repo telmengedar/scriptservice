@@ -29,7 +29,6 @@ export class Workflows {
      */
     public static toStructure(workflow: WorkflowDetails): WorkflowStructure {
         return {
-            scope: workflow.scope,
             name: workflow.name,
             nodes: workflow.nodes,
             transitions: Workflows.buildTransitions(workflow.nodes, workflow.transitions)

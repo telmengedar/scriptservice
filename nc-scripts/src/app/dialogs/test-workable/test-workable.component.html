@@ -24,9 +24,11 @@
 <div class="row header">
   <div class="col-12">Log</div>
 </div>
-<div class="row log" *ngFor="let line of task.log">
-  <div class="col-sm-12" >
-    {{line}}
+<div class="row logarea">
+  <div class="row log" *ngFor="let line of task.log">
+    <div class="col-sm-12" >
+      {{line}}
+    </div>
   </div>
 </div>
 <mat-dialog-actions align="end">

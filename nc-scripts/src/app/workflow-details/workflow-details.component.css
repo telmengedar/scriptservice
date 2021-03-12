@@ -1,6 +1,8 @@
 .workflowcontainer {
     background-color: black;
-    width: 90%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .workflowgraph {
@@ -99,4 +101,12 @@
 .chart-container{
     margin: 0;
     padding: 0;
+}
+
+.toolpadding {
+    width: 3em;
+}
+
+.toolselected {
+    color: 'accent'
 }

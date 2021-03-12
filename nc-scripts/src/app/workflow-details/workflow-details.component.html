@@ -1,15 +1,19 @@
 <div class="content-page">
-  <div class="descriptor">
-    <h1>Workflow Editor</h1>
-  </div>
-
   <div class="container">
     <div class="row">
-      <div class="col-11 value">
+      <div class="col-9 value">
         <mat-form-field>
           <mat-label>Name</mat-label>
           <input matInput [(ngModel)]="workflow.name" (ngModelChange)="changed=true">
         </mat-form-field>
+      </div>
+      <div class="col-2 value">
+        <ngx-select [ngModel]="ScriptLanguage.getValue(workflow.language)" [items]="languages" optionValueField="type" optionTextField="name" (ngModelChange)="changed=true;workflow.language=$event;">
+          <ng-template ngx-select-option let-option>
+            <span>{{option.data.name}}</span><br>
+            <small>{{option.data.description}}</small>
+          </ng-template>
+        </ngx-select>  
       </div>
       <div class="col-1 value">
         <mat-form-field>
@@ -20,8 +24,8 @@
     </div>
   </div>
 
-  <div class="container workflowcontainer">
-    <div class="row workflowgraph" (click)="resetTransition()">
+  <div class="workflowcontainer">
+    <div class="row workflowgraph" (contextmenu)="onContextMenu($event)">
       <ngx-graph class="chart-container" layout="dagreCluster" [nodes]="nodes" [links]="transitions" [clusters]="clusters" [update$]="updateGraph$" [draggingEnabled]="false">
         <ng-template #defsTemplate>
           <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
@@ -30,7 +34,12 @@
         </ng-template>
 
         <ng-template #nodeTemplate let-node>
-          <svg:g class="node" ngx-tooltip [tooltipPlacement]="'top'" [tooltipType]="'tooltip'" [tooltipTitle]="node.label" (click)="nodeClick($event, node)" [attr.width]="node.dimension.width" [attr.height]="node.dimension.height" (dblclick)="editNode($event, node)">
+          <svg:g class="node" ngx-tooltip 
+                 [tooltipPlacement]="'top'" [tooltipType]="'tooltip'" [tooltipTitle]="node.label" 
+                 (click)="nodeClick($event, node)" (dblclick)="nodeDoubleClick($event, node)"
+                 (mousedown)="nodeMouseDown($event, node)" (mouseup)="nodeMouseUp($event, node)"
+                 [attr.width]="node.dimension.width" [attr.height]="node.dimension.height" 
+                 >
             <svg:rect [attr.width]="node.dimension.width" height="15" fill="#606060" />
             <svg:text alignment-baseline="central" [attr.x]="5" [attr.y]="7.5" font-size="10" fill="#FFFFFF">
               {{NodeType.getNodeTypeName(node.data.node.type)}}
@@ -65,7 +74,9 @@
           </svg:g>
         </ng-template>
         <ng-template #linkTemplate let-link>
-          <svg:g class="edge" (dblclick)="editTransition($event, link)" (click)="edgeClick($event, link)">
+          <svg:g class="edge" ngx-tooltip 
+                 tooltipPlacement="top" tooltipType="tooltip" [tooltipTitle]="link.data.transition.condition" 
+                 (dblclick)="edgeDoubleClick($event, link)" (click)="edgeClick($event, link)">
             <svg:path class="line" [ngClass]="{'transitionhighlight': link.data.highlighted, 'transitionerror': !link.data.highlighted && link.data.transition.type==='Error', 'transition': !link.data.highlighted && link.data.transition.type==='Standard', 'transitionloop': !link.data.highlighted && link.data.transition.type==='Loop' }" stroke-width="3" marker-end="url(#arrow)"></svg:path>
             <svg:text class="edge-label" text-anchor="middle">
               <textPath
@@ -87,13 +98,37 @@
       </ngx-graph>
     </div>
   </div>
-  <p></p>
   <div class="container">
     <div class="actionbutton">
       <button mat-raised-button color="primary" [disabled]="!changed" (click)="save()">Save</button>
     </div>
     <div class="actionbutton">
       <button mat-raised-button color="primary" (click)="startTest()">Test</button>
+    </div>
+    <div class="actionbutton toolpadding"></div>
+    <div class="actionbutton" ngx-tooltip 
+      tooltipPlacement="top" tooltipType="tooltip" tooltipTitle="navigate and edit">
+      <button mat-icon-button [color]="selectedTool===0?'accent':''" (click)="selectTool(0)">
+        <mat-icon class="actionicon">mode_edit</mat-icon>
+      </button>
+    </div>
+    <div class="actionbutton" ngx-tooltip 
+    tooltipPlacement="top" tooltipType="tooltip" tooltipTitle="create nodes">
+      <button mat-icon-button [color]="selectedTool===1?'accent':''" (click)="selectTool(1)">
+        <mat-icon class="actionicon">crop_16_9</mat-icon>
+      </button>
+    </div>
+    <div class="actionbutton" ngx-tooltip 
+    tooltipPlacement="top" tooltipType="tooltip" tooltipTitle="create transitions">
+      <button mat-icon-button [color]="selectedTool===2?'accent':''" (click)="selectTool(2)">
+        <mat-icon class="actionicon">horizontal_rule</mat-icon>
+      </button>
+    </div>
+    <div class="actionbutton" ngx-tooltip 
+    tooltipPlacement="top" tooltipType="tooltip" tooltipTitle="delete nodes or transitions">
+      <button mat-icon-button [color]="selectedTool===3?'accent':''" (click)="selectTool(3)">
+        <mat-icon class="actionicon">delete</mat-icon>
+      </button>
     </div>
   </div>
 </div>

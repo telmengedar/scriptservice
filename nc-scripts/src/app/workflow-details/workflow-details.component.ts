@@ -1,7 +1,7 @@
 import {Location} from '@angular/common';
-import { Component, ViewChild, HostListener, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { WorkflowDetails } from '../dto/workflows/workflowdetails';
-import { Node, Edge, ClusterNode, NodeDimension } from '@swimlane/ngx-graph';
+import { Node, Edge, ClusterNode } from '@swimlane/ngx-graph';
 import { WorkflowService } from '../services/workflow.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -21,6 +21,9 @@ import { TransitionType } from '../dto/workflows/transitionType';
 import { NodeType } from '../dto/workflows/nodetype';
 import { TestWorkableComponent } from '../dialogs/test-workable/test-workable.component';
 import { WorkableType } from '../dto/tasks/workabletype';
+import { ScriptLanguageOptions } from '../dto/scripts/scriptlanguageoptions';
+import { ScriptLanguage } from '../dto/scripts/scriptlanguage';
+import { Errors } from '../helpers/errors';
 
 @Component({
   selector: 'app-workflow-details',
@@ -29,13 +32,15 @@ import { WorkableType } from '../dto/tasks/workabletype';
 })
 export class WorkflowDetailsComponent implements OnInit{
   NodeType=NodeType;
+  ScriptLanguage=ScriptLanguage;
+  
   workflowid?: number;
 
   workflow: WorkflowDetails={
     id: 0,
     revision: 0,
+    language: ScriptLanguage.NCScript,
     name: "",
-    scope: "",
     nodes: [],
     transitions: []
   };
@@ -48,7 +53,9 @@ export class WorkflowDetailsComponent implements OnInit{
   updateGraph$: Subject<boolean>=new Subject();
 
   selectedNode: Node;
-  selectedEdge: Edge;
+  selectedTool: number=0;
+
+  languages=ScriptLanguageOptions;
 
   @ViewChild(MatMenuTrigger)
   contextMenu: MatMenuTrigger;
@@ -69,9 +76,14 @@ export class WorkflowDetailsComponent implements OnInit{
     });
 
     if(this.workflowid)
-      this.workflowservice.getWorkflowById(this.workflowid).subscribe(w=>{
-        this.processWorkflowData(w);
-      });
+      this.workflowservice.getWorkflowById(this.workflowid)
+        .toPromise()
+        .then(w=>{
+          this.processWorkflowData(w);
+        })
+        .catch(e=>{
+          this.snackbar.open(Errors.getErrorText(e));
+        });
   }
 
   loadRevision(): void {
@@ -188,14 +200,11 @@ export class WorkflowDetailsComponent implements OnInit{
    * opens a dialog used to edit a transition
    * @param edge edge representing transition to edit
    */
-  editTransition(event: MouseEvent, edge: Edge): void {
+  edgeDoubleClick(event: MouseEvent, edge: Edge): void {
     event.stopPropagation();
-    if(this.selectedEdge)
-    {
-      this.selectedEdge.data.highlighted=false;
-      this.selectedEdge=null;
-    }
-
+    if(this.selectedTool!==0)
+      return;
+    
     let transitiondialog=this.dialogservice.open(TransitionEditorComponent, {
       data: edge.data.transition,
       width: '50%'
@@ -241,31 +250,26 @@ export class WorkflowDetailsComponent implements OnInit{
    * @param event mouse event which triggered this method
    * @param node node to edit
    */
-  editNode(event: MouseEvent, node: Node) {
+  nodeDoubleClick(event: MouseEvent, node: Node) {
     event.stopPropagation();
 
-    if(event.shiftKey) {
-      let nodeid: string=this.addNode();
-      this.createTransition({
-        originId: node.id,
-        targetId: nodeid,
-        type: TransitionType.Standard
-      });
+    if(this.selectedTool!==0)
+      return;
+  
+    let nodedialog=this.dialogservice.open<NodeEditorComponent, NodeEditorParameters>(NodeEditorComponent, {
+      data: {
+        node: node.data.node,
+        imports: this.determineImports(),
+      },
+      panelClass: 'editor-dialog-container',
+      width: '50%'
+    });
+    nodedialog.afterClosed().subscribe(n=>{
+      this.changed=true;
+      this.generateClusters();
+      this.layoutNode(node.data.node, node);
       this.refreshLayout();
-    } else {
-      let nodedialog=this.dialogservice.open<NodeEditorComponent, NodeEditorParameters>(NodeEditorComponent, {
-        data: {
-          node: node.data.node,
-          imports: this.determineImports(),
-        },
-        panelClass: 'editor-dialog-container',
-        width: '50%'
-      });
-      nodedialog.afterClosed().subscribe(n=>{
-        this.changed=true;
-        this.generateClusters();
-      });
-    }
+    });
   }
 
   /**
@@ -283,8 +287,8 @@ export class WorkflowDetailsComponent implements OnInit{
       data: {
         type: WorkableType.Workflow,
         workable: {
-          scope: this.workflow.scope,
           name: this.workflow.name,
+          language: this.workflow.language,
           nodes: this.buildNodes(),
           transitions: this.buildTransitions()
         }
@@ -318,15 +322,6 @@ export class WorkflowDetailsComponent implements OnInit{
     return result;
   }
 
-  onContextMenu(event: MouseEvent) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    //this.contextMenu.menuData = { 'item': item };
-    this.contextMenu.menu.focusFirstItem('mouse');
-    this.contextMenu.openMenu();
-  }
-
   addNode(): string {
     const n: WorkflowNode={
       id: guid(),
@@ -342,61 +337,82 @@ export class WorkflowDetailsComponent implements OnInit{
     this.updateGraph$.next(true);
   }
 
-  resetTransition(): void {
-    if(this.selectedNode) {
-      this.selectedNode.data.highlighted=false;
-      this.selectedNode=null;
-    }
-
-    if(this.selectedEdge) {
-      this.selectedEdge.data.highlighted=false;
-      this.selectedEdge=null;  
-    }
-  }
-
   edgeClick(event: MouseEvent, edge: Edge): void {
-    if(this.selectedNode)
-      this.selectedNode.data.highlighted=false;
-    
-    if(this.selectedEdge) {
-      if(this.selectedEdge!==edge)
-        this.selectedEdge.data.highlighted=false;
-    }
+    if(this.selectedTool===3) {      
+      const index: number=this.transitions.findIndex(t=>t.source===edge.source && t.target===edge.target);
+      if(index>-1)
+        this.transitions.splice(index, 1);
 
-    this.selectedEdge=edge;
-    this.selectedEdge.data.highlighted=true;
+      this.changed=true;
+      this.refreshLayout();
+    }
     event.stopPropagation();
   }
 
+  /**
+   * creates a new node, connecting it to a parent node in the graph
+   * @param parentNode node to connect new node to
+   */
+  private createNewNode(parentNode: Node): void {
+    let nodeid: string=this.addNode();
+    this.createTransition({
+      originId: parentNode.id,
+      targetId: nodeid,
+      type: TransitionType.Standard
+    });
+    this.refreshLayout();
+  }
+
+  removeNode(node: Node): void {
+    let index: number=this.nodes.findIndex(n=>n.id===node.id);
+    if(index>-1)
+      this.nodes.splice(index, 1);
+
+    do {
+      index=this.transitions.findIndex(t=>t.source==node.id || t.target==node.id);
+      if(index>-1)
+        this.transitions.splice(index, 1);
+    } while(index>-1);
+
+    this.changed=true;
+    this.refreshLayout();
+  }
+
   nodeClick(event: MouseEvent, node: Node): void {
-    if(!event.ctrlKey)
+    switch(this.selectedTool) {
+      case 1:
+        this.createNewNode(node);
+        break;
+      case 3:
+        this.removeNode(node);
+        break;
+    }  
+  }
+
+  nodeMouseDown(event: MouseEvent, node: Node): void {
+    if(this.selectedTool!==2)
+      return;
+
+    this.selectedNode=node;
+  }
+
+  nodeMouseUp(event: MouseEvent, node: Node): void {
+    if(!this.selectedNode || this.selectedTool!==2)
       return;
     
-    if(this.selectedEdge)
-      this.selectedEdge.data.highlighted=false;
-    
-    if(!this.selectedNode) {
-      this.selectedNode=node;
-      node.data.highlighted=true;
-      event.stopPropagation();
-      return;
+    if(node!==this.selectedNode) {
+      if(this.transitions.findIndex(t=>t.source===this.selectedNode.id && t.target===node.id) < 0) {          
+        this.createTransition({
+          originId: this.selectedNode.id,
+          targetId: node.id,
+          type: TransitionType.Standard
+        });
+        this.changed=true;
+        this.refreshLayout();
+      }
     }
 
-    if(this.selectedNode) {
-      if(node!==this.selectedNode) {
-        if(this.transitions.findIndex(t=>t.source===this.selectedNode.id && t.target===node.id) < 0) {          
-          this.createTransition({
-            originId: this.selectedNode.id,
-            targetId: node.id,
-            type: TransitionType.Standard
-          });
-          this.changed=true;
-          this.refreshLayout();
-        }
-      }
-      this.selectedNode.data.highlighted=false;
-      this.selectedNode=null;
-    }    
+    this.selectedNode=null;
   }
 
   /**
@@ -404,8 +420,8 @@ export class WorkflowDetailsComponent implements OnInit{
    */
   save(): void {
     let data: WorkflowStructure={
-      scope: this.workflow.scope,
       name: this.workflow.name,
+      language: this.workflow.language,
       nodes: this.buildNodes(),
       transitions: this.buildTransitions()
     };
@@ -419,31 +435,16 @@ export class WorkflowDetailsComponent implements OnInit{
     this.changed=false;
   }
 
-  @HostListener('document:keyup', ['$event'])
-  handleKey(event: KeyboardEvent): void {
-    if(event.key==="Delete") {
-      if(this.selectedEdge) {
-        const index: number=this.transitions.findIndex(t=>t.source===this.selectedEdge.source && t.target===this.selectedEdge.target);
-        if(index>-1)
-          this.transitions.splice(index, 1);
-        this.selectedEdge=null;
-        this.changed=true;
-        this.refreshLayout();
-      }
-      else if(this.selectedNode) {
-        let index: number=this.nodes.findIndex(n=>n.id===this.selectedNode.id);
-        if(index>-1)
-          this.nodes.splice(index, 1);
-
-        do {
-          index=this.transitions.findIndex(t=>t.source==this.selectedNode.id || t.target==this.selectedNode.id);
-          if(index>-1)
-            this.transitions.splice(index, 1);
-        } while(index>-1);
-        this.changed=true;
-        this.selectedNode=null;
-        this.refreshLayout();
-      }
-    }
+  /**
+   * selects a different editor tool to use
+   * @param tool tool to select
+   */
+  selectTool(tool: number): void {
+    this.selectedTool=tool;
   }
+
+  onContextMenu(event): void {
+    event.preventDefault();
+  }
+  
 }
