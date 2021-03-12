@@ -29,9 +29,14 @@ namespace ScriptService.Services.Workflows.Nodes {
 
         /// <inheritdoc />
         protected override string GenerateCode(ScriptLanguage language) {
-            if(language==ScriptLanguage.Lua)
-                return $"${Parameters.Host}:{Parameters.Method}({string.Join(",", Parameters.Arguments)})";
-            else return $"${Parameters.Host}.{Parameters.Method}({string.Join(",", Parameters.Arguments)})";
+            switch (language) {
+            case ScriptLanguage.NCScript:
+                return $"${Parameters.Host}.{Parameters.Method}({string.Join(",", Parameters.Arguments)})";
+            case ScriptLanguage.Lua:
+                return $"{Parameters.Host}:{Parameters.Method}({string.Join(",", Parameters.Arguments)})";
+            default:
+                return $"{Parameters.Host}.{Parameters.Method}({string.Join(",", Parameters.Arguments)})";
+            }
         }
     }
 }
