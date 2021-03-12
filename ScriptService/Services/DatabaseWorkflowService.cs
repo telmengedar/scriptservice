@@ -187,7 +187,8 @@ namespace ScriptService.Services {
             return await FillWorkflow(new WorkflowDetails {
                 Id = workflow.Id,
                 Revision = workflow.Revision,
-                Name = workflow.Name
+                Name = workflow.Name,
+                Language = workflow.Language
             });
         }
         
@@ -205,7 +206,8 @@ namespace ScriptService.Services {
             return await FillWorkflow(new WorkflowDetails {
                 Id = workflow.Id,
                 Revision = workflow.Revision,
-                Name = workflow.Name
+                Name = workflow.Name,
+                Language = workflow.Language
             });
         }
 
