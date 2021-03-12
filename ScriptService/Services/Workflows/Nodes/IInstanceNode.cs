@@ -39,6 +39,5 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// executes the node
         /// </summary>
         public Task<object> Execute(WorkflowInstanceState state, CancellationToken token);
-
     }
 }

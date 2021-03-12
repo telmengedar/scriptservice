@@ -1,4 +1,5 @@
-﻿using ScriptService.Services.Workflows.Nodes;
+﻿using ScriptService.Dto;
+using ScriptService.Services.Workflows.Nodes;
 
 namespace ScriptService.Services.Workflows {
 
@@ -6,17 +7,18 @@ namespace ScriptService.Services.Workflows {
     /// state used to continue suspended workflows
     /// </summary>
     public class SuspendState {
-        
         /// <summary>
         /// creates a new <see cref="SuspendState"/>
         /// </summary>
         /// <param name="node">suspended node</param>
         /// <param name="variables">variables of executing workflow</param>
+        /// <param name="language">default language of workflow</param>
         /// <param name="subflow">suspended sub workflow (optional)</param>
-        public SuspendState(IInstanceNode node, StateVariableProvider variables, SuspendState subflow=null) {
+        public SuspendState(IInstanceNode node, StateVariableProvider variables, ScriptLanguage? language, SuspendState subflow=null) {
             Variables = variables;
             Node = node;
             Subflow = subflow;
+            Language = language;
         }
 
         /// <summary>
@@ -34,6 +36,11 @@ namespace ScriptService.Services.Workflows {
         /// </summary>
         public SuspendState Subflow { get; }
 
+        /// <summary>
+        /// default language used in workflow
+        /// </summary>
+        public ScriptLanguage? Language { get; }
+        
         /// <inheritdoc />
         public override string ToString() {
             if (Subflow != null)

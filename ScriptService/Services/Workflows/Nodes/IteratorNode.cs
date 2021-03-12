@@ -36,9 +36,10 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// </summary>
         public IteratorParameters Parameters { get; set; }
         
-        async Task<IEnumerator> CreateEnumerator(IVariableProvider variables, CancellationToken token) {
-            IScript enumerationscript = await compiler.CompileCodeAsync(Parameters.Collection, ScriptLanguage.NCScript);
-            if (!(await enumerationscript.ExecuteAsync(variables, token) is IEnumerable enumerable))
+        async Task<IEnumerator> CreateEnumerator(WorkflowInstanceState state, CancellationToken token) {
+            IScript enumerationscript = await compiler.CompileCodeAsync(Parameters.Collection, state.Language ?? ScriptLanguage.NCScript);
+            object collection = await enumerationscript.ExecuteAsync(state.Variables, token);
+            if (!(collection is IEnumerable enumerable))
                 throw new WorkflowException("Can not enumerate null");
 
             return enumerable.GetEnumerator();
@@ -48,7 +49,7 @@ namespace ScriptService.Services.Workflows.Nodes {
         public override async Task<object> Execute(WorkflowInstanceState state, CancellationToken token) {
             IEnumerator current = state.GetNodeData<IEnumerator>(NodeId);
             if (current == null)
-                state[NodeId] = current = await CreateEnumerator(state.Variables, token);
+                state[NodeId] = current = await CreateEnumerator(state, token);
 
             if (current.MoveNext()) {
                 state.Variables[Parameters.Item ?? "item"] = current.Current;

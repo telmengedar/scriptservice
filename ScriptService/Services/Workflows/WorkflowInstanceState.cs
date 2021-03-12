@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ScriptService.Dto;
 
 namespace ScriptService.Services.Workflows {
     
@@ -18,11 +19,14 @@ namespace ScriptService.Services.Workflows {
         /// <param name="logger">access to logging</param>
         /// <param name="variables">workflow state variables</param>
         /// <param name="workflowprovider">provides workflows by name</param>
-        public WorkflowInstanceState(WorkableLogger logger, StateVariableProvider variables, Func<string, Task<WorkflowInstance>> workflowprovider, IWorkflowExecutionService workflowexecutor) {
+        /// <param name="workflowexecutor">executor for workflows</param>
+        /// <param name="language">default language used for code execution</param>
+        public WorkflowInstanceState(WorkableLogger logger, StateVariableProvider variables, Func<string, Task<WorkflowInstance>> workflowprovider, IWorkflowExecutionService workflowexecutor, ScriptLanguage? language) {
             this.workflowprovider = workflowprovider;
             Logger = logger;
             Variables = variables;
             WorkflowExecutor = workflowexecutor;
+            Language = language;
         }
         
         /// <summary>
@@ -84,5 +88,10 @@ namespace ScriptService.Services.Workflows {
         /// executor for workflows
         /// </summary>
         public IWorkflowExecutionService WorkflowExecutor { get; }
+
+        /// <summary>
+        /// default language for code execution
+        /// </summary>
+        public ScriptLanguage? Language { get; }
     }
 }

@@ -35,7 +35,7 @@ namespace ScriptService.Services.Workflows.Nodes {
 
         /// <inheritdoc />
         public override async Task<object> Execute(WorkflowInstanceState state, CancellationToken token) {
-            logparameter ??= await compiler.CompileCodeAsync(Parameters.Text, ScriptLanguage.NCScript);
+            logparameter ??= await compiler.CompileCodeAsync(Parameters.Text, state.Language ?? ScriptLanguage.NCScript);
             state.Logger.Log(Parameters.Type, await logparameter.ExecuteAsync<string>(state.Variables, token));
             return null;
         }

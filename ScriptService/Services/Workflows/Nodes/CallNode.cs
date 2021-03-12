@@ -1,4 +1,5 @@
 ﻿using System;
+using ScriptService.Dto;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Services.Scripts;
 
@@ -27,8 +28,10 @@ namespace ScriptService.Services.Workflows.Nodes {
         public CallParameters Parameters { get; }
 
         /// <inheritdoc />
-        protected override string GenerateCode() {
-            return $"${Parameters.Host}.{Parameters.Method}({string.Join(",", Parameters.Arguments)})";
+        protected override string GenerateCode(ScriptLanguage language) {
+            if(language==ScriptLanguage.Lua)
+                return $"${Parameters.Host}:{Parameters.Method}({string.Join(",", Parameters.Arguments)})";
+            else return $"${Parameters.Host}.{Parameters.Method}({string.Join(",", Parameters.Arguments)})";
         }
     }
 }

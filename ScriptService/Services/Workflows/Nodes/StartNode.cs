@@ -41,13 +41,14 @@ namespace ScriptService.Services.Workflows.Nodes {
         public override async Task<object> Execute(WorkflowInstanceState state, CancellationToken token) {
             if (Parameters?.Parameters?.Length > 0) {
                 foreach (ParameterDeclaration parameter in Parameters.Parameters) {
+                    // not sure whether type specs are possible in every script language
                     Type type = (await compiler.CompileCodeAsync(parameter.Type, ScriptLanguage.NCScript)).Execute<Type>();
                     
                     if (!state.Variables.TryGetValue(parameter.Name, out object parametervalue)) {
                         if (string.IsNullOrEmpty(parameter.Default))
                             throw new WorkflowException($"Missing required parameter '{parameter.Name}'");
 
-                        parametervalue = await (await compiler.CompileCodeAsync(parameter.Default, ScriptLanguage.NCScript)).ExecuteAsync(state.Variables, token);
+                        parametervalue = await (await compiler.CompileCodeAsync(parameter.Default, state.Language??ScriptLanguage.NCScript)).ExecuteAsync(state.Variables, token);
                     }
                     
                     if(parametervalue == null) {

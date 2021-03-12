@@ -146,14 +146,14 @@ namespace ScriptService.Extensions {
         /// <param name="arguments">arguments to use as code source</param>
         /// <param name="compiler">compiler used to compile scripts</param>
         /// <returns></returns>
-        public static IDictionary<string, IScript> BuildArguments(this IDictionary<string, object> arguments, IScriptCompiler compiler) {
+        public static IDictionary<string, IScript> BuildArguments(this IDictionary<string, object> arguments, IScriptCompiler compiler, ScriptLanguage? language) {
             if (arguments == null)
                 return null;
 
             Dictionary<string, IScript> result=new Dictionary<string, IScript>();
             foreach ((string key, object value) in arguments) {
                 if (value is string code)
-                    result[key] = compiler.CompileCode(code, ScriptLanguage.NCScript) ?? new ConstantValueScript(null);
+                    result[key] = compiler.CompileCode(code, language??ScriptLanguage.NCScript) ?? new ConstantValueScript(null);
                 else result[key] = new ConstantValueScript(value);
             }
 
@@ -166,14 +166,14 @@ namespace ScriptService.Extensions {
         /// <param name="variables">variables to translate</param>
         /// <param name="compiler">compiler to use to parse variable scripts</param>
         /// <returns>workable parameter variables</returns>
-        public static async Task<IDictionary<string, object>> TranslateVariables(this IDictionary<string, object> variables, IScriptCompiler compiler) {
+        public static async Task<IDictionary<string, object>> TranslateVariables(this IDictionary<string, object> variables, IScriptCompiler compiler, ScriptLanguage? language) {
             if(variables == null)
                 return null;
 
             Dictionary<string, object> translated = new Dictionary<string, object>();
             foreach(KeyValuePair<string, object> kvp in variables) {
                 if(kvp.Value is string code) {
-                    translated[kvp.Key] = await (await compiler.CompileCodeAsync(code, ScriptLanguage.NCScript)).ExecuteAsync();
+                    translated[kvp.Key] = await (await compiler.CompileCodeAsync(code, language??ScriptLanguage.NCScript)).ExecuteAsync();
                 }
                 else
                     translated[kvp.Key] = kvp.Value;

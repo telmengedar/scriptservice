@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using NightlyCode.Scripting;
+using ScriptService.Dto;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Extensions;
 using ScriptService.Services.Scripts;
@@ -22,10 +23,11 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// <param name="name">name of node</param>
         /// <param name="parameters">parameters for workflow call</param>
         /// <param name="scriptcompiler">compiler used to build workflow arguments</param>
-        public WorkflowInstanceNode(Guid nodeid, string name, CallWorkableParameters parameters, IScriptCompiler scriptcompiler)
+        /// <param name="language">language used to translate arguments</param>
+        public WorkflowInstanceNode(Guid nodeid, string name, CallWorkableParameters parameters, IScriptCompiler scriptcompiler, ScriptLanguage? language)
         : base(nodeid, name) {
             this.parameters = parameters;
-            Arguments = parameters.Arguments.BuildArguments(scriptcompiler);
+            Arguments = parameters.Arguments.BuildArguments(scriptcompiler, language ?? ScriptLanguage.NCScript);
         }
 
         /// <summary>
@@ -38,7 +40,7 @@ namespace ScriptService.Services.Workflows.Nodes {
             WorkflowInstance instance = await state.GetWorkflow(parameters.Name);
             object result = await state.WorkflowExecutor.Execute(instance, state.Logger, await Arguments.EvaluateArguments(state.Variables, token), token);
             if (result is SuspendState suspend)
-                result = new SuspendState(this, state.Variables, suspend);
+                result = new SuspendState(this, state.Variables, state.Language, suspend);
 
             return result;
         }

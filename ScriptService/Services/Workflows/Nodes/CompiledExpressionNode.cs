@@ -30,11 +30,11 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// generates code for node to execute
         /// </summary>
         /// <returns>script code to parse and execute</returns>
-        protected abstract string GenerateCode();
+        protected abstract string GenerateCode(ScriptLanguage language);
 
         /// <inheritdoc />
         public override async Task<object> Execute(WorkflowInstanceState state, CancellationToken token) {
-            expression ??= await compiler.CompileCodeAsync(GenerateCode(), ScriptLanguage.NCScript);
+            expression ??= await compiler.CompileCodeAsync(GenerateCode(state.Language??ScriptLanguage.NCScript), state.Language??ScriptLanguage.NCScript);
             object result = await expression.ExecuteAsync(state.Variables, token);
             if (result is Task task) {
                 await task;

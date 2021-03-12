@@ -30,7 +30,7 @@ namespace ScriptService.Services.Workflows.Nodes {
         public override Task<object> Execute(WorkflowInstanceState state, CancellationToken token) {
             if (!string.IsNullOrEmpty(Parameters.Variable))
                 state.Variables[Parameters.Variable] = null;
-            SuspendState suspendstate = new SuspendState(this, state.Variables);
+            SuspendState suspendstate = new SuspendState(this, state.Variables, state.Language);
             return Task.FromResult((object)suspendstate);
         }
     }

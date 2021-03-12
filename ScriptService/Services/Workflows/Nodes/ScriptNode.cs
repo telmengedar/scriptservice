@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NightlyCode.Scripting;
 using NightlyCode.Scripting.Parser;
+using ScriptService.Dto;
 using ScriptService.Dto.Scripts;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Extensions;
@@ -25,11 +26,12 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// <param name="name">name of node</param>
         /// <param name="parameters">parameters for script</param>
         /// <param name="compiler">compiler used to retrieve script instance</param>
-        public ScriptNode(Guid nodeid, string name, CallWorkableParameters parameters, IScriptCompiler compiler) 
+        /// <param name="language">language used to translate parameters</param>
+        public ScriptNode(Guid nodeid, string name, CallWorkableParameters parameters, IScriptCompiler compiler, ScriptLanguage? language) 
         : base(nodeid, name) {
             this.compiler = compiler;
             Name = parameters.Name;
-            Arguments = parameters.Arguments.BuildArguments(compiler);
+            Arguments = parameters.Arguments.BuildArguments(compiler, language);
         }
 
         

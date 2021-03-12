@@ -93,7 +93,7 @@ namespace ScriptService.Services {
                 return lastresult;
             }
 
-            return await Execute(new WorkflowInstanceState(tasklogger, state.Variables, GetWorkflowInstance, this), token, transition.Target, lastresult);
+            return await Execute(new WorkflowInstanceState(tasklogger, state.Variables, GetWorkflowInstance, this, state.Language), token, transition.Target, lastresult);
         }
 
         void HandleTaskResult(Task<object> t, WorkableTask task, WorkableLogger tasklogger) {
@@ -163,7 +163,7 @@ namespace ScriptService.Services {
         public Task<object> Execute(WorkflowInstance workflow, WorkableLogger tasklogger, IDictionary<string, object> arguments, CancellationToken token) {
             StateVariableProvider variables = new StateVariableProvider(ProcessImports(tasklogger, workflow.StartNode.Parameters?.Imports));
             variables.Add(arguments);
-            return Execute(new WorkflowInstanceState(tasklogger, variables, GetWorkflowInstance, this), token, workflow.StartNode);
+            return Execute(new WorkflowInstanceState(tasklogger, variables, GetWorkflowInstance, this, workflow.Language), token, workflow.StartNode);
         }
         
         async Task<InstanceTransition> EvaluateTransitions(IInstanceNode current, WorkableLogger tasklogger, IVariableProvider variableprovider, List<InstanceTransition> transitions, CancellationToken token) {

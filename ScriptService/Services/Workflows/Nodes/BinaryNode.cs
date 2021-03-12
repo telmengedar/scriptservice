@@ -1,4 +1,5 @@
 ﻿using System;
+using ScriptService.Dto;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Extensions;
 using ScriptService.Services.Scripts;
@@ -29,7 +30,7 @@ namespace ScriptService.Services.Workflows.Nodes {
         public BinaryOpParameters Parameters { get; }
 
         /// <inheritdoc />
-        protected override string GenerateCode() {
+        protected override string GenerateCode(ScriptLanguage language) {
             return $"{Parameters.Lhs}{Parameters.Operation.ToOperatorString()}{Parameters.Rhs}";
         }
     }

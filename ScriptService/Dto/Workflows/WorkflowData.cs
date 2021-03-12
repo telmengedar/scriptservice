@@ -12,5 +12,10 @@ namespace ScriptService.Dto.Workflows {
         /// </summary>
         [Unique]
         public string Name { get; set; }
+
+        /// <summary>
+        /// default script language for expressions
+        /// </summary>
+        public ScriptLanguage? Language { get; set; }
     }
 }

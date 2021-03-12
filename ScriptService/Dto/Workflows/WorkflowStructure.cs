@@ -3,13 +3,8 @@
     /// <summary>
     /// arguments used to create a new workflow
     /// </summary>
-    public class WorkflowStructure {
-
-        /// <summary>
-        /// name of workflow to create
-        /// </summary>
-        public string Name { get; set; }
-
+    public class WorkflowStructure : WorkflowData {
+        
         /// <summary>
         /// nodes to create
         /// </summary>

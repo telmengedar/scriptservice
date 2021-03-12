@@ -70,7 +70,7 @@ namespace ScriptService.Services {
         /// <inheritdoc />
         public async Task<WorkableTask> Execute(long id, int? revision=null, IDictionary<string, object> variables = null, TimeSpan? wait=null) {
             CompiledScript script = await scriptcompiler.CompileScriptAsync(id, revision);
-            IDictionary<string, object> runtimevariables = await variables.TranslateVariables(scriptcompiler);
+            IDictionary<string, object> runtimevariables = await variables.TranslateVariables(scriptcompiler, ScriptLanguage.NCScript);
             WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, script.Id, script.Revision, script.Name, runtimevariables);
             try {
                 return await Execute(script.Instance, scripttask, runtimevariables, wait);
@@ -87,7 +87,7 @@ namespace ScriptService.Services {
         /// <inheritdoc />
         public async Task<WorkableTask> Execute(string name, int? revision=null, IDictionary<string, object> variables=null, TimeSpan? wait = null) {
             CompiledScript script = await scriptcompiler.CompileScriptAsync(name, revision);
-            IDictionary<string, object> runtimevariables = await variables.TranslateVariables(scriptcompiler);
+            IDictionary<string, object> runtimevariables = await variables.TranslateVariables(scriptcompiler, ScriptLanguage.NCScript);
             WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, script.Id, script.Revision, script.Name, runtimevariables);
             try {
                 return await Execute(script.Instance, scripttask, runtimevariables, wait);
@@ -103,7 +103,7 @@ namespace ScriptService.Services {
 
         /// <inheritdoc />
         public async Task<WorkableTask> Execute(NamedCode code, IDictionary<string, object> variables = null, TimeSpan? wait = null) {
-            IDictionary<string, object> runtimevariables = await variables.TranslateVariables(scriptcompiler);
+            IDictionary<string, object> runtimevariables = await variables.TranslateVariables(scriptcompiler, ScriptLanguage.NCScript);
             WorkableTask scripttask = scriptinstances.CreateTask(WorkableType.Script, 0, 0, code.Name, runtimevariables);
             try {
                 return await Execute(await scriptcompiler.CompileCodeAsync(code.Code, code.Language), scripttask, runtimevariables, wait);

@@ -1,4 +1,5 @@
 ﻿using System;
+using ScriptService.Dto;
 using ScriptService.Services.Scripts;
 
 namespace ScriptService.Services.Workflows.Nodes {
@@ -26,7 +27,7 @@ namespace ScriptService.Services.Workflows.Nodes {
         public object Value { get; }
 
         /// <inheritdoc />
-        protected override string GenerateCode() {
+        protected override string GenerateCode(ScriptLanguage language) {
             return $"{Value}";
         }
     }

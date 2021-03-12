@@ -37,7 +37,7 @@ namespace ScriptService.Services.Workflows {
         
         /// <inheritdoc />
         public async Task<WorkflowInstance> BuildWorkflow(WorkflowStructure workflow) {
-            logger.LogInformation($"Building workflow '{workflow.Name}'");
+            logger.LogInformation("Building workflow '{name}'", workflow.Name);
             int startcount = workflow.Nodes.Count(n => n.Type == NodeType.Start);
             if(startcount == 0)
                 throw new ArgumentException("Workflow has no start node");
@@ -48,25 +48,25 @@ namespace ScriptService.Services.Workflows {
 
             List<IInstanceNode> nodes = new List<IInstanceNode>();
             foreach(NodeData node in workflow.Nodes) {
-                IInstanceNode nodeinstance = await BuildNode(node);
+                IInstanceNode nodeinstance = await BuildNode(workflow.Language, node);
                 nodes.Add(nodeinstance);
-                if(nodeinstance is StartNode startinstance) {
+                if(nodeinstance is StartNode startinstance)
                     startnode = startinstance;
-                }
             }
 
             foreach(IndexTransition transition in workflow.Transitions) {
-                await BuildTransition(transition.OriginIndex, transition.TargetIndex, transition, i => nodes[i]);
+                await BuildTransition(workflow, transition.OriginIndex, transition.TargetIndex, transition, i => nodes[i]);
             }
 
             return new WorkflowInstance {
                 Name = workflow.Name,
-                StartNode = startnode
+                StartNode = startnode,
+                Language = workflow.Language
             };
         }
 
-        async Task BuildTransition<T>(T source, T target, Transition data, Func<T, IInstanceNode> nodegetter) {
-            IScript condition = string.IsNullOrEmpty(data.Condition) ? null : await compiler.CompileCodeAsync(data.Condition, ScriptLanguage.NCScript);
+        async Task BuildTransition<T>(WorkflowData workflow, T source, T target, Transition data, Func<T, IInstanceNode> nodegetter) {
+            IScript condition = string.IsNullOrEmpty(data.Condition) ? null : await compiler.CompileCodeAsync(data.Condition, data.Language ?? workflow.Language ?? ScriptLanguage.NCScript);
             List<InstanceTransition> transitions;
             switch(data.Type) {
             case TransitionType.Standard:
@@ -85,11 +85,11 @@ namespace ScriptService.Services.Workflows {
             transitions.Add(new InstanceTransition {
                 Target = nodegetter(target),
                 Condition = condition,
-                Log = string.IsNullOrEmpty(data.Log) ? null : await compiler.CompileCodeAsync(data.Log, ScriptLanguage.NCScript)
+                Log = string.IsNullOrEmpty(data.Log) ? null : await compiler.CompileCodeAsync(data.Log, data.Language ?? workflow.Language ?? ScriptLanguage.NCScript)
             });
         }
 
-        async Task<IInstanceNode> BuildNode(NodeData node, Guid? nodeid=null) {
+        async Task<IInstanceNode> BuildNode(ScriptLanguage? language, NodeData node, Guid? nodeid=null) {
             nodeid ??= Guid.NewGuid();
             
             IInstanceNode instance;
@@ -102,10 +102,10 @@ namespace ScriptService.Services.Workflows {
                 instance = new ExpressionNode(nodeid.Value, node.Name, await compiler.CompileCodeAsync(parameters.Code, parameters.Language));
                 break;
             case NodeType.Script:
-                instance = new ScriptNode(nodeid.Value, node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), compiler);
+                instance = new ScriptNode(nodeid.Value, node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), compiler, language);
                 break;
             case NodeType.Workflow:
-                instance = new WorkflowInstanceNode(nodeid.Value, node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), compiler);
+                instance = new WorkflowInstanceNode(nodeid.Value, node.Name, node.Parameters.Deserialize<CallWorkableParameters>(), compiler, language);
                 break;
             case NodeType.BinaryOperation:
                 BinaryOpParameters binparameters = node.Parameters.Deserialize<BinaryOpParameters>();
@@ -143,7 +143,7 @@ namespace ScriptService.Services.Workflows {
             if(instance != null)
                 return instance;
 
-            logger.LogInformation($"Rebuilding workflow '{workflow.Name}'");
+            logger.LogInformation("Rebuilding workflow '{name}'", workflow.Name);
             int startcount = workflow.Nodes.Count(n => n.Type == NodeType.Start);
             if(startcount == 0)
                 throw new ArgumentException("Workflow has no start node");
@@ -154,7 +154,7 @@ namespace ScriptService.Services.Workflows {
 
             Dictionary<Guid, IInstanceNode> nodes = new Dictionary<Guid, IInstanceNode>();
             foreach(NodeDetails node in workflow.Nodes) {
-                IInstanceNode nodeinstance = await BuildNode(node, node.Id);
+                IInstanceNode nodeinstance = await BuildNode(workflow.Language, node, node.Id);
                 nodes[node.Id] = nodeinstance;
 
                 if(nodeinstance is StartNode startinstance) {
@@ -162,14 +162,14 @@ namespace ScriptService.Services.Workflows {
                 }
             }
 
-            foreach(TransitionData transition in workflow.Transitions) {
-                await BuildTransition(transition.OriginId, transition.TargetId, transition, id => nodes[id]);
-            }
+            foreach(TransitionData transition in workflow.Transitions)
+                await BuildTransition(workflow, transition.OriginId, transition.TargetId, transition, id => nodes[id]);
 
             instance = new WorkflowInstance {
                 Id = workflow.Id,
                 Revision = workflow.Revision,
                 Name = workflow.Name,
+                Language = workflow.Language,
                 StartNode = startnode
             };
             cacheservice.StoreObject(workflow.Id, workflow.Revision, instance);
