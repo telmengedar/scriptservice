@@ -94,7 +94,7 @@ namespace ScriptService.Controllers {
         /// <param name="filter">filter to use when listing (optional)</param>
         /// <returns>a result page of matching workflows</returns>
         [HttpGet]
-        public Task<Page<Workflow>> ListWorkflows([FromQuery]ListFilter filter = null) {
+        public Task<Page<Workflow>> ListWorkflows([FromQuery]WorkflowFilter filter = null) {
             return workflowservice.ListWorkflows(filter);
         }
 

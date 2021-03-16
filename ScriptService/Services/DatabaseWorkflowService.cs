@@ -8,6 +8,7 @@ using NightlyCode.Database.Clients;
 using NightlyCode.Database.Entities;
 using NightlyCode.Database.Entities.Operations;
 using NightlyCode.Database.Entities.Operations.Prepared;
+using NightlyCode.Database.Expressions;
 using NightlyCode.Database.Fields;
 using ScriptService.Dto;
 using ScriptService.Dto.Patches;
@@ -212,14 +213,25 @@ namespace ScriptService.Services {
         }
 
         /// <inheritdoc />
-        public async Task<Page<Workflow>> ListWorkflows(ListFilter filter = null) {
-            filter??=new ListFilter();
+        public async Task<Page<Workflow>> ListWorkflows(WorkflowFilter filter = null) {
+            filter ??= new WorkflowFilter();
             LoadOperation<Workflow> operation = database.Load<Workflow>();
 
+            PredicateExpression<Workflow> predicate = null;
+            if (filter.Name?.Length > 0) {
+                if (filter.Name.Length == 1)
+                    predicate &= w => w.Name == filter.Name[0];
+                else predicate &= w => w.Name.In(filter.Name);
+            }
 
+            if (!string.IsNullOrEmpty(filter.Query)) {
+                string q = filter.Query.TranslateWildcards();
+                predicate &= w => w.Name.Like(q);
+            }
+            
             return Page<Workflow>.Create(
-                await operation.ApplyFilter(filter).ExecuteEntitiesAsync(),
-                await database.Load<Workflow>(w => DBFunction.Count()).ExecuteScalarAsync<long>(),
+                await operation.Where(predicate?.Content).ApplyFilter(filter).ExecuteEntitiesAsync(),
+                await database.Load<Workflow>(w => DBFunction.Count()).Where(predicate?.Content).ExecuteScalarAsync<long>(),
                 filter.Continue
             );
         }

@@ -45,7 +45,7 @@ namespace ScriptService.Services {
         /// </summary>
         /// <param name="filter">filter to use when listing (optional)</param>
         /// <returns>a result page of matching workflows</returns>
-        Task<Page<Workflow>> ListWorkflows(ListFilter filter = null);
+        Task<Page<Workflow>> ListWorkflows(WorkflowFilter filter = null);
 
         /// <summary>
         /// patches data of a workflow
