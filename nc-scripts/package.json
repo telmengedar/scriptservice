@@ -38,6 +38,7 @@
     "ngx-select-ex": "^3.7.3",
     "ngx-tooltip": "0.0.9",
     "rxjs": "~6.3.3",
+    "save-svg-as-png": "^1.4.17",
     "tslib": "^1.9.0",
     "uuid": "^8.3.0",
     "webpack": "^4.44.1",

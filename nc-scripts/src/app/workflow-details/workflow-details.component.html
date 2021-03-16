@@ -26,7 +26,7 @@
 
   <div class="workflowcontainer">
     <div class="row workflowgraph" (contextmenu)="onContextMenu($event)">
-      <ngx-graph class="chart-container" layout="dagreCluster" [nodes]="nodes" [links]="transitions" [clusters]="clusters" [update$]="updateGraph$" [draggingEnabled]="false">
+      <ngx-graph id="workflowsvg" class="chart-container" layout="dagreCluster" [nodes]="nodes" [links]="transitions" [clusters]="clusters" [update$]="updateGraph$" [draggingEnabled]="false">
         <ng-template #defsTemplate>
           <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
             <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
@@ -129,6 +129,10 @@
       <button mat-icon-button [color]="selectedTool===3?'accent':''" (click)="selectTool(3)">
         <mat-icon class="actionicon">delete</mat-icon>
       </button>
+    </div>
+    <div class="actionbutton toolpadding"></div>
+    <div class="actionbutton">
+      <button mat-raised-button color="primary" (click)="exportToPng()">Export as Png</button>
     </div>
   </div>
 </div>

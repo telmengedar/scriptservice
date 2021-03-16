@@ -24,6 +24,7 @@ import { WorkableType } from '../dto/tasks/workabletype';
 import { ScriptLanguageOptions } from '../dto/scripts/scriptlanguageoptions';
 import { ScriptLanguage } from '../dto/scripts/scriptlanguage';
 import { Errors } from '../helpers/errors';
+import * as svg from 'save-svg-as-png';
 
 @Component({
   selector: 'app-workflow-details',
@@ -446,5 +447,45 @@ export class WorkflowDetailsComponent implements OnInit{
   onContextMenu(event): void {
     event.preventDefault();
   }
-  
+
+  /**
+   * exports workflow graph to a png file
+   */
+  exportToPng(): void {
+    const svgelement=document.getElementById("workflowsvg")
+                      .getElementsByTagName("ngx-charts-chart")[0]
+                      .getElementsByTagName("div")[0]
+                      .getElementsByTagName("svg")[0];
+
+    let top=0,bottom=0,left=0,right=0;
+
+    let regex=/^translate\((?<x>-?\d+(\.\d+)?), (?<y>-?\d+(\.\d+)?)\)/;
+    for(let node of this.nodes) {
+      let nodeelement=document.getElementById(node.id);
+      let transform=nodeelement.getAttribute("transform");
+      if(!transform)
+        continue;
+      
+      let result=regex.exec(transform);
+      console.log(result);
+      let x=parseFloat(result.groups.x);
+      let y=parseFloat(result.groups.y);
+
+      top=Math.min(top, y);
+      bottom=Math.max(bottom, y+node.dimension.height);
+      left=Math.min(left, x);
+      right=Math.max(right, x+node.dimension.width);
+    }
+
+    //const boundingbox=svgelement.getBBox();
+    //console.log(boundingbox);
+    const name=this.workflow.name||"workflow";
+    svg.saveSvgAsPng(svgelement, `${name}.png`, {
+      exportOptions: 1,
+      top: top,
+      left: left,
+      width: right-left,
+      height: bottom-top
+    });
+  }
 }
