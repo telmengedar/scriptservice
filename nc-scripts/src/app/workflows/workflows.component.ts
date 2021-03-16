@@ -10,6 +10,7 @@ import { ConfirmDeleteComponent } from '../dialogs/confirm-delete/confirm-delete
 import { Workflows } from '../helpers/workflows';
 import { ListFilter } from '../dto/listfilter';
 import { Errors } from '../helpers/errors';
+import { EnterExportUrlComponent } from '../dialogs/enter-export-url/enter-export-url.component';
 
 /**
  * provides a list of workflows.
@@ -26,8 +27,9 @@ export class WorkflowsComponent implements OnInit {
 
   workflows: MatTableDataSource<Workflow>=new MatTableDataSource<Workflow>();
   filter: ListFilter={
-    count: Paging.pageSizes[0]
-  }
+    count: Paging.pageSizes[0],
+    sort: "name"
+  };
 
   page: number;
   total: number;
@@ -112,6 +114,28 @@ export class WorkflowsComponent implements OnInit {
     .catch(e=>{
       this.snackbar.open(Errors.getErrorText(e));
     })
+  }
+
+  /**
+   * export a workflow to another script api
+   * @param workflowId id of workflow to export
+   */
+  exportWorkflow(workflowId: number): void {
+    const dialogRef=this.dialog.open(EnterExportUrlComponent);
+
+    dialogRef.afterClosed().subscribe(url=>{
+      if(url)
+      {
+        this.workflowservice.exportToApi(workflowId, url)
+        .toPromise()
+        .then(r=>{
+          this.snackbar.open("Export Successful");
+        })
+        .catch(e=>{
+          this.snackbar.open(Errors.getErrorText(e));
+        });
+      }
+    });
   }
 
   /**

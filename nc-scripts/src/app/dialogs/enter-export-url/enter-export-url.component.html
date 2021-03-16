@@ -1,0 +1,15 @@
+<h2>Enter Target Api Url</h2>
+<mat-dialog-content>
+  <p>
+    Please enter url to export to.
+  </p>
+  <div class="row">
+    <mat-form-field>
+      <mat-label>Target Url</mat-label>
+      <input matInput [(ngModel)]="url">
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [disabled]="!url" (click)="close()">Export</button>
+</mat-dialog-actions>

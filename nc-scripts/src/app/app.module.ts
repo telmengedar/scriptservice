@@ -44,6 +44,7 @@ import { DisplayPipe } from './pipes/display.pipe';
 import { ObjectStructurePipe } from './pipes/object-structure.pipe';
 import { ConfirmDeleteComponent } from './dialogs/confirm-delete/confirm-delete.component';
 import { TestWorkableComponent } from './dialogs/test-workable/test-workable.component';
+import { EnterExportUrlComponent } from './dialogs/enter-export-url/enter-export-url.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { TestWorkableComponent } from './dialogs/test-workable/test-workable.com
     ObjectStructurePipe,
     ConfirmDeleteComponent,
     TestWorkableComponent,
+    EnterExportUrlComponent,
   ],
   imports: [
     BrowserModule,
@@ -100,7 +102,8 @@ import { TestWorkableComponent } from './dialogs/test-workable/test-workable.com
     TransitionEditorComponent,
     NodeEditorComponent,
     ConfirmDeleteComponent,
-    TestWorkableComponent
+    TestWorkableComponent,
+    EnterExportUrlComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { WorkflowStructure } from '../dto/workflows/workflowstructure';
 import { WorkflowDetails } from '../dto/workflows/workflowdetails';
 import { Observable } from 'rxjs';
@@ -11,6 +11,10 @@ import { PatchOperation } from '../dto/patchoperation';
 import { ExecuteWorkflowParameters } from '../dto/workflows/executeworkflowparameters';
 import { WorkableTask } from '../dto/workabletask';
 import { ContinueWorkflowParameters } from '../dto/workflows/continueworkflowparameters';
+import { mergeMap } from 'rxjs/operators';
+import { Parameters } from '../helpers/parameters';
+import { Rest } from '../helpers/rest';
+import { WorkflowFilter } from '../dto/workflows/workflowfilter';
 
 /**
  * service used to interact with workflows in backend
@@ -64,8 +68,10 @@ export class WorkflowService {
    * lists workflows in backend
    * @param filter filter to apply
    */
-  listWorkflows(filter?: ListFilter): Observable<Page<Workflow>> {
-    return this.http.get<Page<Workflow>>(this.workflowsurl);
+  listWorkflows(filter?: WorkflowFilter): Observable<Page<Workflow>> {
+    return this.http.get<Page<Workflow>>(this.workflowsurl, {
+      params: Rest.createParameters(filter)
+    });
   }
 
   /**
@@ -100,5 +106,31 @@ export class WorkflowService {
    */
   continue(taskid: string, parameters: ContinueWorkflowParameters): Observable<WorkableTask> {
     return this.http.put<WorkableTask>(`${this.workflowsurl}/tasks/${taskid}`, parameters);
+  }
+
+  /**
+   * exports a workflow to another api
+   * @param workflowId id of workflow to export
+   * @param targetUrl url of api to export workflow to
+   */
+  exportToApi(workflowId: number, targetUrl: string): Observable<WorkflowDetails> {
+    return this.http.get<WorkflowStructure>(`${this.workflowsurl}/${workflowId}/export`)
+    .pipe(
+      mergeMap(structure=>{
+        return this.http.get<Page<Workflow>>(`${targetUrl}/api/v1/workflows`, {
+          params: Rest.createParameters({
+            name: [structure.name]
+          })
+        }).pipe(
+          mergeMap(listresult=>{
+            if(listresult.total===0)
+              return this.http.post<WorkflowDetails>(`${targetUrl}/api/v1/workflows`, structure);
+            else if(listresult.total===1)
+              return this.http.put<WorkflowDetails>(`${targetUrl}/api/v1/workflows/${listresult.result[0].id}`, structure);
+            throw new Error(`More than one workflow with name '${structure.name}' found in target service. Workflow can't get exported automatically.`);
+          })              
+        );
+      })
+    );
   }
 }
