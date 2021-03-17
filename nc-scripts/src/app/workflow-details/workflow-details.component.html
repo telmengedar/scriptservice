@@ -26,7 +26,7 @@
 
   <div class="workflowcontainer">
     <div class="row workflowgraph" (contextmenu)="onContextMenu($event)">
-      <ngx-graph id="workflowsvg" class="chart-container" layout="dagreCluster" [nodes]="nodes" [links]="transitions" [clusters]="clusters" [update$]="updateGraph$" [draggingEnabled]="false">
+      <ngx-graph id="workflowsvg" class="chart-container" layout="dagreCluster" [nodes]="nodes" [links]="transitions" [clusters]="clusters" [update$]="updateGraph$" [draggingEnabled]="false" #graph>
         <ng-template #defsTemplate>
           <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
             <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />

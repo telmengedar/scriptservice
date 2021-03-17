@@ -34,7 +34,9 @@ import * as svg from 'save-svg-as-png';
 export class WorkflowDetailsComponent implements OnInit{
   NodeType=NodeType;
   ScriptLanguage=ScriptLanguage;
-  
+
+  @ViewChild('graph') graph;
+
   workflowid?: number;
 
   workflow: WorkflowDetails={
@@ -467,7 +469,6 @@ export class WorkflowDetailsComponent implements OnInit{
         continue;
       
       let result=regex.exec(transform);
-      console.log(result);
       let x=parseFloat(result.groups.x);
       let y=parseFloat(result.groups.y);
 
@@ -477,15 +478,13 @@ export class WorkflowDetailsComponent implements OnInit{
       right=Math.max(right, x+node.dimension.width);
     }
 
-    //const boundingbox=svgelement.getBBox();
-    //console.log(boundingbox);
     const name=this.workflow.name||"workflow";
     svg.saveSvgAsPng(svgelement, `${name}.png`, {
       exportOptions: 1,
-      top: top,
-      left: left,
-      width: right-left,
-      height: bottom-top
+      top: top+this.graph.panOffsetY-20,
+      left: left+this.graph.panOffsetX-20,
+      width: (right-left)+40,
+      height: (bottom-top)+40
     });
   }
 }
