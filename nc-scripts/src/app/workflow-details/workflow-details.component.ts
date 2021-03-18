@@ -483,8 +483,9 @@ export class WorkflowDetailsComponent implements OnInit{
       exportOptions: 1,
       top: top+this.graph.panOffsetY-20,
       left: left+this.graph.panOffsetX-20,
-      width: (right-left)+40,
-      height: (bottom-top)+40
+      width: (right-left)*this.graph.zoomLevel+40,
+      height: (bottom-top)*this.graph.zoomLevel+40,
+      scale: 1.0/this.graph.zoomLevel
     });
   }
 }
