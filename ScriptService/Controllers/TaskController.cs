@@ -15,16 +15,16 @@ namespace ScriptService.Controllers {
     [ApiController]
     public class TaskController : ControllerBase {
         readonly ILogger<TaskController> logger;
-        readonly ITaskService scripttaskservice;
+        readonly ITaskService taskservice;
 
         /// <summary>
         /// creates a new <see cref="TaskController"/>
         /// </summary>
         /// <param name="logger">access to logging</param>
-        /// <param name="scripttaskservice">access to script task service</param>
-        public TaskController(ILogger<TaskController> logger, ITaskService scripttaskservice) {
+        /// <param name="taskservice">access to script task service</param>
+        public TaskController(ILogger<TaskController> logger, ITaskService taskservice) {
             this.logger = logger;
-            this.scripttaskservice = scripttaskservice;
+            this.taskservice = taskservice;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace ScriptService.Controllers {
         /// <returns>script task</returns>
         [HttpGet("{id}")]
         public Task<WorkableTask> GetTask(Guid id) {
-            return scripttaskservice.GetTask(id);
+            return taskservice.GetTask(id);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace ScriptService.Controllers {
         /// <returns>a page of script tasks which match the filter</returns>
         [HttpGet]
         public Task<Page<WorkableTask>> ListTasks([FromQuery] TaskFilter filter) {
-            return scripttaskservice.ListTasks(filter);
+            return taskservice.ListTasks(filter);
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace ScriptService.Controllers {
         /// <param name="id">id of task to cancel</param>
         [HttpDelete("{id}")]
         public Task<WorkableTask> CancelTask(Guid id) {
-            logger.LogInformation($"Cancelling task {id}");
-            return scripttaskservice.CancelTask(id);
+            logger.LogInformation("Cancelling task {id}", id);
+            return taskservice.CancelTask(id);
         }
 
     }

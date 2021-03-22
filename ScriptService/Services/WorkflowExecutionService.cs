@@ -202,7 +202,7 @@ namespace ScriptService.Services {
                     lastresult = await current.Execute(state, token);
 
                     if (token.IsCancellationRequested)
-                        return null;
+                        throw new TaskCanceledException();
 
                     // used for workflow suspension
                     if (lastresult is SuspendState)

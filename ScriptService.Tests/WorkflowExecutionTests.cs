@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
+using NightlyCode.AspNetCore.Services.Data;
 using NightlyCode.Database.Entities;
 using NightlyCode.Scripting.Parser;
 using NUnit.Framework;
@@ -526,6 +527,91 @@ namespace ScriptService.Tests {
             await task.Task;
             Assert.AreEqual(TaskStatus.Success, task.Status);
             Assert.AreEqual(15, task.Result);
+        }
+
+        [Test, Parallelizable]
+        [Timeout(5000)]
+        public async Task AbortInfiniteLoop() {
+            Mock<IScriptImportService> importservice=new Mock<IScriptImportService>();
+            importservice.Setup(s => s.Clone(It.IsAny<WorkableLogger>())).Returns(() => importservice.Object);
+
+            IEntityManager database = TestSetup.CreateMemoryDatabase();
+            CacheService cache = new CacheService(new NullLogger<CacheService>());
+            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object, importservice.Object, null, null);
+            WorkflowCompiler workflowcompiler = new WorkflowCompiler(new NullLogger<WorkflowCompiler>(), cache, null, compiler);
+            WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), new DatabaseTaskService(database), null, null, workflowcompiler);
+
+            WorkableTask task = await executionservice.Execute(await workflowcompiler.BuildWorkflow(new WorkflowStructure {
+                Name = "JS Test",
+                Nodes = new[] {
+                    new NodeData {
+                        Type = NodeType.Start
+                    },
+                    new NodeData {
+                        Type = NodeType.Node,
+                    }
+                },
+                Transitions = new[] {
+                    new IndexTransition {
+                        OriginIndex = 0,
+                        TargetIndex = 1
+                    },
+                    new IndexTransition {
+                        OriginIndex = 1,
+                        TargetIndex = 0,
+                    }
+                }
+            }), new Dictionary<string, object>());
+
+            Assert.AreEqual(TaskStatus.Running, task.Status);
+            task.Token.Cancel();
+            await Task.WhenAny(task.Task, Task.Delay(1000));
+            Assert.AreEqual(TaskStatus.Canceled, task.Status);
+        }
+        
+        [Test, Parallelizable]
+        [Timeout(5000)]
+        public async Task ListRunningTask() {
+            Mock<IScriptImportService> importservice=new Mock<IScriptImportService>();
+            importservice.Setup(s => s.Clone(It.IsAny<WorkableLogger>())).Returns(() => importservice.Object);
+
+            IEntityManager database = TestSetup.CreateMemoryDatabase();
+            CacheService cache = new CacheService(new NullLogger<CacheService>());
+            IScriptCompiler compiler = new ScriptCompiler(new NullLogger<ScriptCompiler>(), new ScriptParser(), cache, null, new Mock<IScriptService>().Object, new Mock<IArchiveService>().Object, importservice.Object, null, null);
+            WorkflowCompiler workflowcompiler = new WorkflowCompiler(new NullLogger<WorkflowCompiler>(), cache, null, compiler);
+            ITaskService taskservice = new DatabaseTaskService(database);
+            WorkflowExecutionService executionservice = new WorkflowExecutionService(new NullLogger<WorkflowExecutionService>(), taskservice, null, null, workflowcompiler);
+
+            WorkableTask task = await executionservice.Execute(await workflowcompiler.BuildWorkflow(new WorkflowStructure {
+                Name = "JS Test",
+                Nodes = new[] {
+                    new NodeData {
+                        Type = NodeType.Start
+                    },
+                    new NodeData {
+                        Type = NodeType.Node,
+                    }
+                },
+                Transitions = new[] {
+                    new IndexTransition {
+                        OriginIndex = 0,
+                        TargetIndex = 1
+                    },
+                    new IndexTransition {
+                        OriginIndex = 1,
+                        TargetIndex = 0,
+                    }
+                }
+            }), new Dictionary<string, object>());
+
+            Assert.AreEqual(TaskStatus.Running, task.Status);
+            Page<WorkableTask> tasks=await taskservice.ListTasks();
+            Assert.AreEqual(1, tasks.Total);
+            Assert.AreEqual(1, tasks.Result.Length);
+            
+            task.Token.Cancel();
+            await Task.WhenAny(task.Task, Task.Delay(1000));
+            Assert.AreEqual(TaskStatus.Canceled, task.Status);
         }
 
     }

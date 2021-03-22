@@ -98,6 +98,18 @@ namespace ScriptService.Services {
             };
         }
 
+        WorkableTask GenerateListVersion(WorkableTask task) {
+            return new WorkableTask {
+                Id = task.Id,
+                WorkableId = task.WorkableId,
+                WorkableRevision = task.WorkableRevision,
+                WorkableName = task.WorkableName,
+                Started = task.Started,
+                Finished = task.Finished,
+                Status = task.Status,
+                Result = task.Result
+            };
+        }
         /// <inheritdoc />
         public async Task<Page<WorkableTask>> ListTasks(TaskFilter filter=null) {
             filter ??= new TaskFilter();
@@ -107,7 +119,7 @@ namespace ScriptService.Services {
             List<WorkableTask> match=new List<WorkableTask>();
             
             if (filter.Status == null || filter.Status.Contains(TaskStatus.Running) || filter.Status.Contains(TaskStatus.Suspended))
-                match.AddRange(runningtasks.Values.Where(t=>filter.Status.Contains(t.Status)).Take((int) filter.Count.Value).Select(t => new WorkableTask(t)));
+                match.AddRange(runningtasks.Values.Take((int) filter.Count.Value).Select(GenerateListVersion));
 
             long left = filter.Count.Value - match.Count;
             if (left > 0 && ((filter.Status?.Length??0)==0 || filter.Status.Any(s => s != TaskStatus.Running && s != TaskStatus.Suspended))) {
