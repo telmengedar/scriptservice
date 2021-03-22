@@ -110,12 +110,14 @@ namespace ScriptService.Services {
         /// <summary>
         /// logs a performance entry to the task
         /// </summary>
-        /// <param name="node">node for which performance was measured</param>
+        /// <param name="nodeid">node for which performance was measured</param>
+        /// <param name="nodename">name of node</param>
         /// <param name="action">executed action</param>
         /// <param name="time">time it took to execute action (optional)</param>
-        public void Performance(string node, string action, TimeSpan? time) {
+        public void Performance(Guid? nodeid, string nodename, string action, TimeSpan? time) {
             instance.Performance.Add(new ProfilingEntry {
-                Node = node,
+                NodeId = nodeid,
+                NodeName = nodename,
                 Action = action,
                 Time = time
             });

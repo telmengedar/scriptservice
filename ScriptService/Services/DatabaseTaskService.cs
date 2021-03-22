@@ -109,10 +109,12 @@ namespace ScriptService.Services {
                 WorkableName = task.WorkableName,
                 Started = task.Started,
                 Finished = task.Finished,
+                Runtime = (task.Finished ?? DateTime.Now) - task.Started,
                 Status = task.Status,
                 Result = task.Result
             };
         }
+        
         /// <inheritdoc />
         public async Task<Page<WorkableTask>> ListTasks(TaskFilter filter=null) {
             filter ??= new TaskFilter();

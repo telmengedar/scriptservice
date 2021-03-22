@@ -10,7 +10,12 @@ namespace ScriptService.Dto {
         /// <summary>
         /// node for which a sample was generated
         /// </summary>
-        public string Node { get; set; }
+        public Guid? NodeId { get; set; }
+
+        /// <summary>
+        /// node for which a sample was generated
+        /// </summary>
+        public string NodeName{ get; set; }
 
         /// <summary>
         /// action executed on node

@@ -206,7 +206,7 @@ namespace ScriptService.Services {
                     if (state.Profiling) {
                         Stopwatch stopwatch = Stopwatch.StartNew();
                         lastresult = await current.Execute(state, token);
-                        state.Logger.Performance(current.NodeId.ToString(), "Execute", stopwatch.Elapsed);
+                        state.Logger.Performance(current.NodeId, current.NodeName, "Execute", stopwatch.Elapsed);
                     }
                     else lastresult = await current.Execute(state, token);
 
@@ -224,7 +224,7 @@ namespace ScriptService.Services {
                     if (state.Profiling) {
                         Stopwatch stopwatch = Stopwatch.StartNew();
                         next = await EvaluateTransitions(current, state.Logger, new VariableProvider(state.Variables, new Variable("error", e)), current.ErrorTransitions, token);
-                        state.Logger.Performance(current.NodeId.ToString(), "EvaluateErrorTransitions", stopwatch.Elapsed);
+                        state.Logger.Performance(current.NodeId, current.NodeName, "EvaluateErrorTransitions", stopwatch.Elapsed);
                     }
                     else next = await EvaluateTransitions(current, state.Logger, new VariableProvider(state.Variables, new Variable("error", e)), current.ErrorTransitions, token);
                     
@@ -241,7 +241,7 @@ namespace ScriptService.Services {
                         if (state.Profiling) {
                             Stopwatch stopwatch = Stopwatch.StartNew();
                             transition = await EvaluateTransitions(current, state.Logger, state.Variables, current.LoopTransitions, token);
-                            state.Logger.Performance(current.NodeId.ToString(), "EvaluateLoopTransitions", stopwatch.Elapsed);
+                            state.Logger.Performance(current.NodeId, current.NodeName, "EvaluateLoopTransitions", stopwatch.Elapsed);
                         }
                         else {
                             transition = await EvaluateTransitions(current, state.Logger, state.Variables, current.LoopTransitions, token);
@@ -260,7 +260,7 @@ namespace ScriptService.Services {
                     if (state.Profiling) {
                         Stopwatch stopwatch = Stopwatch.StartNew();
                         next = await EvaluateTransitions(current, state.Logger, new VariableProvider(state.Variables, new Variable("error", e)), current?.ErrorTransitions, token);
-                        state.Logger.Performance(current?.NodeId.ToString(), "EvaluateErrorTransitions", stopwatch.Elapsed);
+                        state.Logger.Performance(current?.NodeId, current?.NodeName, "EvaluateErrorTransitions", stopwatch.Elapsed);
                     }
                     else next = await EvaluateTransitions(current, state.Logger, new VariableProvider(state.Variables, new Variable("error", e)), current?.ErrorTransitions, token);
                     
