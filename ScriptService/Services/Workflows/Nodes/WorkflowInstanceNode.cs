@@ -38,9 +38,9 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// <inheritdoc />
         public override async Task<object> Execute(WorkflowInstanceState state, CancellationToken token) {
             WorkflowInstance instance = await state.GetWorkflow(parameters.Name);
-            object result = await state.WorkflowExecutor.Execute(instance, state.Logger, await Arguments.EvaluateArguments(state.Variables, token), token);
+            object result = await state.WorkflowExecutor.Execute(instance, state.Logger, await Arguments.EvaluateArguments(state.Variables, token), state.Profiling, token);
             if (result is SuspendState suspend)
-                result = new SuspendState(this, state.Variables, state.Language, suspend);
+                result = new SuspendState(this, state.Variables, state.Language, state.Profiling, suspend);
 
             return result;
         }

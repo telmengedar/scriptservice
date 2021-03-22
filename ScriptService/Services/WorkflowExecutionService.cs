@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -93,7 +94,7 @@ namespace ScriptService.Services {
                 return lastresult;
             }
 
-            return await Execute(new WorkflowInstanceState(tasklogger, state.Variables, GetWorkflowInstance, this, state.Language), token, transition.Target, lastresult);
+            return await Execute(new WorkflowInstanceState(tasklogger, state.Variables, GetWorkflowInstance, this, state.Language, state.Profiling), token, transition.Target, lastresult);
         }
 
         void HandleTaskResult(Task<object> t, WorkableTask task, WorkableLogger tasklogger) {
@@ -140,11 +141,11 @@ namespace ScriptService.Services {
         }
 
         /// <inheritdoc />
-        public async Task<WorkableTask> Execute(WorkflowInstance workflow, IDictionary<string, object> arguments, TimeSpan? wait = null) {
+        public async Task<WorkableTask> Execute(WorkflowInstance workflow, IDictionary<string, object> arguments, bool profiling, TimeSpan? wait = null) {
             WorkableTask task = taskservice.CreateTask(WorkableType.Workflow, workflow.Id, workflow.Revision, workflow.Name, arguments);
             WorkableLogger tasklogger = new WorkableLogger(logger, task);
             try {
-                task.Task = Task.Run(() => Execute(workflow, tasklogger, arguments, task.Token.Token)).ContinueWith(t => HandleTaskResult(t, task, tasklogger));
+                task.Task = Task.Run(() => Execute(workflow, tasklogger, arguments, profiling, task.Token.Token)).ContinueWith(t => HandleTaskResult(t, task, tasklogger));
             }
             catch (Exception e) {
                 tasklogger.Error("Failed to execute workflow", e);
@@ -160,13 +161,16 @@ namespace ScriptService.Services {
         }
 
         /// <inheritdoc />
-        public Task<object> Execute(WorkflowInstance workflow, WorkableLogger tasklogger, IDictionary<string, object> arguments, CancellationToken token) {
+        public Task<object> Execute(WorkflowInstance workflow, WorkableLogger tasklogger, IDictionary<string, object> arguments, bool profiling, CancellationToken token) {
             StateVariableProvider variables = new StateVariableProvider(ProcessImports(tasklogger, workflow.StartNode.Parameters?.Imports));
             variables.Add(arguments);
-            return Execute(new WorkflowInstanceState(tasklogger, variables, GetWorkflowInstance, this, workflow.Language), token, workflow.StartNode);
+            return Execute(new WorkflowInstanceState(tasklogger, variables, GetWorkflowInstance, this, workflow.Language, profiling), token, workflow.StartNode);
         }
         
         async Task<InstanceTransition> EvaluateTransitions(IInstanceNode current, WorkableLogger tasklogger, IVariableProvider variableprovider, List<InstanceTransition> transitions, CancellationToken token) {
+            if (transitions == null)
+                return null;
+            
             InstanceTransition transition = null;
             foreach (InstanceTransition conditionaltransition in transitions.Where(c=>c.Condition!=null)) {
                 if (await conditionaltransition.Condition.ExecuteAsync<bool>(variableprovider, token)) {
@@ -199,7 +203,12 @@ namespace ScriptService.Services {
         async Task<object> Execute(WorkflowInstanceState state, CancellationToken token, IInstanceNode current, object lastresult=null) {
             while (current != null) {
                 try {
-                    lastresult = await current.Execute(state, token);
+                    if (state.Profiling) {
+                        Stopwatch stopwatch = Stopwatch.StartNew();
+                        lastresult = await current.Execute(state, token);
+                        state.Logger.Performance(current.NodeId.ToString(), "Execute", stopwatch.Elapsed);
+                    }
+                    else lastresult = await current.Execute(state, token);
 
                     if (token.IsCancellationRequested)
                         throw new TaskCanceledException();
@@ -210,8 +219,15 @@ namespace ScriptService.Services {
                 }
                 catch (Exception e) {
                     state.Logger.Warning($"Error while executing node '{current.NodeName}'", e.Message);
+
+                    InstanceTransition next;
+                    if (state.Profiling) {
+                        Stopwatch stopwatch = Stopwatch.StartNew();
+                        next = await EvaluateTransitions(current, state.Logger, new VariableProvider(state.Variables, new Variable("error", e)), current.ErrorTransitions, token);
+                        state.Logger.Performance(current.NodeId.ToString(), "EvaluateErrorTransitions", stopwatch.Elapsed);
+                    }
+                    else next = await EvaluateTransitions(current, state.Logger, new VariableProvider(state.Variables, new Variable("error", e)), current.ErrorTransitions, token);
                     
-                    InstanceTransition next = await EvaluateTransitions(current, state.Logger, new VariableProvider(state.Variables, new Variable("error", e)), current.ErrorTransitions, token);
                     if (next == null)
                         throw;
                     
@@ -220,19 +236,34 @@ namespace ScriptService.Services {
                 }
 
                 try {
+                    InstanceTransition transition;
                     if (lastresult is LoopCommand) {
-                        InstanceTransition transition = await EvaluateTransitions(current, state.Logger, state.Variables, current.LoopTransitions, token);
-                        current =  transition?.Target ?? current;
+                        if (state.Profiling) {
+                            Stopwatch stopwatch = Stopwatch.StartNew();
+                            transition = await EvaluateTransitions(current, state.Logger, state.Variables, current.LoopTransitions, token);
+                            state.Logger.Performance(current.NodeId.ToString(), "EvaluateLoopTransitions", stopwatch.Elapsed);
+                        }
+                        else {
+                            transition = await EvaluateTransitions(current, state.Logger, state.Variables, current.LoopTransitions, token);
+                        }
+                        current = transition?.Target ?? current;
                     }
                     else {
-                        InstanceTransition transition = await EvaluateTransitions(current, state.Logger, state.Variables, current.Transitions, token);
+                        transition = await EvaluateTransitions(current, state.Logger, state.Variables, current.Transitions, token);
                         current = transition?.Target;
                     }
                 }
                 catch (Exception e) {
                     state.Logger.Warning($"Error while evaluating transitions of node '{current?.NodeName}'", e.Message);
+
+                    InstanceTransition next;
+                    if (state.Profiling) {
+                        Stopwatch stopwatch = Stopwatch.StartNew();
+                        next = await EvaluateTransitions(current, state.Logger, new VariableProvider(state.Variables, new Variable("error", e)), current?.ErrorTransitions, token);
+                        state.Logger.Performance(current?.NodeId.ToString(), "EvaluateErrorTransitions", stopwatch.Elapsed);
+                    }
+                    else next = await EvaluateTransitions(current, state.Logger, new VariableProvider(state.Variables, new Variable("error", e)), current?.ErrorTransitions, token);
                     
-                    InstanceTransition next = await EvaluateTransitions(current, state.Logger, new VariableProvider(state.Variables, new Variable("error", e)), current.ErrorTransitions, token);
                     if(next == null)
                         throw;
                     

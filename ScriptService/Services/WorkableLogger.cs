@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
+using ScriptService.Dto;
 using ScriptService.Dto.Tasks;
 using LogLevel = ScriptService.Dto.LogLevel;
 
@@ -104,6 +105,20 @@ namespace ScriptService.Services {
             instance.Log.Add($"{DateTime.Now:yyyy-MM-dd hh:mm:ss} ERR: {message}");
             if(details != null)
                 instance.Log.Add(details.ToString());
+        }
+
+        /// <summary>
+        /// logs a performance entry to the task
+        /// </summary>
+        /// <param name="node">node for which performance was measured</param>
+        /// <param name="action">executed action</param>
+        /// <param name="time">time it took to execute action (optional)</param>
+        public void Performance(string node, string action, TimeSpan? time) {
+            instance.Performance.Add(new ProfilingEntry {
+                Node = node,
+                Action = action,
+                Time = time
+            });
         }
     }
 }

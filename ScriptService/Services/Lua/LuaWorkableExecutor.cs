@@ -41,7 +41,7 @@ namespace ScriptService.Services.Lua {
             return Task.Run(async () => {
                 WorkflowDetails workflow = await workflowservice.GetWorkflow(name, revision);
                 WorkflowInstance instance = await compiler.BuildWorkflow(workflow);
-                return await executor.Execute(instance, logger, arguments, CancellationToken.None);
+                return await executor.Execute(instance, logger, arguments, false, CancellationToken.None);
             }).GetAwaiter().GetResult();
         }
     }

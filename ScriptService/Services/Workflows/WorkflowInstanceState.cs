@@ -21,14 +21,16 @@ namespace ScriptService.Services.Workflows {
         /// <param name="workflowprovider">provides workflows by name</param>
         /// <param name="workflowexecutor">executor for workflows</param>
         /// <param name="language">default language used for code execution</param>
-        public WorkflowInstanceState(WorkableLogger logger, StateVariableProvider variables, Func<string, Task<WorkflowInstance>> workflowprovider, IWorkflowExecutionService workflowexecutor, ScriptLanguage? language) {
+        /// <param name="profiling">determines whether to profile performance</param>
+        public WorkflowInstanceState(WorkableLogger logger, StateVariableProvider variables, Func<string, Task<WorkflowInstance>> workflowprovider, IWorkflowExecutionService workflowexecutor, ScriptLanguage? language, bool profiling) {
             this.workflowprovider = workflowprovider;
             Logger = logger;
             Variables = variables;
             WorkflowExecutor = workflowexecutor;
             Language = language;
+            Profiling = profiling;
         }
-        
+
         /// <summary>
         /// accessor for node instance data
         /// </summary>
@@ -93,5 +95,10 @@ namespace ScriptService.Services.Workflows {
         /// default language for code execution
         /// </summary>
         public ScriptLanguage? Language { get; }
+
+        /// <summary>
+        /// determines whether to profile performance
+        /// </summary>
+        public bool Profiling { get; }
     }
 }

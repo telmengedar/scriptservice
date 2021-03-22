@@ -45,23 +45,25 @@ namespace ScriptService.Controllers {
         /// <returns></returns>
         [HttpPost]
         public async Task<WorkableTask> Execute([FromBody] ExecuteWorkflowParameters parameters) {
-            logger.LogInformation($"Executing {parameters.Id?.ToString() ?? parameters.Name} with parameters '{string.Join(";", parameters.Parameters?.Select(p => $"{p.Key}={p.Value}") ?? new string[0])}'");
+            logger.LogInformation("Executing {workflow} with parameters '{parameters}'",
+                parameters.Id?.ToString() ?? parameters.Name,
+                string.Join(";", parameters.Parameters?.Select(p => $"{p.Key}={p.Value}") ?? new string[0]));
 
             try {
                 if (parameters.Id.HasValue) {
                     if (!string.IsNullOrEmpty(parameters.Name))
                         throw new ArgumentException("Either id or name has to be set, not both");
-                    return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Id.Value, parameters.Revision), parameters.Parameters, parameters.Wait);
+                    return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Id.Value, parameters.Revision), parameters.Parameters, parameters.Profile ?? false, parameters.Wait);
                 }
 
                 if (!string.IsNullOrEmpty(parameters.Name))
-                    return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Name, parameters.Revision), parameters.Parameters, parameters.Wait);
+                    return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Name, parameters.Revision), parameters.Parameters, parameters.Profile ?? false, parameters.Wait);
 
                 if (parameters.Workflow != null)
-                    return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Workflow), parameters.Parameters, parameters.Wait);
+                    return await executionservice.Execute(await compiler.BuildWorkflow(parameters.Workflow), parameters.Parameters, parameters.Profile ?? false, parameters.Wait);
             }
             catch (Exception e) {
-                WorkableTask failtask= new WorkableTask {
+                WorkableTask failtask = new WorkableTask {
                     Id = Guid.NewGuid(),
                     Status = TaskStatus.Failure,
                     Started = DateTime.Now,
@@ -87,7 +89,9 @@ namespace ScriptService.Controllers {
         /// <returns></returns>
         [HttpPut("{taskid}")]
         public Task<WorkableTask> Continue(Guid taskid, [FromBody] ContinueWorkflowBody parameters) {
-            logger.LogInformation($"Continuing workflow task '{taskid}' with parameters '{string.Join(";", parameters.Parameters?.Select(p => $"{p.Key}={p.Value}") ?? new string[0])}'");
+            logger.LogInformation("Continuing workflow task '{taskid}' with parameters '{parameters}'",
+                taskid,
+                string.Join(";", parameters.Parameters?.Select(p => $"{p.Key}={p.Value}") ?? new string[0]));
             return executionservice.Continue(taskid, parameters.Parameters, parameters.Wait);
         }
     }

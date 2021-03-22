@@ -13,12 +13,14 @@ namespace ScriptService.Services.Workflows {
         /// <param name="node">suspended node</param>
         /// <param name="variables">variables of executing workflow</param>
         /// <param name="language">default language of workflow</param>
+        /// <param name="profiling">determines whether profiling is enabled</param>
         /// <param name="subflow">suspended sub workflow (optional)</param>
-        public SuspendState(IInstanceNode node, StateVariableProvider variables, ScriptLanguage? language, SuspendState subflow=null) {
+        public SuspendState(IInstanceNode node, StateVariableProvider variables, ScriptLanguage? language, bool profiling, SuspendState subflow=null) {
             Variables = variables;
             Node = node;
             Subflow = subflow;
             Language = language;
+            Profiling = profiling;
         }
 
         /// <summary>
@@ -40,6 +42,11 @@ namespace ScriptService.Services.Workflows {
         /// default language used in workflow
         /// </summary>
         public ScriptLanguage? Language { get; }
+
+        /// <summary>
+        /// determines whether profiling is enabled
+        /// </summary>
+        public bool Profiling { get; }
         
         /// <inheritdoc />
         public override string ToString() {

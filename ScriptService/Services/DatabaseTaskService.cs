@@ -34,7 +34,7 @@ namespace ScriptService.Services {
         public DatabaseTaskService(IEntityManager database) {
             this.database = database;
             database.UpdateSchema<TaskDb>();
-            insert = database.Insert<TaskDb>().Columns(t => t.Id, t=>t.Type, t => t.WorkableId, t => t.WorkableRevision, t => t.WorkableName, t => t.Parameters, t => t.Started, t => t.Finished, t => t.Status, t => t.Result, t => t.Log).Prepare();
+            insert = database.Insert<TaskDb>().Columns(t => t.Id, t=>t.Type, t => t.WorkableId, t => t.WorkableRevision, t => t.WorkableName, t => t.Parameters, t => t.Started, t => t.Finished, t => t.Status, t => t.Result, t => t.Log, t=>t.Performance).Prepare();
             loadtask = database.Load<TaskDb>().Where(t => t.Id == DBParameter.Guid).Prepare();
         }
 
@@ -47,6 +47,7 @@ namespace ScriptService.Services {
                 WorkableRevision = workablerevision,
                 WorkableName = workablename,
                 Log = new List<string>(),
+                Performance = new List<ProfilingEntry>(),
                 Started = DateTime.Now,
                 Parameters = variables,
                 Status = TaskStatus.Running,
@@ -71,7 +72,8 @@ namespace ScriptService.Services {
                 task.Finished,
                 task.Status,
                 task.Result.Serialize(),
-                task.Log.Serialize());
+                task.Log.Serialize(),
+                task.Performance.Serialize());
         }
 
         /// <inheritdoc />
@@ -92,9 +94,10 @@ namespace ScriptService.Services {
                 Status = dbtask.Status,
                 Started = dbtask.Started,
                 Finished = dbtask.Finished,
-                Runtime = dbtask.Finished-dbtask.Started,
+                Runtime = dbtask.Finished - dbtask.Started,
                 Result = dbtask.Result.Deserialize<object>(),
-                Log = new List<string>(dbtask.Log.Deserialize<string[]>()??new string[0])
+                Log = new List<string>(dbtask.Log.Deserialize<string[]>() ?? new string[0]),
+                Performance = new List<ProfilingEntry>(dbtask.Performance.Deserialize<ProfilingEntry[]>() ?? new ProfilingEntry[0])
             };
         }
 

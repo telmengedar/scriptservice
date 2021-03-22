@@ -44,5 +44,10 @@ namespace ScriptService.Dto {
         /// if script doesn't finish in the specified timespan, taskinformation of the running task is returned
         /// </remarks>
         public TimeSpan? Wait { get; set; }
+
+        /// <summary>
+        /// determines whether to profile execution path and performance
+        /// </summary>
+        public bool? Profile { get; set; }
     }
 }
