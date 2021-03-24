@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ScriptService.Dto;
+using ScriptService.Dto.Workflows;
 
 namespace ScriptService.Services.Workflows {
     
@@ -16,21 +17,23 @@ namespace ScriptService.Services.Workflows {
         /// <summary>
         /// creates a new <see cref="WorkflowInstanceState"/>
         /// </summary>
+        /// <param name="workflow">currently executing workflow</param>
         /// <param name="logger">access to logging</param>
         /// <param name="variables">workflow state variables</param>
         /// <param name="workflowprovider">provides workflows by name</param>
         /// <param name="workflowexecutor">executor for workflows</param>
         /// <param name="language">default language used for code execution</param>
         /// <param name="profiling">determines whether to profile performance</param>
-        public WorkflowInstanceState(WorkableLogger logger, StateVariableProvider variables, Func<string, Task<WorkflowInstance>> workflowprovider, IWorkflowExecutionService workflowexecutor, ScriptLanguage? language, bool profiling) {
+        public WorkflowInstanceState(WorkflowIdentifier workflow, WorkableLogger logger, StateVariableProvider variables, Func<string, Task<WorkflowInstance>> workflowprovider, IWorkflowExecutionService workflowexecutor, ScriptLanguage? language, bool profiling) {
             this.workflowprovider = workflowprovider;
             Logger = logger;
             Variables = variables;
             WorkflowExecutor = workflowexecutor;
             Language = language;
             Profiling = profiling;
+            Workflow = workflow;
         }
-
+        
         /// <summary>
         /// accessor for node instance data
         /// </summary>
@@ -75,6 +78,25 @@ namespace ScriptService.Services.Workflows {
             
             return workflow;
         }
+
+        /// <summary>
+        /// adds a performance entry
+        /// </summary>
+        /// <param name="nodeid">id of node</param>
+        /// <param name="nodename">node name</param>
+        /// <param name="time">time it took to execute node</param>
+        public void AddPerformance(Guid nodeid, string nodename, TimeSpan time) {
+            Performance.Add(new ProfilingEntry {
+                Workflow = Workflow,
+                Node = new NodeIdentifier(nodeid, nodename),
+                Time = time
+            });
+        }
+        
+        /// <summary>
+        /// currently executing workflow
+        /// </summary>
+        public WorkflowIdentifier Workflow { get; set; }
         
         /// <summary>
         /// logger for workflow execution
@@ -100,5 +122,10 @@ namespace ScriptService.Services.Workflows {
         /// determines whether to profile performance
         /// </summary>
         public bool Profiling { get; }
+
+        /// <summary>
+        /// performance profiling log
+        /// </summary>
+        public List<ProfilingEntry> Performance { get; } = new List<ProfilingEntry>();
     }
 }

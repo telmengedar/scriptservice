@@ -5,6 +5,7 @@ using Moq;
 using NightlyCode.Scripting.Parser;
 using NUnit.Framework;
 using ScriptService.Dto;
+using ScriptService.Dto.Workflows;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Services.Scripts;
 using ScriptService.Services.Workflows;
@@ -39,7 +40,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             AssignStateNode node=new AssignStateNode(instancenode.Object, "result", operation, compiler.Object);
             
             Dictionary<string, object> variables=new Dictionary<string, object>();
-            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(new WorkflowIdentifier(), null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
 
             Assert.That(variables.ContainsKey("result"));
             Assert.AreEqual(expected, variables["result"]);
@@ -71,7 +72,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             Dictionary<string, object> variables = new Dictionary<string, object> {
                 ["result"] = 7
             };
-            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(new WorkflowIdentifier(), null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
 
             Assert.That(variables.ContainsKey("result"));
             Assert.AreEqual(expected, variables["result"]);

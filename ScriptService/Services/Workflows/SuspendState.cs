@@ -1,4 +1,5 @@
 ﻿using ScriptService.Dto;
+using ScriptService.Dto.Workflows;
 using ScriptService.Services.Workflows.Nodes;
 
 namespace ScriptService.Services.Workflows {
@@ -7,22 +8,30 @@ namespace ScriptService.Services.Workflows {
     /// state used to continue suspended workflows
     /// </summary>
     public class SuspendState {
+        
         /// <summary>
         /// creates a new <see cref="SuspendState"/>
         /// </summary>
+        /// <param name="workflow">suspended workflow</param>
         /// <param name="node">suspended node</param>
         /// <param name="variables">variables of executing workflow</param>
         /// <param name="language">default language of workflow</param>
         /// <param name="profiling">determines whether profiling is enabled</param>
         /// <param name="subflow">suspended sub workflow (optional)</param>
-        public SuspendState(IInstanceNode node, StateVariableProvider variables, ScriptLanguage? language, bool profiling, SuspendState subflow=null) {
+        public SuspendState(WorkflowIdentifier workflow, IInstanceNode node, StateVariableProvider variables, ScriptLanguage? language, bool profiling, SuspendState subflow=null) {
             Variables = variables;
             Node = node;
             Subflow = subflow;
             Language = language;
             Profiling = profiling;
+            Workflow = workflow;
         }
 
+        /// <summary>
+        /// suspended workflow
+        /// </summary>
+        public WorkflowIdentifier Workflow { get; }
+        
         /// <summary>
         /// script variables
         /// </summary>

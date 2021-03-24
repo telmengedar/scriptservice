@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
-using ScriptService.Dto;
 using ScriptService.Dto.Tasks;
 using LogLevel = ScriptService.Dto.LogLevel;
 
@@ -50,9 +49,9 @@ namespace ScriptService.Services {
         /// <param name="details">message details (optional)</param>
         public void Info(string message, string details = null) {
             if(details != null)
-                logger.LogInformation($"{instance.WorkableName}#{instance.WorkableRevision}: {message}\n{details}");
+                logger.LogInformation("{name}#{revision}: {message}\n{details}", instance.WorkableName, instance.WorkableRevision, message, details);
             else
-                logger.LogInformation($"{instance.WorkableName}#{instance.WorkableRevision}: {message}");
+                logger.LogInformation("{name}#{revision}: {message}", instance.WorkableName, instance.WorkableRevision, message);
 
             instance.Log.Add($"{DateTime.Now:yyyy-MM-dd hh:mm:ss} INF: {message}");
             if(details != null)
@@ -66,9 +65,9 @@ namespace ScriptService.Services {
         /// <param name="details">message details (optional)</param>
         public void Warning(string message, string details = null) {
             if(details != null)
-                logger.LogWarning($"{instance.WorkableName}#{instance.WorkableRevision}: {message}\n{details}");
+                logger.LogWarning("{name}#{revision}: {message}\n{details}", instance.WorkableName, instance.WorkableRevision, message, details);
             else
-                logger.LogWarning($"{instance.WorkableName}#{instance.WorkableRevision}: {message}");
+                logger.LogWarning("{name}#{revision}: {message}", instance.WorkableName, instance.WorkableRevision, message);
 
             instance.Log.Add($"{DateTime.Now:yyyy-MM-dd hh:mm:ss} WRN: {message}");
             if(details != null)
@@ -82,9 +81,9 @@ namespace ScriptService.Services {
         /// <param name="details">message details (optional)</param>
         public void Error(string message, string details = null) {
             if(details != null)
-                logger.LogError($"{instance.WorkableName}#{instance.WorkableRevision}: {message}\n{details}");
+                logger.LogError("{name}#{revision}: {message}\n{details}", instance.WorkableName, instance.WorkableRevision, message, details);
             else
-                logger.LogError($"{instance.WorkableName}#{instance.WorkableRevision}: {message}");
+                logger.LogError("{name}#{revision}: {message}", instance.WorkableName, instance.WorkableRevision, message);
 
             instance.Log.Add($"{DateTime.Now:yyyy-MM-dd hh:mm:ss} ERR: {message}");
             if(details != null)
@@ -98,29 +97,13 @@ namespace ScriptService.Services {
         /// <param name="details">message details (optional)</param>
         public void Error(string message, Exception details = null) {
             if(details != null)
-                logger.LogError(details, $"{instance.WorkableName}#{instance.WorkableRevision}: {message}");
+                logger.LogError(details, "{name}#{revision}: {message}", instance.WorkableName, instance.WorkableRevision, message);
             else
-                logger.LogError($"{instance.WorkableName}#{instance.WorkableRevision}: {message}");
+                logger.LogError("{name}#{revision}: {message}", instance.WorkableName, instance.WorkableRevision, message);
 
             instance.Log.Add($"{DateTime.Now:yyyy-MM-dd hh:mm:ss} ERR: {message}");
             if(details != null)
                 instance.Log.Add(details.ToString());
-        }
-
-        /// <summary>
-        /// logs a performance entry to the task
-        /// </summary>
-        /// <param name="nodeid">node for which performance was measured</param>
-        /// <param name="nodename">name of node</param>
-        /// <param name="action">executed action</param>
-        /// <param name="time">time it took to execute action (optional)</param>
-        public void Performance(Guid? nodeid, string nodename, string action, TimeSpan? time) {
-            instance.Performance.Add(new ProfilingEntry {
-                NodeId = nodeid,
-                NodeName = nodename,
-                Action = action,
-                Time = time
-            });
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using ScriptService.Dto.Workflows;
 
 namespace ScriptService.Dto {
     
@@ -6,25 +7,20 @@ namespace ScriptService.Dto {
     /// entry generated for performance profiling
     /// </summary>
     public class ProfilingEntry {
-        
-        /// <summary>
-        /// node for which a sample was generated
-        /// </summary>
-        public Guid? NodeId { get; set; }
 
         /// <summary>
-        /// node for which a sample was generated
+        /// workflow node is part of
         /// </summary>
-        public string NodeName{ get; set; }
+        public WorkflowIdentifier Workflow { get; set; }
 
         /// <summary>
-        /// action executed on node
+        /// measured node
         /// </summary>
-        public string Action { get; set; }
+        public NodeIdentifier Node { get; set; }
 
         /// <summary>
         /// time it took to execute action
         /// </summary>
-        public TimeSpan? Time { get; set; }
+        public TimeSpan Time { get; set; }
     }
 }

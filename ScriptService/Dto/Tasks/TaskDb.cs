@@ -46,11 +46,6 @@ namespace ScriptService.Dto.Tasks {
         /// script log
         /// </summary>
         public string Log { get; set; }
-
-        /// <summary>
-        /// performance log
-        /// </summary>
-        public string Performance { get; set; }
         
         /// <summary>
         /// time when script was started

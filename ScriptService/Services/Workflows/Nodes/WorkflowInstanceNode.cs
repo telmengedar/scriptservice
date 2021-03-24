@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NightlyCode.Scripting;
 using ScriptService.Dto;
+using ScriptService.Dto.Workflows;
 using ScriptService.Dto.Workflows.Nodes;
 using ScriptService.Extensions;
 using ScriptService.Services.Scripts;
@@ -38,9 +39,12 @@ namespace ScriptService.Services.Workflows.Nodes {
         /// <inheritdoc />
         public override async Task<object> Execute(WorkflowInstanceState state, CancellationToken token) {
             WorkflowInstance instance = await state.GetWorkflow(parameters.Name);
+            WorkflowIdentifier parent = state.Workflow;
+            state.Workflow = new WorkflowIdentifier(instance.Id, instance.Revision, instance.Name);
             object result = await state.WorkflowExecutor.Execute(instance, state.Logger, await Arguments.EvaluateArguments(state.Variables, token), state.Profiling, token);
+            state.Workflow = parent;
             if (result is SuspendState suspend)
-                result = new SuspendState(this, state.Variables, state.Language, state.Profiling, suspend);
+                result = new SuspendState(state.Workflow, this, state.Variables, state.Language, state.Profiling, suspend);
 
             return result;
         }

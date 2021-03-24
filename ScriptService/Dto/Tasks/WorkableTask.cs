@@ -30,7 +30,6 @@ namespace ScriptService.Dto.Tasks {
             WorkableName = other.WorkableName;
             Parameters = other.Parameters;
             Log = other.Log;
-            Performance = other.Performance;
             Started = other.Started;
             Finished = other.Finished;
             if (Finished.HasValue)
@@ -74,11 +73,6 @@ namespace ScriptService.Dto.Tasks {
         /// script log
         /// </summary>
         public List<string> Log { get; set; }
-
-        /// <summary>
-        /// performance profiling log
-        /// </summary>
-        public List<ProfilingEntry> Performance { get; set; }
         
         /// <summary>
         /// time when script was started

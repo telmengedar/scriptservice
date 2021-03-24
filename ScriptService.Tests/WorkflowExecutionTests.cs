@@ -414,8 +414,7 @@ namespace ScriptService.Tests {
 
             await task.Task;
             Assert.AreEqual(TaskStatus.Success, task.Status);
-            Assert.That(task.Performance.Any(e => e.NodeName == "Call Submarine"));
-            Assert.That(task.Performance.Any(e => e.NodeName == "Subvalue"));
+            Assert.That(task.Log.Any(l=>l.Contains("calls")));
             Assert.AreEqual(1.0, task.Result);
         }
 
@@ -760,7 +759,7 @@ namespace ScriptService.Tests {
 
             await task.Task;
             Assert.AreEqual(TaskStatus.Success, task.Status);
-            Assert.Less(0, task.Performance.Count);
+            Assert.That(task.Log.Any(l=>l.Contains("calls")));
             Assert.AreEqual(15, task.Result);
         }
 

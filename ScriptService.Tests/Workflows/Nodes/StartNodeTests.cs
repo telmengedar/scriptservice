@@ -30,7 +30,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             StartNode node=new StartNode(Guid.NewGuid(), "Start", new StartParameters(), compiler.Object);
 
             Dictionary<string, object> variables = new Dictionary<string, object>();
-            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(new WorkflowIdentifier(), null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
         }
 
         [Test, Parallelizable]
@@ -51,7 +51,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             Dictionary<string, object> variables = new Dictionary<string, object>() {
                 ["input"] = "7"
             };
-            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(new WorkflowIdentifier(), null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
 
             Assert.AreEqual(7, variables["input"]);
         }
@@ -72,7 +72,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             }, compiler.Object);
 
             Dictionary<string, object> variables = new Dictionary<string, object>();
-            Assert.ThrowsAsync<WorkflowException>(() => node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None));
+            Assert.ThrowsAsync<WorkflowException>(() => node.Execute(new WorkflowInstanceState(new WorkflowIdentifier(), null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None));
         }
         
         [Test, Parallelizable]
@@ -92,7 +92,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             }, compiler.Object);
 
             Dictionary<string, object> variables = new Dictionary<string, object>();
-            Assert.ThrowsAsync<WorkflowException>(() => node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None));
+            Assert.ThrowsAsync<WorkflowException>(() => node.Execute(new WorkflowInstanceState(new WorkflowIdentifier(), null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None));
         }
         
         [Test, Parallelizable]
@@ -112,7 +112,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             }, compiler.Object);
 
             Dictionary<string, object> variables = new Dictionary<string, object>();
-            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(new WorkflowIdentifier(), null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
 
             IEnumerable<int> input = variables["input"] as IEnumerable<int>;
             Assert.NotNull(input);
@@ -139,7 +139,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             }, compiler.Object);
 
             Dictionary<string, object> variables = new Dictionary<string, object>();
-            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(new WorkflowIdentifier(), null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
 
             Transition[] input = variables["input"] as Transition[];
             Assert.NotNull(input);
@@ -164,7 +164,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             }, compiler.Object);
 
             Dictionary<string, object> variables = new Dictionary<string, object>();
-            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(new WorkflowIdentifier(), null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
 
             Assert.That(variables.ContainsKey("input"));
             Assert.AreEqual(12, variables["input"]);
@@ -200,7 +200,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
                     }
                 }
             };
-            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(new WorkflowIdentifier(), null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
 
             RecursiveType input = variables["input"] as RecursiveType;
             Assert.NotNull(input);
@@ -232,7 +232,7 @@ namespace ScriptService.Tests.Workflows.Nodes {
             Dictionary<string, object> variables = new Dictionary<string, object> {
                 ["input"] = await Json.ReadAsync(typeof(StartNodeTests).Assembly.GetManifestResourceStream("ScriptService.Tests.Data.2020-10-22_campaign.json"))
             };
-            await node.Execute(new WorkflowInstanceState(null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
+            await node.Execute(new WorkflowInstanceState(new WorkflowIdentifier(), null, new StateVariableProvider(variables), s => null, null, null, false), CancellationToken.None);
 
             Campaign campaign = variables["input"] as Campaign;
             Assert.NotNull(campaign);
