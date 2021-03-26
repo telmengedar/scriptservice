@@ -9,5 +9,10 @@ export interface ExecuteWorkflowParameters {
     name?: string,
     workflow?: WorkflowStructure,
     parameters?: any,
-    wait?: TimeSpan
+    wait?: TimeSpan,
+
+    /**
+     * determines whether to measure execution times for nodes
+     */
+    profile?: boolean
 }

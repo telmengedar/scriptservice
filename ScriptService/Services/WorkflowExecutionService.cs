@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -66,16 +65,7 @@ namespace ScriptService.Services {
                 task.Status = TaskStatus.Running;
                 task.Task = Task.Run(async () => {
                     WorkflowInstanceState workflowstate = new WorkflowInstanceState(task.SuspensionState.Workflow, tasklogger, task.SuspensionState.Variables, GetWorkflowInstance, this, task.SuspensionState.Language, task.SuspensionState.Profiling);
-                    object result= await ContinueState(task.SuspensionState, workflowstate, tasklogger, variables, task.Token.Token);
-                    if (task.SuspensionState.Profiling) {
-                        foreach (IGrouping<WorkflowIdentifier, ProfilingEntry> workflowperformancegroup in workflowstate.Performance.GroupBy(e => e.Workflow)) {
-                            StringBuilder details = new StringBuilder();
-                            foreach (IGrouping<NodeIdentifier, ProfilingEntry> nodeperformance in workflowperformancegroup.GroupBy(e => e.Node))
-                                details.AppendLine($"{nodeperformance.Key.Name}: {nodeperformance.Count()} node calls took {TimeSpan.FromSeconds(nodeperformance.Sum(p => p.Time.TotalSeconds))}");
-                            tasklogger.Info($"Workflow {workflowperformancegroup.Key.Name}: {workflowperformancegroup.Count()} calls took {TimeSpan.FromSeconds(workflowperformancegroup.Sum(p => p.Time.TotalSeconds))}", details.ToString());
-                        }
-                    }
-                    return result;
+                    return await ContinueState(task.SuspensionState, workflowstate, tasklogger, variables, task.Token.Token);
                 }).ContinueWith(t => HandleTaskResult(t, task, tasklogger));
             }
             catch(Exception e) {
@@ -115,6 +105,7 @@ namespace ScriptService.Services {
         }
 
         void HandleTaskResult(Task<object> t, WorkableTask task, WorkableLogger tasklogger) {
+            tasklogger.LogPerformance();
             if(t.IsCanceled) {
                 tasklogger.Warning("Workflow execution was aborted");
                 task.Status = TaskStatus.Canceled;
@@ -139,7 +130,7 @@ namespace ScriptService.Services {
                 tasklogger.Info($"Workflow executed successfully with result '{task.Result}'");
                 task.Status = TaskStatus.Success;
             }
-
+            
             task.Finished = DateTime.Now;
             taskservice.FinishTask(task.Id).GetAwaiter().GetResult();
         }
@@ -162,22 +153,12 @@ namespace ScriptService.Services {
             WorkableTask task = taskservice.CreateTask(WorkableType.Workflow, workflow.Id, workflow.Revision, workflow.Name, arguments);
             WorkableLogger tasklogger = new WorkableLogger(logger, task);
             try {
-                task.Task = Task.Run(async () => {
+                task.Task = Task.Run(() => {
                     StateVariableProvider variables = new StateVariableProvider(ProcessImports(tasklogger, workflow.StartNode.Parameters?.Imports));
                     variables.Add(arguments);
 
                     WorkflowInstanceState workflowstate = new WorkflowInstanceState(new WorkflowIdentifier(workflow.Id, workflow.Revision, workflow.Name), tasklogger, variables, GetWorkflowInstance, this, workflow.Language, profiling);
-                    object result=await Execute(workflowstate, task.Token.Token, workflow.StartNode);
-                    if (profiling) {
-                        foreach (IGrouping<WorkflowIdentifier, ProfilingEntry> workflowperformancegroup in workflowstate.Performance.GroupBy(e => e.Workflow)) {
-                            StringBuilder details = new StringBuilder();
-                            foreach (IGrouping<NodeIdentifier, ProfilingEntry> nodeperformance in workflowperformancegroup.GroupBy(e => e.Node))
-                                details.AppendLine($"{nodeperformance.Key.Name}: {nodeperformance.Count()} node calls took {TimeSpan.FromSeconds(nodeperformance.Sum(p => p.Time.TotalSeconds))}");
-                            tasklogger.Info($"Workflow {workflowperformancegroup.Key.Name}: {workflowperformancegroup.Count()} calls took {TimeSpan.FromSeconds(workflowperformancegroup.Sum(p => p.Time.TotalSeconds))}", details.ToString());
-                        }
-                    }
-
-                    return result;
+                    return Execute(workflowstate, task.Token.Token, workflow.StartNode);
                 }).ContinueWith(t => HandleTaskResult(t, task, tasklogger));
             }
             catch (Exception e) {
@@ -237,7 +218,7 @@ namespace ScriptService.Services {
                     if (state.Profiling) {
                         Stopwatch stopwatch = Stopwatch.StartNew();
                         lastresult = await current.Execute(state, token);
-                        state.AddPerformance(current.NodeId, current.NodeName, stopwatch.Elapsed);
+                        state.Logger.Performance(state.Workflow, current.NodeId, current.NodeName, stopwatch.Elapsed);
                     }
                     else lastresult = await current.Execute(state, token);
 

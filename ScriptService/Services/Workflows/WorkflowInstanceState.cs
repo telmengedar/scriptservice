@@ -78,20 +78,6 @@ namespace ScriptService.Services.Workflows {
             
             return workflow;
         }
-
-        /// <summary>
-        /// adds a performance entry
-        /// </summary>
-        /// <param name="nodeid">id of node</param>
-        /// <param name="nodename">node name</param>
-        /// <param name="time">time it took to execute node</param>
-        public void AddPerformance(Guid nodeid, string nodename, TimeSpan time) {
-            Performance.Add(new ProfilingEntry {
-                Workflow = Workflow,
-                Node = new NodeIdentifier(nodeid, nodename),
-                Time = time
-            });
-        }
         
         /// <summary>
         /// currently executing workflow
@@ -122,10 +108,5 @@ namespace ScriptService.Services.Workflows {
         /// determines whether to profile performance
         /// </summary>
         public bool Profiling { get; }
-
-        /// <summary>
-        /// performance profiling log
-        /// </summary>
-        public List<ProfilingEntry> Performance { get; } = new List<ProfilingEntry>();
     }
 }

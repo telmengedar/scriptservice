@@ -32,5 +32,6 @@
   </div>
 </div>
 <mat-dialog-actions align="end">
-  <button mat-button [disabled]="task && task.status==='Running'" (click)="startTest()">Start Test</button>
+  <mat-checkbox class="profilingbox" [(ngModel)]="profiling" *ngIf="data.type===WorkableType.Workflow">Activate Profiling</mat-checkbox>
+  <button mat-raised-button color="primary" [disabled]="task && task.status==='Running'" (click)="startTest()">Start Test</button>
 </mat-dialog-actions>

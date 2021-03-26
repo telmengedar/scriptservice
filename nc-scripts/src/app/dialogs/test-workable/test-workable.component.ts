@@ -30,6 +30,7 @@ export class TestWorkableComponent {
     status: "None",
     result: undefined
   };
+  profiling: boolean=false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {type: WorkableType, workable: any}, 
     private scriptService: ScriptService, 
@@ -62,7 +63,8 @@ export class TestWorkableComponent {
       case WorkableType.Workflow:
         this.workflowService.execute({
           parameters: Parameters.translate(this.convertParameters()),
-          workflow: (<WorkflowStructure>this.data.workable)
+          workflow: (<WorkflowStructure>this.data.workable),
+          profile: this.profiling
         }).toPromise().then(task=>{
           this.task=task;
           if(task.status==="Running")
