@@ -72,11 +72,11 @@ namespace ScriptService {
                 foreach (IConfigurationSection type in typesection.GetChildren()) {
                     Type typedef = Type.GetType(type.Value);
                     if (typedef == null) {
-                        logger.LogWarning($"Unable to find type '{type.Value}'");
+                        logger.LogWarning("Unable to find type '{typeValue}'", type.Value);
                         continue;
                     }
 
-                    logger.LogInformation($"Adding '{typedef}' as '{type.Key}'");
+                    logger.LogInformation("Adding '{typedef}' as '{typeKey}'", typedef, type.Key);
                     parser.Types.AddType(type.Key, new TypeInstanceProvider(typedef, parser.MethodCallResolver));
                 }
             }
@@ -87,11 +87,11 @@ namespace ScriptService {
                 foreach (string extension in extensions) {
                     Type typedef = Type.GetType(extension);
                     if(typedef == null) {
-                        logger.LogWarning($"Unable to find extension type '{extension}'");
+                        logger.LogWarning("Unable to find extension type '{extension}'", extension);
                         continue;
                     }
 
-                    logger.LogInformation($"Adding extension '{typedef}'");
+                    logger.LogInformation("Adding extension '{typedef}'", typedef);
                     parser.Extensions.AddExtensions(typedef);
                 }
             }
@@ -105,7 +105,7 @@ namespace ScriptService {
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers();
             services.AddSingleton<ICacheService, CacheService>();
-            services.AddSingleton(s => SetupScriptParser());
+            services.AddSingleton(_ => SetupScriptParser());
             services.AddSingleton<IScriptCompiler, ScriptCompiler>();
             services.AddSingleton<IScriptService, DatabaseScriptService>();
             services.AddSingleton<IScriptExecutionService, ScriptExecutionService>();
@@ -124,7 +124,7 @@ namespace ScriptService {
             services.AddSingleton<ITypeCreator, TypeCreator>();
             
             services.AddHostedService<TaskScheduler>();
-            services.AddSingleton(s => ConnectDatabase());
+            services.AddSingleton(_ => ConnectDatabase());
             services.AddErrorHandlers();
             services.AddSingleton<IConfigureOptions<MvcOptions>, MvcConfiguration>();
 
@@ -133,11 +133,7 @@ namespace ScriptService {
                 options.AddProvider(new SingleLineLoggerProvider());
             });
 
-            ILogger logger=LoggerFactory.Create(builder => {
-                builder.SetMinimumLevel(LogLevel.Information);
-                builder.AddConsole();
-                builder.AddEventSourceLogger();
-            }).CreateLogger("Startup");
+            ILogger logger = new SingleLineLogger("Startup");
 
             string contentRoot = Configuration.GetValue<string>(WebHostDefaults.ContentRootKey);
 
@@ -145,12 +141,12 @@ namespace ScriptService {
             IConfigurationSection assemblysection = Configuration.GetSection("Assemblies");
             if (assemblysection != null) {
                 foreach (IConfigurationSection assembly in assemblysection.GetChildren()) {
-                    logger.LogInformation($"Loading assembly '{assembly.Value}'");
+                    logger.LogInformation("Loading assembly '{assembly}'", assembly.Value);
                     try {
                         assemblies.Add(Assembly.LoadFrom(Path.Combine(contentRoot, assembly.Value)));
                     }
                     catch (Exception e) {
-                        logger.LogError(e, $"Unable to load '{assembly.Value}'");
+                        logger.LogError(e, "Unable to load '{assembly}'", assembly.Value);
                     }
                 }
             }
@@ -168,15 +164,14 @@ namespace ScriptService {
                     if (implementationtype == null && !string.IsNullOrEmpty(implementationname))
                         implementationtype = assemblies.Select(a => a.GetType(implementationname)).FirstOrDefault(t => t != null);
 
-                    if (servicetype == null)
-                        servicetype = implementationtype;
+                    servicetype ??= implementationtype;
 
                     if (servicetype == null) {
-                        logger.LogWarning($"Unable to setup service '{service.Key}' using '{servicename}'->'{implementationname}'");
+                        logger.LogWarning("Unable to setup service '{serviceKey}' using '{servicename}'->'{implementationname}'", service.Key, servicename, implementationname);
                         continue;
                     }
 
-                    logger.LogInformation($"Adding service '{service.Key}' using '{servicename}'->'{implementationname}'");
+                    logger.LogInformation("Adding service '{serviceKey}' using '{servicename}'->'{implementationname}'", service.Key, servicename, implementationname);
 
                     services.AddSingleton(servicetype, implementationtype);
                 }
