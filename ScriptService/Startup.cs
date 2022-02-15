@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NightlyCode.AspNetCore.Services.Extensions;
+using NightlyCode.AspNetCore.Services.Loggers;
 using NightlyCode.AspNetCore.Services.Middleware;
 using NightlyCode.Database.Clients;
 using NightlyCode.Database.Entities;
@@ -126,6 +127,11 @@ namespace ScriptService {
             services.AddSingleton(s => ConnectDatabase());
             services.AddErrorHandlers();
             services.AddSingleton<IConfigureOptions<MvcOptions>, MvcConfiguration>();
+
+            services.AddLogging(options => {
+                options.ClearProviders();
+                options.AddProvider(new SingleLineLoggerProvider());
+            });
 
             ILogger logger=LoggerFactory.Create(builder => {
                 builder.SetMinimumLevel(LogLevel.Information);

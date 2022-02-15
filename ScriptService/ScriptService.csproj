@@ -20,7 +20,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="MoonSharp" Version="2.0.0" />
     <PackageReference Include="NightlyCode.AspNetCore.Services" Version="0.4.0-preview" />
-    <PackageReference Include="NightlyCode.Database" Version="0.13.7-preview" />
+    <PackageReference Include="NightlyCode.Database" Version="0.13.9-preview" />
     <PackageReference Include="NightlyCode.Scripting" Version="0.17.53-preview" />
     <PackageReference Include="Npgsql" Version="6.0.3" />
     <PackageReference Include="React.Core" Version="5.2.10" />
