@@ -137,7 +137,7 @@ namespace ScriptService.Services {
                 if (filter.To.HasValue)
                     tasks &= t => t.Finished <= filter.To;
 
-                WorkableTask[] results = await database.Load<TaskDb>(t => t.Id, t => t.WorkableId, t => t.WorkableRevision, t => t.WorkableName, t => t.Started, t => t.Finished, t => t.Status, t => t.Result)
+                WorkableTask[] results = (await database.Load<TaskDb>(t => t.Id, t => t.WorkableId, t => t.WorkableRevision, t => t.WorkableName, t => t.Started, t => t.Finished, t => t.Status, t => t.Result)
                     .ApplyFilter(filter)
                     .OrderBy(new OrderByCriteria(DB.Property<WorkableTask>(w => w.Started), false))
                     .Where(tasks?.Content)
@@ -153,7 +153,7 @@ namespace ScriptService.Services {
                             Status = t.GetValue<TaskStatus>(6),
                             Result = t.GetValue<string>(7).Deserialize<object>()
                         }
-                    );
+                    )).ToArray();
 
                 return Page<WorkableTask>.Create(
                     match.Concat(results).OrderByDescending(r=>r.Started).ToArray(),

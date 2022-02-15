@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using NightlyCode.AspNetCore.Services.Data;
 using NightlyCode.AspNetCore.Services.Errors.Exceptions;
 using NightlyCode.Database.Clients;
@@ -66,7 +67,7 @@ namespace ScriptService.Services {
             LoadOperation<Script> operation = database.Load<Script>();
             operation.ApplyFilter(filter);
             return Page<Script>.Create(
-                await operation.ExecuteEntitiesAsync(),
+                (await operation.ExecuteEntitiesAsync()).ToArray(),
                 await database.Load<Script>(s => DBFunction.Count()).ExecuteScalarAsync<long>(),
                 filter.Continue
             );

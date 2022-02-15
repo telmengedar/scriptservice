@@ -73,7 +73,7 @@ namespace ScriptService.Services.Tasks {
                 operation.Where(predicate.Content);
 
             return Page<ScheduledTask>.Create(
-                await operation.ExecuteEntitiesAsync<ScheduledTask>(),
+                (await operation.ExecuteEntitiesAsync<ScheduledTask>()).ToArray(),
                 await database.Load<ScheduledTask>(t => DBFunction.Count()).Where(predicate?.Content).ExecuteScalarAsync<long>(),
                 filter.Continue);
         }

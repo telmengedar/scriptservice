@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading.Tasks;
 using NightlyCode.AspNetCore.Services.Data;
 using NightlyCode.AspNetCore.Services.Errors.Exceptions;
@@ -60,7 +61,7 @@ namespace ScriptService.Services {
         public async Task<Page<int>> ListRevisions(string type, long id, ListFilter filter = null) {
             filter??=new ListFilter();
             return Page<int>.Create(
-                await database.Load<ArchivedObject>(o => o.Revision).Where(o => o.Type == type && o.ObjectId == id).ApplyFilter(filter).ExecuteSetAsync<int>(),
+                (await database.Load<ArchivedObject>(o => o.Revision).Where(o => o.Type == type && o.ObjectId == id).ApplyFilter(filter).ExecuteSetAsync<int>()).ToArray(),
                 await database.Load<ArchivedObject>(o => DBFunction.Count()).Where(o => o.Type == type && o.ObjectId == id).ExecuteScalarAsync<long>(),
                 filter.Continue
             );

@@ -96,21 +96,21 @@ namespace ScriptService.Services {
         }
 
         async Task<WorkflowDetails> FillWorkflow(WorkflowDetails workflow) {
-            workflow.Nodes = await loadnodes.ExecuteTypesAsync(r => new NodeDetails {
+            workflow.Nodes = (await loadnodes.ExecuteTypesAsync(r => new NodeDetails {
                 Id = r.GetValue<Guid>(0),
                 Name = r.GetValue<string>(1),
                 Group = r.GetValue<string>(2),
                 Type = r.GetValue<NodeType>(3),
                 Parameters = r.GetValue<string>(4).Deserialize<IDictionary<string,object>>(),
                 Variable = r.GetValue<string>(5)
-            }, workflow.Id);
-            workflow.Transitions = await loadtransitions.ExecuteTypesAsync(r => new TransitionData {
+            }, workflow.Id)).ToArray();
+            workflow.Transitions = (await loadtransitions.ExecuteTypesAsync(r => new TransitionData {
                 OriginId = r.GetValue<Guid>(0),
                 TargetId = r.GetValue<Guid>(1),
                 Condition = r.GetValue<string>(2),
                 Type= r.GetValue<TransitionType>(3),
                 Log=r.GetValue<string>(4)
-            }, workflow.Id);
+            }, workflow.Id)).ToArray();
             return workflow;
         }
 
@@ -230,7 +230,7 @@ namespace ScriptService.Services {
             }
             
             return Page<Workflow>.Create(
-                await operation.Where(predicate?.Content).ApplyFilter(filter).ExecuteEntitiesAsync(),
+                (await operation.Where(predicate?.Content).ApplyFilter(filter).ExecuteEntitiesAsync()).ToArray(),
                 await database.Load<Workflow>(w => DBFunction.Count()).Where(predicate?.Content).ExecuteScalarAsync<long>(),
                 filter.Continue
             );
